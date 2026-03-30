@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>日本語 感・知・學 – Pure Beacon Pulse | 沉浸式創新日語體驗</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        :root {
+            --bg: #0a0c14;
+            --card: #11131f;
+            --accent: #ffb882;
+            --accent-glow: rgba(255, 184, 130, 0.55);
+            --text: #fce9da;
+            --text-dim: #c9b39a;
+        }
+
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+        }
+
+        body { 
+            background: var(--bg); 
+            color: var(--text); 
+            font-family: 'Segoe UI', system-ui, sans-serif; 
+            min-height: 100vh; 
+            line-height: 1.5; 
+        }
+
+        .nav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(17, 19, 31, 0.95);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255,184,130,0.15);
+        }
+
+        .nav-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 32px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 76px;
+        }
+
+        .logo {
+            font-size: 1.45rem;
+            font-weight: 700;
+            letter-spacing: 3px;
+            color: var(--accent);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 32px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-dim);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1.05rem;
+            transition: all 0.3s;
+        }
+
+        .nav-links a.nav-game {
+            padding: 12px 26px;
+            margin-left: 18px;
+            border-radius: 999px;
+            background: rgba(255,184,130,0.16);
+            color: var(--accent);
+            font-weight: 700;
+            font-size: 1.1rem;
+            box-shadow: 0 0 22px rgba(255,184,130,0.24);
+        }
+
+        .nav-links a.nav-game:hover,
+        .nav-links a.nav-game.active {
+            background: rgba(255,184,130,0.28);
+            color: #0a0c14;
+            text-shadow: none;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--accent);
+            text-shadow: 0 0 15px var(--accent-glow);
+        }
+
+        .nav-cta {
+            background: var(--accent);
+            color: #0a0c14;
+            padding: 10px 24px;
+            border-radius: 999px;
+            font-weight: 700;
+            text-decoration: none;
+            font-size: 1rem;
+            transition: all 0.3s;
+            box-shadow: 0 0 25px rgba(255,184,130,0.4);
+        }
+
+        .nav-cta:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 35px rgba(255,184,130,0.6);
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            background: var(--card);
+            border-radius: 44px;
+            padding: 48px 32px;
+            box-shadow: 0 0 80px rgba(255,140,0,0.18), inset 0 0 40px rgba(255,184,130,0.06);
+            border: 1px solid rgba(255,184,130,0.12);
+            margin-top: -12px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 48px;
+        }
+
+        h1 {
+            font-size: 3.4rem;
+            letter-spacing: 6px;
+            background: linear-gradient(90deg, #ffaa7a, #ffb882, #ffcb9a);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 30px var(--accent-glow);
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            font-size: 1.28rem;
+            color: var(--text-dim);
+            opacity: 0.9;
+        }
+
+        .intro-text {
+            max-width: 720px;
+            margin: 32px auto 0;
+            font-size: 1.15rem;
+            color: var(--text-dim);
+            line-height: 1.65;
+            text-align: center;
+        }
+
+        .badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            justify-content: center;
+            margin: 28px 0 40px;
+        }
+
+        .badge {
+            background: rgba(255,184,130,0.08);
+            border: 1px solid rgba(255,184,130,0.25);
+            border-radius: 999px;
+            padding: 10px 20px;
+            font-size: 1.05rem;
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+        }
+
+        .badge:hover {
+            background: rgba(255,184,130,0.18);
+            box-shadow: 0 0 20px rgba(255,184,130,0.3);
+            transform: translateY(-2px);
+        }
+
+        .badge i { font-size: 1.4rem; }
+
+        .sense-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            justify-content: center;
+            margin: 32px 0 56px;
+        }
+
+        .sense-icon {
+            width: 64px;
+            height: 64px;
+            background: rgba(255,184,130,0.07);
+            border: 1px solid rgba(255,184,130,0.3);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            color: var(--accent);
+            transition: all 0.4s;
+        }
+
+        .sense-icon:hover {
+            transform: scale(1.15);
+            box-shadow: 0 0 25px var(--accent-glow);
+        }
+
+        section h2 {
+            text-align: center;
+            font-size: 2.1rem;
+            margin: 0 0 32px;
+            color: var(--accent);
+            text-shadow: 0 0 20px rgba(255,184,130,0.4);
+            letter-spacing: 2px;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 28px;
+            margin-bottom: 60px;
+        }
+
+        .feature-card {
+            background: rgba(20,22,35,0.6);
+            border: 1px solid rgba(255,184,130,0.18);
+            border-radius: 28px;
+            padding: 32px 20px;
+            text-align: center;
+            transition: all 0.4s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 50% 30%, rgba(255,184,130,0.14) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.5s;
+            pointer-events: none;
+        }
+
+        .feature-card:hover::before {
+            opacity: 1;
+        }
+
+        .feature-card:hover {
+            border-color: var(--accent);
+            box-shadow: 0 0 50px var(--accent-glow);
+            transform: translateY(-6px) scale(1.03);
+        }
+
+        .feature-icon {
+            font-size: 4.8rem;
+            color: var(--accent);
+            margin-bottom: 20px;
+            filter: drop-shadow(0 0 12px var(--accent-glow));
+            animation: pulse 4s infinite ease-in-out;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.88; transform: scale(1); }
+            50%      { opacity: 1;    transform: scale(1.08); }
+        }
+
+        .feature-card h3 {
+            font-size: 1.35rem;
+            margin-bottom: 12px;
+            color: var(--text);
+        }
+
+        .feature-card p {
+            font-size: 1rem;
+            color: var(--text-dim);
+            line-height: 1.45;
+        }
+
+        .cta-section {
+            text-align: center;
+            padding: 48px 20px;
+            background: rgba(255,184,130,0.06);
+            border-radius: 32px;
+            border: 1px solid rgba(255,184,130,0.18);
+        }
+
+        .cta-btn {
+            display: inline-block;
+            background: linear-gradient(90deg, #ffaa7a, #ffb882);
+            color: #0a0c14;
+            font-size: 1.35rem;
+            font-weight: 700;
+            padding: 18px 48px;
+            border-radius: 999px;
+            text-decoration: none;
+            box-shadow: 0 0 40px var(--accent-glow);
+            transition: all 0.4s;
+            margin-top: 16px;
+        }
+
+        .cta-btn:hover {
+            transform: scale(1.08) translateY(-4px);
+            box-shadow: 0 0 60px var(--accent-glow);
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 60px;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255,184,130,0.1);
+            color: var(--text-dim);
+            font-size: 0.95rem;
+        }
+
+        @media (max-width: 640px) {
+            h1 { font-size: 2.6rem; letter-spacing: 4px; }
+            .feature-grid { gap: 24px; }
+            .feature-card { padding: 28px 16px; }
+            .feature-icon { font-size: 4.2rem; }
+            .nav-links { gap: 16px; font-size: 0.98rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAV MENU (copy this block + style to all other pages) -->
+    <nav class="nav">
+        <div class="nav-container">
+            <a href="homepage.html" class="logo">
+                <i class="fas fa-wifi"></i> 感・知・學
+            </a>
+            
+            <ul class="nav-links">
+                <li><a href="homepage.html" class="active">首頁 Home</a></li>
+                <li><a href="learning progress.html">學習進度 Progress</a></li>
+                <li><a href="features.html">智能特色 Features</a></li>
+                <li><a href="game.html">體驗海報 Poster</a></li>
+                <li><a href="learning resource.html">學習資源 Resources</a></li>
+                <li><a href="about.html">關於我們 About</a></li>
+                <li><a href="game.html#game" class="nav-game">學習遊戲 Game</a></li>
+            </ul>
+            
+            <a href="game.html#game" class="nav-cta">立即開始體驗</a>
+        </div>
+    </nav>
+
+    <div class="container">
+
+        <header>
+            <h1>日本語 感・知・學</h1>
+            <div class="subtitle">沉浸式日語體驗 · 連繫真實</div>
+            
+            <p class="intro-text">
+                掃 QR、拍 NFC、靠近信標……<br>
+                把日語從課本帶到街角、神社、餐廳、日常每一刻。<br>
+                專為初學者、在職人士、文化愛好者與旅遊準備者設計。
+            </p>
+        </header>
+
+        <div class="badges">
+            <div class="badge"><i class="fas fa-star"></i> 自由學・隨時感</div>
+            <div class="badge"><i class="fas fa-map-marker-alt"></i> 真實語境體驗</div>
+        </div>
+
+        <div class="badges" style="margin-top:-16px;">
+            <div class="badge"><i class="fas fa-user-graduate"></i> 初學者</div>
+            <div class="badge"><i class="fas fa-briefcase"></i> 在職人士</div>
+            <div class="badge"><i class="fas fa-heart"></i> 文化愛好者</div>
+            <div class="badge"><i class="fas fa-plane"></i> 旅遊準備</div>
+        </div>
+
+        <div class="sense-row">
+            <div class="sense-icon"><i class="fas fa-ear-listen"></i></div>
+            <div class="sense-icon"><i class="fas fa-volume-high"></i></div>
+            <div class="sense-icon"><i class="fas fa-camera"></i></div>
+            <div class="sense-icon"><i class="fas fa-location-dot"></i></div>
+            <div class="sense-icon"><i class="fas fa-hand-pointer"></i></div>
+            <div class="sense-icon"><i class="fas fa-wifi"></i></div>
+        </div>
+
+        <section>
+            <h2>學習體驗 × 智能感應</h2>
+
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-qrcode"></i></div>
+                    <h3>QR 即學</h3>
+                    <p>掃描閃卡 → 真人發音 + 情境影片 + 即時單字</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-map-pin"></i></div>
+                    <h3>地域解鎖</h3>
+                    <p>行到邊學到邊 → 餐廳/神社詞彙 + 在地文化</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-microphone"></i></div>
+                    <h3>發音教練</h3>
+                    <p>即時回饋 → 自信開口 + 通勤覆讀</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-bell"></i></div>
+                    <h3>貼身伴學</h3>
+                    <p>每日一句 + 溫習提示 → 語感不中斷</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-tag"></i></div>
+                    <h3>NFC 觸發</h3>
+                    <p>一拍即學 → 單字交換 + 實體教材互動</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-volume-high"></i></div>
+                    <h3>景點信標導覽</h3>
+                    <p>信標靠近 → 自動播放文化語音解說</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA -->
+        <div class="cta-section">
+            <h2 style="margin-bottom:16px; font-size:2rem;">準備好把日語帶進生活了嗎？</h2>
+            <p style="max-width:520px; margin:0 auto 24px; color:var(--text-dim);">掃一掃、拍一拍、走一走 — 即時開啟你的沉浸式日語旅程</p>
+            <a href="#" class="cta-btn">立即開始體驗（免費試用）</a>
+        </div>
+
+        <footer>
+            By Yu Wang Yui — 創新與資訊科技 (IoT 融入學習設計)<br>
+            YouTube 播放清單｜詞彙表｜更多資源
+        </footer>
+
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>學習進度 – 日本語 感・知・學 | 你的日語成長軌跡</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        :root {
+            --bg: #0a0c14;
+            --card: #11131f;
+            --accent: #ffb882;
+            --accent-glow: rgba(255, 184, 130, 0.55);
+            --text: #fce9da;
+            --text-dim: #c9b39a;
+        }
+
+        * { margin:0; padding:0; box-sizing:border-box; }
+
+        body { 
+            background: var(--bg); 
+            color: var(--text); 
+            font-family: 'Segoe UI', system-ui, sans-serif; 
+            min-height: 100vh; 
+            line-height: 1.5; 
+        }
+
+        /* ── Reused Nav ── */
+        .nav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(17, 19, 31, 0.95);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255,184,130,0.15);
+        }
+
+        .nav-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 32px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 76px;
+        }
+
+        .logo {
+            font-size: 1.45rem;
+            font-weight: 700;
+            letter-spacing: 3px;
+            color: var(--accent);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 32px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-dim);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1.05rem;
+            transition: all 0.3s;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--accent);
+            text-shadow: 0 0 15px var(--accent-glow);
+        }
+
+        .nav-cta {
+            background: var(--accent);
+            color: #0a0c14;
+            padding: 10px 24px;
+            border-radius: 999px;
+            font-weight: 700;
+            text-decoration: none;
+            font-size: 1rem;
+            transition: all 0.3s;
+            box-shadow: 0 0 25px rgba(255,184,130,0.4);
+        }
+
+        .nav-cta:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 35px rgba(255,184,130,0.6);
+        }
+
+        /* ── Main Content ── */
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            background: var(--card);
+            border-radius: 44px;
+            padding: 64px 32px 48px;
+            box-shadow: 0 0 80px rgba(255,140,0,0.18), inset 0 0 40px rgba(255,184,130,0.06);
+            border: 1px solid rgba(255,184,130,0.12);
+            margin-top: -12px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 56px;
+        }
+
+        h1 {
+            font-size: 3.2rem;
+            letter-spacing: 5px;
+            background: linear-gradient(90deg, #ffaa7a, #ffb882, #ffcb9a);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 30px var(--accent-glow);
+            margin-bottom: 12px;
+        }
+
+        .subtitle {
+            font-size: 1.4rem;
+            color: var(--text-dim);
+            opacity: 0.92;
+        }
+
+        .progress-overview {
+            background: rgba(255,184,130,0.06);
+            border: 1px solid rgba(255,184,130,0.2);
+            border-radius: 28px;
+            padding: 32px;
+            margin-bottom: 48px;
+            text-align: center;
+        }
+
+        .progress-overview h2 {
+            color: var(--accent);
+            font-size: 2.2rem;
+            margin-bottom: 16px;
+        }
+
+        .progress-stats {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 40px;
+            margin: 24px 0;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 3.5rem;
+            font-weight: 700;
+            color: var(--accent);
+            text-shadow: 0 0 20px var(--accent-glow);
+        }
+
+        .stat-label {
+            font-size: 1.1rem;
+            color: var(--text-dim);
+            margin-top: 8px;
+        }
+
+        .progress-bar {
+            height: 24px;
+            background: rgba(255,184,130,0.1);
+            border-radius: 999px;
+            overflow: hidden;
+            margin: 32px 0;
+            border: 1px solid rgba(255,184,130,0.25);
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 42%; /* 範例進度，可改成動態 */
+            background: linear-gradient(90deg, #ffaa7a, #ffb882);
+            border-radius: 999px;
+            box-shadow: 0 0 30px var(--accent-glow);
+            transition: width 1.2s ease;
+        }
+
+        section h2 {
+            text-align: center;
+            font-size: 2.3rem;
+            margin: 64px 0 40px;
+            color: var(--accent);
+            text-shadow: 0 0 24px rgba(255,184,130,0.45);
+            letter-spacing: 2px;
+        }
+
+        .progress-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 32px;
+            margin: 0 auto;
+        }
+
+        .progress-card {
+            background: rgba(20,22,35,0.65);
+            border: 1px solid rgba(255,184,130,0.2);
+            border-radius: 32px;
+            padding: 40px 28px;
+            text-align: center;
+            transition: all 0.45s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .progress-card:hover {
+            border-color: var(--accent);
+            box-shadow: 0 0 60px var(--accent-glow);
+            transform: translateY(-10px) scale(1.04);
+        }
+
+        .progress-icon {
+            font-size: 5.2rem;
+            color: var(--accent);
+            margin-bottom: 24px;
+            filter: drop-shadow(0 0 16px var(--accent-glow));
+            animation: pulse 5s infinite ease-in-out;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.85; transform: scale(1); }
+            50%      { opacity: 1;    transform: scale(1.12); }
+        }
+
+        .progress-card h3 {
+            font-size: 1.55rem;
+            margin-bottom: 16px;
+            color: var(--text);
+        }
+
+        .progress-detail {
+            font-size: 1.05rem;
+            color: var(--text-dim);
+            line-height: 1.6;
+        }
+
+        .detail-list {
+            text-align: left;
+            margin-top: 20px;
+            padding-left: 24px;
+            color: var(--text-dim);
+        }
+
+        .detail-list li {
+            margin-bottom: 10px;
+            position: relative;
+        }
+
+        .detail-list li::before {
+            content: "→";
+            color: var(--accent);
+            position: absolute;
+            left: -20px;
+        }
+
+        .cta-section {
+            text-align: center;
+            margin: 80px auto 40px;
+            max-width: 720px;
+            padding: 48px 32px;
+            background: rgba(255,184,130,0.05);
+            border-radius: 36px;
+            border: 1px solid rgba(255,184,130,0.2);
+        }
+
+        .cta-btn {
+            display: inline-block;
+            background: linear-gradient(90deg, #ffaa7a, #ffb882);
+            color: #0a0c14;
+            font-size: 1.4rem;
+            font-weight: 700;
+            padding: 18px 52px;
+            border-radius: 999px;
+            text-decoration: none;
+            box-shadow: 0 0 45px var(--accent-glow);
+            transition: all 0.4s;
+        }
+
+        .cta-btn:hover {
+            transform: scale(1.09) translateY(-5px);
+            box-shadow: 0 0 70px var(--accent-glow);
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 80px;
+            padding-top: 40px;
+            border-top: 1px solid rgba(255,184,130,0.1);
+            color: var(--text-dim);
+            font-size: 0.98rem;
+        }
+
+        @media (max-width: 640px) {
+            h1 { font-size: 2.5rem; letter-spacing: 4px; }
+            .progress-stats { gap: 24px; }
+            .stat-number { font-size: 2.8rem; }
+            .progress-grid { gap: 28px; }
+            .progress-card { padding: 32px 20px; }
+            .progress-icon { font-size: 4.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAV (Learning Progress 設為 active) -->
+    <nav class="nav">
+        <div class="nav-container">
+            <a href="homepage.html" class="logo">
+                <i class="fas fa-wifi"></i> 感・知・學
+            </a>
+            
+            <ul class="nav-links">
+                <li><a href="homepage.html">首頁 Home</a></li>
+                <li><a href="features.html">特色 Features</a></li>
+                <li><a href="learning progress.html" class="active">學習進度 Progress</a></li>
+                <li><a href="learning resource.html">學習資源 Resources</a></li>
+                <li><a href="about.html">關於我們 About</a></li>
+                <li><a href="game.html#game">學習遊戲 Game</a></li>
+            </ul>
+            
+            <a href="game.html#game" class="nav-cta">立即開始體驗</a>
+        </div>
+    </nav>
+
+    <div class="container">
+
+        <header>
+            <h1>學習進度</h1>
+            <div class="subtitle">你的日語成長軌跡 · 每一步都看得見</div>
+        </header>
+
+        <!-- 總覽區塊 -->
+        <div class="progress-overview">
+            <h2>目前總進度</h2>
+            <div class="progress-stats">
+                <div class="stat-item">
+                    <div class="stat-number">428</div>
+                    <div class="stat-label">已學單字</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">67</div>
+                    <div class="stat-label">解鎖場景</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">89%</div>
+                    <div class="stat-label">發音準確率</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">42</div>
+                    <div class="stat-label">連續學習天數</div>
+                </div>
+            </div>
+
+            <div class="progress-bar">
+                <div class="progress-fill" style="width: 42%;"></div>
+            </div>
+            <p style="color: var(--text-dim); font-size: 1.1rem;">N5 → N4 進度：42%（目標：明年春天達 N3）</p>
+        </div>
+
+        <section>
+            <h2>最近成就與解鎖</h2>
+
+            <div class="progress-grid">
+
+                <div class="progress-card">
+                    <div class="progress-icon"><i class="fas fa-map-pin"></i></div>
+                    <h3>地域解鎖</h3>
+                    <p class="progress-detail">已解鎖 12 個場景</p>
+                    <ul class="detail-list">
+                        <li>淺草寺（參拜敬語 + 手水所）</li>
+                        <li>道頓堀（大阪美食點餐）</li>
+                        <li>新宿車站（交通問路）</li>
+                        <li>澀谷交叉口（人群導航用語）</li>
+                        <li>伏見稻荷（千本鳥居文化）</li>
+                        <li>... 還有更多</li>
+                    </ul>
+                </div>
+
+                <div class="progress-card">
+                    <div class="progress-icon"><i class="fas fa-microphone"></i></div>
+                    <h3>發音練習</h3>
+                    <p class="progress-detail">累計錄音 156 次</p>
+                    <ul class="detail-list">
+                        <li>最高準確率：92%（おはようございます）</li>
+                        <li>最常練習：點餐短語（おすすめは何ですか？）</li>
+                        <li>改善項目：長音與促音（まだまだ頑張ります！）</li>
+                    </ul>
+                </div>
+
+                <div class="progress-card">
+                    <div class="progress-icon"><i class="fas fa-book-open"></i></div>
+                    <h3>單字與文法</h3>
+                    <p class="progress-detail">掌握 428 個單字</p>
+                    <ul class="detail-list">
+                        <li>本週新增：38 個（美食 + 交通類）</li>
+                        <li>複習完成率：96%</li>
+                        <li>最強類別：日常問候與購物</li>
+                    </ul>
+                </div>
+
+                <div class="progress-card">
+                    <div class="progress-icon"><i class="fas fa-bell"></i></div>
+                    <h3>每日伴學</h3>
+                    <p class="progress-detail">連續 42 天不間斷</p>
+                    <ul class="detail-list">
+                        <li>最長連續天數：42 天（目前進行中）</li>
+                        <li>今日一句：已完成「今日も頑張ります！」</li>
+                        <li>獲得徽章：初心者忍耐王</li>
+                    </ul>
+                </div>
+
+                <div class="progress-card">
+                    <div class="progress-icon"><i class="fas fa-trophy"></i></div>
+                    <h3>成就徽章</h3>
+                    <p class="progress-detail">已解鎖 8 個徽章</p>
+                    <ul class="detail-list">
+                        <li>第一步：完成首次 QR 掃描</li>
+                        <li>街頭勇者：解鎖 5 個地域場景</li>
+                        <li>發音新星：準確率超過 85%</li>
+                        <li>連續達人：21 天不間斷</li>
+                        <li>... 繼續解鎖更多！</li>
+                    </ul>
+                </div>
+
+                <div class="progress-card">
+                    <div class="progress-icon"><i class="fas fa-chart-line"></i></div>
+                    <h3>成長曲線</h3>
+                    <p class="progress-detail">過去 30 天進步趨勢</p>
+                    <ul class="detail-list">
+                        <li>單字 +28%</li>
+                        <li>發音準確率 +15%</li>
+                        <li>解鎖場景 +7 個</li>
+                        <li>建議：下週重點練習敬語與關西方言</li>
+                    </ul>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- CTA -->
+        <div class="cta-section">
+            <h2>繼續前進，你的日語正在蛻變</h2>
+            <p style="margin:24px auto; max-width:580px; font-size:1.15rem; color:var(--text-dim);">
+                每一次掃描、每一次發音、每一次走到新地方，都是在寫下屬於你的日語故事。
+            </p>
+            <a href="#" class="cta-btn">今天也要繼續學習！</a>
+        </div>
+
+        <footer>
+            By Yu Wang Yui — 創新與資訊科技 (IoT 融入語言學習)<br>
+            你的每一步，都在進步中
+        </footer>
+
+    </div>
+
+</body>
+</html>

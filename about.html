@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>關於我們 – 日本語 感・知・學 | 團隊與常見問題</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        :root {
+            --bg: #0a0c14;
+            --card: #11131f;
+            --accent: #ffb882;
+            --accent-glow: rgba(255, 184, 130, 0.55);
+            --text: #fce9da;
+            --text-dim: #c9b39a;
+        }
+
+        * { margin:0; padding:0; box-sizing:border-box; }
+
+        body { 
+            background: var(--bg); 
+            color: var(--text); 
+            font-family: 'Segoe UI', system-ui, sans-serif; 
+            min-height: 100vh; 
+            line-height: 1.5; 
+        }
+
+        /* ── Reused Nav ── */
+        .nav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(17, 19, 31, 0.95);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255,184,130,0.15);
+        }
+
+        .nav-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 32px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 76px;
+        }
+
+        .logo {
+            font-size: 1.45rem;
+            font-weight: 700;
+            letter-spacing: 3px;
+            color: var(--accent);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 32px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-dim);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1.05rem;
+            transition: all 0.3s;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--accent);
+            text-shadow: 0 0 15px var(--accent-glow);
+        }
+
+        .nav-cta {
+            background: var(--accent);
+            color: #0a0c14;
+            padding: 10px 24px;
+            border-radius: 999px;
+            font-weight: 700;
+            text-decoration: none;
+            font-size: 1rem;
+            transition: all 0.3s;
+            box-shadow: 0 0 25px rgba(255,184,130,0.4);
+        }
+
+        .nav-cta:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 35px rgba(255,184,130,0.6);
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            background: var(--card);
+            border-radius: 44px;
+            padding: 64px 32px 48px;
+            box-shadow: 0 0 80px rgba(255,140,0,0.18), inset 0 0 40px rgba(255,184,130,0.06);
+            border: 1px solid rgba(255,184,130,0.12);
+            margin-top: -12px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 56px;
+        }
+
+        h1 {
+            font-size: 3.2rem;
+            letter-spacing: 5px;
+            background: linear-gradient(90deg, #ffaa7a, #ffb882, #ffcb9a);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 30px var(--accent-glow);
+            margin-bottom: 12px;
+        }
+
+        .subtitle {
+            font-size: 1.4rem;
+            color: var(--text-dim);
+            opacity: 0.92;
+        }
+
+        .team-grid, .faq-grid, .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 36px;
+            margin: 0 auto 60px;
+        }
+
+        .team-card, .faq-item, .info-card {
+            background: rgba(20,22,35,0.65);
+            border: 1px solid rgba(255,184,130,0.2);
+            border-radius: 32px;
+            padding: 40px 28px;
+            transition: all 0.45s ease;
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        .team-card:hover, .faq-item:hover, .info-card:hover {
+            border-color: var(--accent);
+            box-shadow: 0 0 60px var(--accent-glow);
+            transform: translateY(-10px) scale(1.04);
+        }
+
+        .team-avatar {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            border: 3px solid var(--accent);
+            box-shadow: 0 0 30px var(--accent-glow);
+            object-fit: cover;
+        }
+
+        .team-name {
+            font-size: 1.7rem;
+            color: var(--text);
+            margin-bottom: 8px;
+        }
+
+        .team-role {
+            font-size: 1.1rem;
+            color: var(--accent);
+            margin-bottom: 16px;
+        }
+
+        .team-bio {
+            font-size: 1.05rem;
+            color: var(--text-dim);
+            line-height: 1.6;
+        }
+
+        .faq-question {
+            font-size: 1.35rem;
+            color: var(--accent);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            justify-content: center;
+        }
+
+        .faq-question i {
+            font-size: 1.6rem;
+        }
+
+        .faq-answer {
+            font-size: 1.05rem;
+            color: var(--text-dim);
+            line-height: 1.65;
+        }
+
+        .info-card h3 {
+            font-size: 1.55rem;
+            color: var(--accent);
+            margin-bottom: 20px;
+        }
+
+        .info-detail {
+            font-size: 1.05rem;
+            color: var(--text-dim);
+            line-height: 1.7;
+            text-align: left;
+        }
+
+        .info-detail ul {
+            list-style: none;
+            padding-left: 0;
+            margin-top: 16px;
+        }
+
+        .info-detail li {
+            margin-bottom: 12px;
+            position: relative;
+            padding-left: 28px;
+        }
+
+        .info-detail li::before {
+            content: "→";
+            color: var(--accent);
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+        }
+
+        .cta-section {
+            text-align: center;
+            margin: 80px auto 40px;
+            max-width: 720px;
+            padding: 48px 32px;
+            background: rgba(255,184,130,0.05);
+            border-radius: 36px;
+            border: 1px solid rgba(255,184,130,0.2);
+        }
+
+        .cta-btn {
+            display: inline-block;
+            background: linear-gradient(90deg, #ffaa7a, #ffb882);
+            color: #0a0c14;
+            font-size: 1.4rem;
+            font-weight: 700;
+            padding: 18px 52px;
+            border-radius: 999px;
+            text-decoration: none;
+            box-shadow: 0 0 45px var(--accent-glow);
+            transition: all 0.4s;
+        }
+
+        .cta-btn:hover {
+            transform: scale(1.09) translateY(-5px);
+            box-shadow: 0 0 70px var(--accent-glow);
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 80px;
+            padding-top: 40px;
+            border-top: 1px solid rgba(255,184,130,0.1);
+            color: var(--text-dim);
+            font-size: 0.98rem;
+        }
+
+        @media (max-width: 640px) {
+            h1 { font-size: 2.5rem; letter-spacing: 4px; }
+            .team-grid, .faq-grid, .info-grid { gap: 28px; }
+            .team-avatar { width: 120px; height: 120px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAV (關於我們 About 設為 active) -->
+    <nav class="nav">
+        <div class="nav-container">
+            <a href="homepage.html" class="logo">
+                <i class="fas fa-wifi"></i> 感・知・學
+            </a>
+            
+            <ul class="nav-links">
+                <li><a href="homepage.html">首頁 Home</a></li>
+                <li><a href="features.html">特色 Features</a></li>
+                <li><a href="learning progress.html">學習進度 Progress</a></li>
+                <li><a href="learning resource.html">學習資源 Resources</a></li>
+                <li><a href="about.html" class="active">關於我們 About</a></li>
+                <li><a href="game.html#game">學習遊戲 Game</a></li>
+            </ul>
+            
+            <a href="game.html#game" class="nav-cta">立即開始體驗</a>
+        </div>
+    </nav>
+
+    <div class="container">
+
+        <header>
+            <h1>關於我們</h1>
+            <div class="subtitle">沉浸式創新日語體驗團隊</div>
+        </header>
+
+        <!-- 團隊介紹 -->
+        <section>
+            <h2>團隊成員</h2>
+
+            <div class="team-grid">
+
+                <div class="team-card">
+                    <img src="https://via.placeholder.com/140/ffb882/0a0c14?text=Yu" alt="Yu Wang Yui" class="team-avatar">
+                    <div class="team-name">Yu Wang Yui</div>
+                    <div class="team-role">創辦人 / 首席設計與創新</div>
+                    <div class="team-bio">
+                        熱愛語言、科技與沉浸式體驗的跨領域創作者。<br>
+                        主導「日本語 感・知・學」的整體概念、IoT 整合設計與使用者體驗。<br>
+                        相信日語不只是語言，而是連結真實生活、文化與未來的橋樑。
+                    </div>
+                </div>
+
+                <div class="team-card">
+                    <img src="https://via.placeholder.com/140/ffb882/0a0c14?text=Alex" alt="Alex Kwok" class="team-avatar">
+                    <div class="team-name">Alex Kwok</div>
+                    <div class="team-role">技術開發與 AI 整合</div>
+                    <div class="team-bio">
+                        專注於 App 後端、語音辨識、GPS 觸發與 NFC 功能的成都工程師。<br>
+                        負責將創新想法轉化為穩定、可擴展的技術實現。<br>
+                        對 AI 輔助學習與實境互動充滿熱情，希望讓每位學習者都能「感受到」日語。
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- 常見問題 -->
+        <section>
+            <h2>常見問題與解答</h2>
+
+            <div class="faq-grid">
+
+                <div class="faq-item">
+                    <div class="faq-question"><i class="fas fa-question-circle"></i> 這個程式適合什麼程度？</div>
+                    <div class="faq-answer">
+                        從零基礎到中級（N5–N3）都適合。<br>
+                        初學者從發音與日常用語開始，中級者可透過真實場景與文化內容深化。
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question"><i class="fas fa-mobile-alt"></i> 需要什麼設備？</div>
+                    <div class="faq-answer">
+                        iOS / Android 智慧手機（支援 NFC、GPS、藍牙）。<br>
+                        建議 iPhone 8+ 或 Android 8.0+ 以確保最佳體驗。
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question"><i class="fas fa-wifi"></i> 一定要連網嗎？</div>
+                    <div class="faq-answer">
+                        離線可用大部分功能（單字、語音包、每日一句）。<br>
+                        地域解鎖與信標導覽需網路或 GPS。
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question"><i class="fas fa-credit-card"></i> 有免費試用嗎？</div>
+                    <div class="faq-answer">
+                        是的！註冊後直接享有 14 天完整免費試用，無需信用卡。
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- 報名、時間表與費用 -->
+        <section>
+            <h2>報名、時間表與費用</h2>
+
+            <div class="info-grid">
+
+                <div class="info-card">
+                    <h3>報名方式</h3>
+                    <div class="info-detail">
+                        <ul>
+                            <li>App Store / Google Play 搜尋「日本語 感・知・學」下載</li>
+                            <li>使用 email、Google 或 Apple 帳號快速註冊</li>
+                            <li>註冊即享 14 天免費完整體驗</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="info-card">
+                    <h3>學習時間表</h3>
+                    <div class="info-detail">
+                        <ul>
+                            <li>完全彈性，無固定上課時間</li>
+                            <li>建議每日 15–30 分鐘（通勤、午休、睡前）</li>
+                            <li>App 會根據你的習慣發送溫習提醒</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="info-card">
+                    <h3>費用方案</h3>
+                    <div class="info-detail">
+                        <ul>
+                            <li><span class="highlight">免費試用</span>：14 天無限制</li>
+                            <li><span class="highlight">月費</span>：HK$78 / 月（隨時取消）</li>
+                            <li><span class="highlight">年費</span>：HK$688 / 年（約省 35%）</li>
+                            <li>包含所有功能、無廣告、優先支援</li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- CTA -->
+        <div class="cta-section">
+            <h2>加入我們，一起感受日語的魅力</h2>
+            <p style="margin:24px auto; max-width:580px; font-size:1.15rem; color:var(--text-dim);">
+                從零開始，或深化你的日語旅程 — 我們與你同行
+            </p>
+            <a href="#" class="cta-btn">立即下載並開始免費試用</a>
+        </div>
+
+        <footer>
+            By Yu Wang Yui & Alex Kwok — 沉浸式創新日語體驗團隊<br>
+            讓日語成為你生活的一部分
+        </footer>
+
+    </div>
+
+</body>
+</html>

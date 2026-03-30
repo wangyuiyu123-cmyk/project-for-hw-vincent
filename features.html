@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>地域解鎖 – 日本語 感・知・學 | 走到哪裡學到哪裡</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        :root {
+            --bg: #0a0c14;
+            --card: #11131f;
+            --accent: #ffb882;
+            --accent-glow: rgba(255, 184, 130, 0.55);
+            --text: #fce9da;
+            --text-dim: #c9b39a;
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            min-height: 100vh;
+            line-height: 1.5;
+        }
+        /* Nav 樣式（與首頁一致） */
+        .nav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(17, 19, 31, 0.95);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255,184,130,0.15);
+        }
+        .nav-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 32px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 76px;
+        }
+        .logo {
+            font-size: 1.45rem;
+            font-weight: 700;
+            letter-spacing: 3px;
+            color: var(--accent);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .nav-links {
+            display: flex;
+            gap: 32px;
+            list-style: none;
+        }
+        .nav-links a {
+            color: var(--text-dim);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1.05rem;
+            transition: all 0.3s;
+        }
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--accent);
+            text-shadow: 0 0 15px var(--accent-glow);
+        }
+        .nav-cta {
+            background: var(--accent);
+            color: #0a0c14;
+            padding: 10px 24px;
+            border-radius: 999px;
+            font-weight: 700;
+            text-decoration: none;
+            font-size: 1rem;
+            transition: all 0.3s;
+            box-shadow: 0 0 25px rgba(255,184,130,0.4);
+        }
+        .nav-cta:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 35px rgba(255,184,130,0.6);
+        }
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            background: var(--card);
+            border-radius: 44px;
+            padding: 64px 32px 48px;
+            box-shadow: 0 0 80px rgba(255,140,0,0.18), inset 0 0 40px rgba(255,184,130,0.06);
+            border: 1px solid rgba(255,184,130,0.12);
+            margin-top: -12px;
+        }
+        header {
+            text-align: center;
+            margin-bottom: 56px;
+        }
+        h1 {
+            font-size: 3.2rem;
+            letter-spacing: 5px;
+            background: linear-gradient(90deg, #ffaa7a, #ffb882, #ffcb9a);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 30px var(--accent-glow);
+            margin-bottom: 12px;
+        }
+        .subtitle {
+            font-size: 1.4rem;
+            color: var(--text-dim);
+            opacity: 0.92;
+            margin-bottom: 8px;
+        }
+        .tagline {
+            font-size: 1.6rem;
+            color: var(--accent);
+            margin: 16px 0 32px;
+            font-weight: 600;
+        }
+        .intro-text {
+            max-width: 800px;
+            margin: 0 auto 40px;
+            font-size: 1.18rem;
+            color: var(--text-dim);
+            line-height: 1.7;
+            text-align: center;
+        }
+        section h2 {
+            text-align: center;
+            font-size: 2.3rem;
+            margin: 64px 0 40px;
+            color: var(--accent);
+            text-shadow: 0 0 24px rgba(255,184,130,0.45);
+            letter-spacing: 2px;
+        }
+        .location-grid, .recommend-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 36px;
+            margin: 0 auto;
+        }
+        .location-card, .recommend-card {
+            background: rgba(20,22,35,0.7);
+            border: 1px solid rgba(255,184,130,0.22);
+            border-radius: 32px;
+            padding: 40px 28px;
+            text-align: center;
+            transition: all 0.45s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .location-card:hover, .recommend-card:hover {
+            border-color: var(--accent);
+            box-shadow: 0 0 60px var(--accent-glow);
+            transform: translateY(-10px) scale(1.04);
+        }
+        .loc-icon, .rec-icon {
+            font-size: 5.5rem;
+            color: var(--accent);
+            margin-bottom: 24px;
+            filter: drop-shadow(0 0 16px var(--accent-glow));
+            animation: pulse 5s infinite ease-in-out;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 0.85; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.12); }
+        }
+        .location-card h3, .recommend-card h3 {
+            font-size: 1.7rem;
+            margin-bottom: 16px;
+            color: var(--text);
+        }
+        .loc-desc, .rec-desc {
+            font-size: 1.08rem;
+            color: var(--text-dim);
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        .phrase-list {
+            text-align: left;
+            color: var(--text);
+            font-size: 1.05rem;
+            line-height: 1.8;
+            padding-left: 0;
+            list-style: none;
+            margin-bottom: 24px;
+        }
+        .phrase-list li {
+            margin-bottom: 16px;
+            position: relative;
+            padding-left: 32px;
+            background: rgba(255,184,130,0.03);
+            border-radius: 8px;
+            padding: 12px 16px 12px 32px;
+        }
+        .phrase-list li::before {
+            content: "▶";
+            color: var(--accent);
+            position: absolute;
+            left: 12px;
+            top: 14px;
+            font-weight: bold;
+        }
+        .jp {
+            color: var(--accent);
+            font-weight: 600;
+            font-size: 1.1rem;
+            display: block;
+        }
+        .romaji {
+            color: var(--text-dim);
+            font-size: 0.95rem;
+            display: block;
+            margin: 4px 0;
+        }
+        .translation {
+            color: var(--text-dim);
+            font-size: 0.98rem;
+            display: block;
+        }
+        .image-gallery {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .gallery-img {
+            width: 100%;
+            max-width: 220px;
+            border-radius: 12px;
+            border: 1px solid rgba(255,184,130,0.3);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+            transition: transform 0.3s;
+        }
+        .gallery-img:hover {
+            transform: scale(1.05);
+        }
+        .cta-section {
+            text-align: center;
+            margin: 80px auto 40px;
+            max-width: 760px;
+            padding: 48px 32px;
+            background: rgba(255,184,130,0.05);
+            border-radius: 36px;
+            border: 1px solid rgba(255,184,130,0.2);
+        }
+        .cta-btn {
+            display: inline-block;
+            background: linear-gradient(90deg, #ffaa7a, #ffb882);
+            color: #0a0c14;
+            font-size: 1.4rem;
+            font-weight: 700;
+            padding: 18px 52px;
+            border-radius: 999px;
+            text-decoration: none;
+            box-shadow: 0 0 45px var(--accent-glow);
+            transition: all 0.4s;
+        }
+        .cta-btn:hover {
+            transform: scale(1.09) translateY(-5px);
+            box-shadow: 0 0 70px var(--accent-glow);
+        }
+        footer {
+            text-align: center;
+            margin-top: 80px;
+            padding-top: 40px;
+            border-top: 1px solid rgba(255,184,130,0.1);
+            color: var(--text-dim);
+            font-size: 0.98rem;
+        }
+        @media (max-width: 640px) {
+            h1 { font-size: 2.5rem; }
+            .location-grid, .recommend-grid { gap: 28px; }
+            .gallery-img { max-width: 180px; }
+            .phrase-list li { padding: 10px 12px 10px 28px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Nav（已更新成最新版本，特色 Features 設為 active） -->
+    <nav class="nav">
+        <div class="nav-container">
+            <a href="homepage.html" class="logo">
+                <i class="fas fa-wifi"></i> 感・知・學
+            </a>
+            <ul class="nav-links">
+                <li><a href="homepage.html">首頁 Home</a></li>
+                <li><a href="features.html" class="active">特色 Features</a></li>
+                <li><a href="learning progress.html">學習進度 Progress</a></li>
+                <li><a href="learning resource.html">學習資源 Resources</a></li>
+                <li><a href="about.html">關於我們 About</a></li>
+                <li><a href="game.html#game">學習遊戲 Game</a></li>
+            </ul>
+            <a href="game.html#game" class="nav-cta">立即開始體驗</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <header>
+            <h1>地域解鎖</h1>
+            <div class="subtitle">GPS 定位 × 真實場景學習</div>
+            <div class="tagline">走到哪裡學到哪裡 — 位置就是你的課本</div>
+            <p class="intro-text">
+                當你靠近特定地點，App 自動解鎖專屬日語內容：發音、情境對話、文化小知識、實拍菜單/標示，甚至慢速導覽語音。<br>
+                讓街道、餐廳、神社、車站主動「教」你實用日語。
+            </p>
+        </header>
+        <section>
+            <h2>解鎖場景實例</h2>
+            <div class="location-grid">
+                <!-- 附近餐廳 -->
+                <div class="location-card">
+                    <div class="loc-icon"><i class="fas fa-utensils"></i></div>
+                    <h3>附近餐廳</h3>
+                    <p class="loc-desc">點餐用語 + 菜單實拍解說</p>
+                    <ul class="phrase-list">
+                        <li>
+                            <span class="jp">すみません、メニューをお願いします</span>
+                            <span class="romaji">Sumimasen, menyū o onegai shimasu.</span>
+                            <span class="translation">（不好意思，請給我菜單）</span>
+                        </li>
+                        <li>
+                            <span class="jp">おすすめは何ですか？</span>
+                            <span class="romaji">Osusume wa nan desu ka?</span>
+                            <span class="translation">（有什麼推薦的嗎？）</span>
+                        </li>
+                        <li>
+                            <span class="jp">これをお願いします</span>
+                            <span class="romaji">Kore o onegai shimasu.</span>
+                            <span class="translation">（我要這個）</span>
+                        </li>
+                        <li>
+                            <span class="jp">美味しかったです、ごちそうさまでした</span>
+                            <span class="romaji">Oishikatta desu, gochisōsama deshita.</span>
+                            <span class="translation">（很好吃，謝謝款待）</span>
+                        </li>
+                        <li>App 會顯示實拍菜單 + 發音 + 過敏詢問（如エビアレルギーです）</li>
+                    </ul>
+                </div>
+                <!-- 神社 / 寺廟 -->
+                <div class="location-card">
+                    <div class="loc-icon"><i class="fas fa-torii-gate"></i></div>
+                    <h3>神社 / 寺廟</h3>
+                    <p class="loc-desc">參拜禮儀 + 相關敬語與文化</p>
+                    <ul class="phrase-list">
+                        <li>
+                            <span class="jp">二礼二拍手一礼（にれいにはくしゅいちれい）</span>
+                            <span class="romaji">Nirei nihakushu ichirei</span>
+                            <span class="translation">（二鞠躬、二拍手、一鞠躬）</span>
+                        </li>
+                        <li>
+                            <span class="jp">お賽銭をお入れください</span>
+                            <span class="romaji">O-saisen o oire kudasai</span>
+                            <span class="translation">（請投入香油錢）</span>
+                        </li>
+                        <li>
+                            <span class="jp">ご利益がありますように</span>
+                            <span class="romaji">Goryaku ga arimasu yō ni</span>
+                            <span class="translation">（祈求靈驗）</span>
+                        </li>
+                        <li>
+                            <span class="jp">お参りに行きます</span>
+                            <span class="romaji">O-mairi ni ikimasu</span>
+                            <span class="translation">（去參拜）</span>
+                        </li>
+                    </ul>
+                    <div class="image-gallery">
+                        <!-- 這裡保留你原本的圖像渲染，如果有 ID 就放回來 -->
+                    </div>
+                    <p style="margin-top:16px; font-size:0.95rem; color:var(--text-dim);">App 會播放洗手順序語音 + 拍手示範 + 繪馬寫法提示</p>
+                </div>
+                <!-- 車站 / 便利店 -->
+                <div class="location-card">
+                    <div class="loc-icon"><i class="fas fa-subway"></i></div>
+                    <h3>車站 / 便利店</h3>
+                    <p class="loc-desc">日常交通 + 購物對話</p>
+                    <ul class="phrase-list">
+                        <li>
+                            <span class="jp">切符はどこで買えますか？</span>
+                            <span class="romaji">Kippu wa doko de kaemasu ka?</span>
+                            <span class="translation">（車票在哪裡買？）</span>
+                        </li>
+                        <li>
+                            <span class="jp">ポイントカードはお持ちですか？</span>
+                            <span class="romaji">Pointo kādo wa omochi desu ka?</span>
+                            <span class="translation">（有集點卡嗎？）</span>
+                        </li>
+                        <li>
+                            <span class="jp">温めますか？</span>
+                            <span class="romaji">Atatamemasu ka?</span>
+                            <span class="translation">（便當要加熱嗎？）</span>
+                        </li>
+                        <li>
+                            <span class="jp">袋はいりますか？</span>
+                            <span class="romaji">Fukuro wa irimasu ka?</span>
+                            <span class="translation">（需要袋子嗎？）</span>
+                        </li>
+                        <li>App 即時顯示附近車站路線 + 便利店熱門商品發音（如おにぎり、コーヒー）</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        <!-- 推介熱門旅遊景點 -->
+        <section>
+            <h2>推介熱門旅遊景點 × 語言沉浸</h2>
+            <p class="intro-text" style="margin-bottom: 48px;">
+                這些日本超人氣景點不只美，還超適合練習日語！<br>
+                當你走到這裡，App 會自動解鎖更多在地詞彙、對話、文化解說，讓旅行變成最有效的「沉浸式學習」。
+            </p>
+            <div class="recommend-grid">
+                <div class="recommend-card">
+                    <div class="rec-icon"><i class="fas fa-city"></i></div>
+                    <h3>東京 (Tokyo)</h3>
+                    <p class="rec-desc">現代都市 + 日常對話天堂</p>
+                    <ul class="phrase-list" style="text-align:left;">
+                        <li>澀谷交叉口、新宿、淺草寺、晴空塔</li>
+                        <li>練習購物、問路、點餐、搭電車的超實用日語</li>
+                        <li>人多互動機會多，適合初學者快速開口</li>
+                    </ul>
+                </div>
+                <div class="recommend-card">
+                    <div class="rec-icon"><i class="fas fa-torii-gate"></i></div>
+                    <h3>京都 (Kyoto)</h3>
+                    <p class="rec-desc">古都文化 + 敬語/傳統練習</p>
+                    <ul class="phrase-list" style="text-align:left;">
+                        <li>清水寺、伏見稻荷大社、金閣寺、嵐山竹林、祇園</li>
+                        <li>參拜、穿和服、茶道、寺廟導覽 → 學敬語與文化用語</li>
+                        <li>寧靜氛圍，適合深度沉浸與慢速練習</li>
+                    </ul>
+                </div>
+                <!-- 其他景點保持原樣... -->
+                <div class="recommend-card">
+                    <div class="rec-icon"><i class="fas fa-utensils"></i></div>
+                    <h3>大阪 (Osaka)</h3>
+                    <p class="rec-desc">關西方言 + 美食街頭聊天</p>
+                    <ul class="phrase-list" style="text-align:left;">
+                        <li>道頓堀、心齋橋、大阪城、環球影城</li>
+                        <li>大阪人熱情愛聊天 → 練習搞笑、點章魚燒、問路超自然</li>
+                        <li>美食天堂，邊吃邊學最開心</li>
+                    </ul>
+                </div>
+                <div class="recommend-card">
+                    <div class="rec-icon"><i class="fas fa-landmark"></i></div>
+                    <h3>廣島 (Hiroshima) + 宮島</h3>
+                    <p class="rec-desc">和平文化 + 嚴肅話題練習</p>
+                    <ul class="phrase-list" style="text-align:left;">
+                        <li>和平紀念公園、嚴島神社、廣島燒</li>
+                        <li>學歷史相關詞彙、感謝語、祈福用語</li>
+                        <li>情感深度對話機會多</li>
+                    </ul>
+                </div>
+                <div class="recommend-card">
+                    <div class="rec-icon"><i class="fas fa-mountain"></i></div>
+                    <h3>箱根 (Hakone)</h3>
+                    <p class="rec-desc">溫泉 + 自然景觀描述</p>
+                    <ul class="phrase-list" style="text-align:left;">
+                        <li>蘆之湖、箱根纜車、大涌谷、溫泉旅館</li>
+                        <li>練習天氣、風景、泡湯相關日語</li>
+                        <li>放鬆環境，適合中級以上練習敘述句</li>
+                    </ul>
+                </div>
+                <div class="recommend-card">
+                    <div class="rec-icon"><i class="fas fa-snowflake"></i></div>
+                    <h3>北海道 (Hokkaido)</h3>
+                    <p class="rec-desc">自然 + 四季活動用語</p>
+                    <ul class="phrase-list" style="text-align:left;">
+                        <li>札幌雪祭、富良野花田、小樽運河、登別地獄谷</li>
+                        <li>學季節詞彙、海鮮點餐、滑雪/賞花相關對話</li>
+                        <li>鄉村地區，當地人互動更親切</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        <div class="cta-section">
+            <h2>讓旅行成為你的日語教室</h2>
+            <p style="margin:24px auto; max-width:620px; font-size:1.15rem; color:var(--text-dim);">
+                從東京街頭到京都古寺，從大阪美食到北海道雪景 —<br>
+                開啟 App，GPS 自動解鎖，讓每一步都學到新日語！
+            </p>
+            <a href="#" class="cta-btn">立即開啟地域解鎖模式</a>
+        </div>
+        <footer>
+            By Yu Wang Yui — IoT 融入沉浸式日語學習<br>
+            真實街道 × 智能觸發 = 最自然的語言習得
+        </footer>
+    </div>
+</body>
+</html>
