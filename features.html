@@ -83,6 +83,7 @@
             box-shadow: 0 0 35px rgba(255,184,130,0.6);
         }
         .container {
+            position: relative;
             max-width: 1100px;
             margin: 0 auto;
             background: var(--card);
@@ -201,6 +202,13 @@
             top: 14px;
             font-weight: bold;
         }
+        .station-content {
+            display: flex;
+            align-items: flex-start;
+            justify-content: flex-start;
+            gap: 24px;
+            margin-top: 18px;
+        }
         .jp {
             color: var(--accent);
             font-weight: 600;
@@ -235,6 +243,15 @@
         }
         .gallery-img:hover {
             transform: scale(1.05);
+        }
+        .location-photo {
+            width: 100%;
+            max-height: 240px;
+            object-fit: cover;
+            border-radius: 20px;
+            border: 1px solid rgba(255,184,130,0.3);
+            box-shadow: 0 6px 24px rgba(0,0,0,0.45);
+            margin-bottom: 24px;
         }
         .cta-section {
             text-align: center;
@@ -288,8 +305,10 @@
             <ul class="nav-links">
                 <li><a href="homepage.html">首頁 Home</a></li>
                 <li><a href="features.html" class="active">特色 Features</a></li>
+                <li><a href="poster.html">海報 Poster</a></li>
                 <li><a href="learning progress.html">學習進度 Progress</a></li>
                 <li><a href="learning resource.html">學習資源 Resources</a></li>
+                <li><a href="stats.html">排名 Stats</a></li>
                 <li><a href="about.html">關於我們 About</a></li>
                 <li><a href="game.html#game">學習遊戲 Game</a></li>
             </ul>
@@ -341,6 +360,7 @@
                 </div>
                 <!-- 神社 / 寺廟 -->
                 <div class="location-card">
+                    <img src="feature-photo.jpg" alt="神社照片" class="location-photo">
                     <div class="loc-icon"><i class="fas fa-torii-gate"></i></div>
                     <h3>神社 / 寺廟</h3>
                     <p class="loc-desc">參拜禮儀 + 相關敬語與文化</p>
@@ -366,9 +386,6 @@
                             <span class="translation">（去參拜）</span>
                         </li>
                     </ul>
-                    <div class="image-gallery">
-                        <!-- 這裡保留你原本的圖像渲染，如果有 ID 就放回來 -->
-                    </div>
                     <p style="margin-top:16px; font-size:0.95rem; color:var(--text-dim);">App 會播放洗手順序語音 + 拍手示範 + 繪馬寫法提示</p>
                 </div>
                 <!-- 車站 / 便利店 -->
@@ -376,29 +393,31 @@
                     <div class="loc-icon"><i class="fas fa-subway"></i></div>
                     <h3>車站 / 便利店</h3>
                     <p class="loc-desc">日常交通 + 購物對話</p>
-                    <ul class="phrase-list">
-                        <li>
-                            <span class="jp">切符はどこで買えますか？</span>
-                            <span class="romaji">Kippu wa doko de kaemasu ka?</span>
-                            <span class="translation">（車票在哪裡買？）</span>
-                        </li>
-                        <li>
-                            <span class="jp">ポイントカードはお持ちですか？</span>
-                            <span class="romaji">Pointo kādo wa omochi desu ka?</span>
-                            <span class="translation">（有集點卡嗎？）</span>
-                        </li>
-                        <li>
-                            <span class="jp">温めますか？</span>
-                            <span class="romaji">Atatamemasu ka?</span>
-                            <span class="translation">（便當要加熱嗎？）</span>
-                        </li>
-                        <li>
-                            <span class="jp">袋はいりますか？</span>
-                            <span class="romaji">Fukuro wa irimasu ka?</span>
-                            <span class="translation">（需要袋子嗎？）</span>
-                        </li>
-                        <li>App 即時顯示附近車站路線 + 便利店熱門商品發音（如おにぎり、コーヒー）</li>
-                    </ul>
+                    <div class="station-content">
+                        <ul class="phrase-list">
+                            <li>
+                                <span class="jp">切符はどこで買えますか？</span>
+                                <span class="romaji">Kippu wa doko de kaemasu ka?</span>
+                                <span class="translation">（車票在哪裡買？）</span>
+                            </li>
+                            <li>
+                                <span class="jp">ポイントカードはお持ちですか？</span>
+                                <span class="romaji">Pointo kādo wa omochi desu ka?</span>
+                                <span class="translation">（有集點卡嗎？）</span>
+                            </li>
+                            <li>
+                                <span class="jp">温めますか？</span>
+                                <span class="romaji">Atatamemasu ka?</span>
+                                <span class="translation">（便當要加熱嗎？）</span>
+                            </li>
+                            <li>
+                                <span class="jp">袋はいりますか？</span>
+                                <span class="romaji">Fukuro wa irimasu ka?</span>
+                                <span class="translation">（需要袋子嗎？）</span>
+                            </li>
+                            <li>App 即時顯示附近車站路線 + 便利店熱門商品發音（如おにぎり、コーヒー）</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </section>

@@ -325,6 +325,29 @@
             color: var(--accent);
             text-shadow: 0 0 12px var(--accent-glow);
         }
+        .level-selector {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+            margin-bottom: 24px;
+        }
+        .level-btn {
+            padding: 12px 18px;
+            border: 1px solid rgba(255,184,130,0.3);
+            border-radius: 999px;
+            background: rgba(255,184,130,0.08);
+            color: var(--text);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .level-btn.active,
+        .level-btn:hover {
+            background: var(--accent);
+            color: #0a0c14;
+            border-color: var(--accent);
+            box-shadow: 0 0 20px rgba(255,184,130,0.25);
+        }
         .question {
             margin: 20px 0;
             padding: 20px;
@@ -393,6 +416,32 @@
             transform: translateY(-3px);
             box-shadow: 0 0 45px rgba(255,184,130,0.6);
         }
+        .play-pronunciation-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 22px;
+            margin-top: 10px;
+            border: none;
+            border-radius: 999px;
+            background: linear-gradient(90deg, #ffb882, #ffaa7a);
+            color: #0a0c14;
+            font-size: 15px;
+            cursor: pointer;
+            transition: transform 0.25s ease, box-shadow 0.25s ease, opacity 0.25s ease;
+        }
+        .play-pronunciation-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 18px rgba(255,184,130,0.3);
+        }
+        .record-controls {
+            margin-top: 22px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+            align-items: center;
+        }
         .final-score {
             text-align: center;
             font-size: 24px;
@@ -420,12 +469,14 @@
             <i class="fas fa-wifi"></i> 感・知・學
         </a>
         <ul class="nav-links">
-            <li><a href="homepage.html" class="nav-link">首頁</a></li>
-            <li><a href="features.html" class="nav-link">智能特色</a></li>
-            <li><a href="learning progress.html" class="nav-link">學習進度</a></li>
-            <li><a href="learning resource.html" class="nav-link">學習資源</a></li>
-            <li><a href="about.html" class="nav-link">關於我們</a></li>
-            <li><a href="#game" class="nav-link active" data-target="game">學習遊戲</a></li>
+            <li><a href="homepage.html" class="nav-link">首頁 Home</a></li>
+            <li><a href="learning progress.html" class="nav-link">學習進度 Progress</a></li>
+            <li><a href="features.html" class="nav-link">智能特色 Features</a></li>
+            <li><a href="poster.html" class="nav-link">海報 Poster</a></li>
+            <li><a href="learning resource.html" class="nav-link">學習資源 Resources</a></li>
+            <li><a href="stats.html" class="nav-link">排名 Stats</a></li>
+            <li><a href="about.html" class="nav-link">關於我們 About</a></li>
+            <li><a href="#game" class="nav-link active" data-target="game">學習遊戲 Game</a></li>
         </ul>
         <a href="#game" class="nav-cta">立即開始體驗</a>
     </div>
@@ -495,10 +546,53 @@
     </header>
 
     <div class="game-box">
+        <div class="level-selector" id="levelSelector"></div>
         <div class="score">得分：<span id="score">0</span>/10</div>
         <div id="questions-container"></div>
         <button class="finish-btn" onclick="showFinalScore()">查看最終成績</button>
         <div class="final-score" id="finalScore"></div>
+        <div class="pronunciation-practice">
+            <h2>發音練習</h2>
+            <p>請跟讀下面句子並練習日語發音：</p>
+            <div class="pronunciation-sample">
+                <p class="jp-sentence">おはようございます</p>
+                <p class="cn-sentence">早上好</p>
+                <button class="play-pronunciation-btn" onclick="playPronunciation('おはようございます')">播放發音</button>
+                <button class="play-pronunciation-btn" onclick="judgePronunciationSimilarity('おはようございます')">AI 判斷</button>
+            </div>
+            <div class="pronunciation-sample">
+                <p class="jp-sentence">こんにちは</p>
+                <p class="cn-sentence">你好</p>
+                <button class="play-pronunciation-btn" onclick="playPronunciation('こんにちは')">播放發音</button>
+                <button class="play-pronunciation-btn" onclick="judgePronunciationSimilarity('こんにちは')">AI 判斷</button>
+            </div>
+            <div class="pronunciation-sample">
+                <p class="jp-sentence">ありがとうございます</p>
+                <p class="cn-sentence">謝謝你</p>
+                <button class="play-pronunciation-btn" onclick="playPronunciation('ありがとうございます')">播放發音</button>
+                <button class="play-pronunciation-btn" onclick="judgePronunciationSimilarity('ありがとうございます')">AI 判斷</button>
+            </div>
+            <div class="pronunciation-sample">
+                <p class="jp-sentence">すみません</p>
+                <p class="cn-sentence">對不起 / 不好意思</p>
+                <button class="play-pronunciation-btn" onclick="playPronunciation('すみません')">播放發音</button>
+                <button class="play-pronunciation-btn" onclick="judgePronunciationSimilarity('すみません')">AI 判斷</button>
+            </div>
+            <div class="pronunciation-sample">
+                <p class="jp-sentence">いただきます</p>
+                <p class="cn-sentence">我要開動了</p>
+                <button class="play-pronunciation-btn" onclick="playPronunciation('いただきます')">播放發音</button>
+                <button class="play-pronunciation-btn" onclick="judgePronunciationSimilarity('いただきます')">AI 判斷</button>
+            </div>
+            <p class="pronunciation-note" id="pronunciationNote"></p>
+            <div class="record-controls">
+                <button id="recordBtn" class="play-pronunciation-btn" onclick="toggleRecording()">開始錄音</button>
+                <button id="compareRecordingBtn" class="play-pronunciation-btn" onclick="compareRecording()">錄音後比對</button>
+                <button id="downloadRecordingBtn" class="play-pronunciation-btn" onclick="downloadRecording()" style="display:none; margin-left: 12px;">下載錄音</button>
+                <p class="pronunciation-note" id="recordingStatus"></p>
+                <audio id="playbackAudio" controls style="display:none; width: 100%; margin-top: 16px;"></audio>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -547,24 +641,126 @@
     initFromHash();
 
     // ====================== GAME LOGIC ======================
-    const questions = [
-        { q: "禮貌日語中的「我」是？", options: ["A) あなた (anata)", "B) わたし (watashi)", "C) かれ (kare)"], answer: 1 },
-        { q: "平假名「ki」是哪一個？", options: ["A) さ", "B) き", "C) く"], answer: 1 },
-        { q: "さくら (sakura) 意思是？", options: ["A) 月亮", "B) 櫻花", "C) 水"], answer: 1 },
-        { q: "數字「3」的日語是？", options: ["A) いち", "B) に", "C) さん"], answer: 2 },
-        { q: "おはよう (ohayou) 意思是？", options: ["A) 早上好", "B) 晚上好", "C) 謝謝"], answer: 0 },
-        { q: "「日/太陽」的漢字是？", options: ["A) 月", "B) 日", "C) 木"], answer: 1 },
-        { q: "ねこ (neko) 意思是？", options: ["A) 狗", "B) 貓", "C) 鳥"], answer: 1 },
-        { q: "哪個助詞提示主題？", options: ["A) は", "B) を", "C) が"], answer: 0 },
-        { q: "ありがとう 意思是？", options: ["A) 對不起", "B) 謝謝", "C) 你好"], answer: 1 },
-        { q: "平假名「me」是？", options: ["A) め", "B) も", "C) ま"], answer: 0 }
+    const levels = [
+        {
+            name: 'N5 Level 1',
+            questions: [
+                { q: "禮貌日語中的「我」是？", options: ["A) あなた (anata)", "B) わたし (watashi)", "C) かれ (kare)"], answer: 1 },
+                { q: "平假名「ki」是哪一個？", options: ["A) さ", "B) き", "C) く"], answer: 1 },
+                { q: "さくら (sakura) 意思是？", options: ["A) 月亮", "B) 櫻花", "C) 水"], answer: 1 },
+                { q: "數字「3」的日語是？", options: ["A) いち", "B) に", "C) さん"], answer: 2 },
+                { q: "おはよう (ohayou) 意思是？", options: ["A) 早上好", "B) 晚上好", "C) 謝謝"], answer: 0 },
+                { q: "「日/太陽」的漢字是？", options: ["A) 月", "B) 日", "C) 木"], answer: 1 },
+                { q: "ねこ (neko) 意思是？", options: ["A) 狗", "B) 貓", "C) 鳥"], answer: 1 },
+                { q: "哪個助詞提示主題？", options: ["A) は", "B) を", "C) が"], answer: 0 },
+                { q: "ありがとう 意思是？", options: ["A) 對不起", "B) 謝謝", "C) 你好"], answer: 1 },
+                { q: "平假名「me」是？", options: ["A) め", "B) も", "C) ま"], answer: 0 }
+            ]
+        },
+        {
+            name: 'N5 Level 2',
+            questions: [
+                { q: "「こんにちは」是什麼時候使用？", options: ["A) 早上", "B) 下午", "C) 晚上"], answer: 1 },
+                { q: "平假名「su」是哪一個？", options: ["A) す", "B) そ", "C) せ"], answer: 0 },
+                { q: "「ありがとう」的回應通常是？", options: ["A) どういたしまして", "B) ごめんなさい", "C) はい"], answer: 0 },
+                { q: "「はい」表示？", options: ["A) 不是", "B) 是", "C) 請"], answer: 1 },
+                { q: "數字「5」的日語是？", options: ["A) よん", "B) ご", "C) ろく"], answer: 1 },
+                { q: "「ありがとう」的漢字寫法是？", options: ["A) 有難う", "B) ありがとう", "C) 亜理多"], answer: 0 },
+                { q: "「何時」的日語是？", options: ["A) なんじ", "B) なんにち", "C) なんさつ"], answer: 0 },
+                { q: "「先生」是指？", options: ["A) 老師", "B) 學生", "C) 醫生"], answer: 0 },
+                { q: "「すみません」通常用來表示？", options: ["A) 吃飯", "B) 抱歉", "C) 再見"], answer: 1 },
+                { q: "假名「か」的發音是？", options: ["A) ka", "B) ki", "C) ku"], answer: 0 }
+            ]
+        },
+        {
+            name: 'N5 Level 3',
+            questions: [
+                { q: "「おはようございます」是？", options: ["A) 早安", "B) 晚安", "C) 請問"], answer: 0 },
+                { q: "「ありがとう」在英文中是？", options: ["A) Sorry", "B) Thanks", "C) Yes"], answer: 1 },
+                { q: "「猫」的假名是？", options: ["A) いぬ", "B) ねこ", "C) とり"], answer: 1 },
+                { q: "平假名「na」是哪一個？", options: ["A) な", "B) に", "C) ぬ"], answer: 0 },
+                { q: "「これは何ですか？」意思是？", options: ["A) 這是什麼？", "B) 你去哪？", "C) 你叫什麼？"], answer: 0 },
+                { q: "「いらっしゃいませ」在店裡表示？", options: ["A) 歡迎光臨", "B) 再見", "C) 請稍等"], answer: 0 },
+                { q: "「美味しい」是什麼意思？", options: ["A) 好吃", "B) 難吃", "C) 很大"], answer: 0 },
+                { q: "「何歳ですか？」在問什麼？", options: ["A) 你叫什麼名字？", "B) 你幾歲？", "C) 你住哪裡？"], answer: 1 },
+                { q: "「さようなら」通常表示？", options: ["A) 哈囉", "B) 再見", "C) 對不起"], answer: 1 },
+                { q: "哪個助詞表示目的地？", options: ["A) に", "B) が", "C) で"], answer: 0 }
+            ]
+        },
+        {
+            name: 'N5 Level 4',
+            questions: [
+                { q: "「ありがとうございます」比「ありがとう」更？", options: ["A) 隨便", "B) 客氣", "C) 沒有禮貌"], answer: 1 },
+                { q: "「駅」讀作？", options: ["A) えき", "B) とり", "C) みせ"], answer: 0 },
+                { q: "哪個是平假名「fu」？", options: ["A) ふ", "B) へ", "C) ほ"], answer: 0 },
+                { q: "日語「水」的讀音？", options: ["A) みず", "B) みち", "C) つき"], answer: 0 },
+                { q: "「こちらこそ」用於？", options: ["A) 我也是", "B) 不用謝", "C) 對不起"], answer: 1 },
+                { q: "「失礼します」常用於？", options: ["A) 離開房間前", "B) 睡覺時", "C) 用餐時"], answer: 0 },
+                { q: "「行きます」是什麼意思？", options: ["A) 來", "B) 去", "C) 看"], answer: 1 },
+                { q: "「何時」的假名是？", options: ["A) なんじ", "B) なんで", "C) なんにち"], answer: 0 },
+                { q: "「ごちそうさまでした」通常在？", options: ["A) 吃完飯後", "B) 早上起床", "C) 走路時"], answer: 0 },
+                { q: "「はい」和「ええ」哪個更口語？", options: ["A) はい", "B) ええ", "C) いいえ"], answer: 1 }
+            ]
+        },
+        {
+            name: 'N5 Level 5',
+            questions: [
+                { q: "「ありがとうございます」與「どういたしまして」之間，哪個是回應？", options: ["A) ありがとうございます", "B) どういたしまして", "C) ごめんなさい"], answer: 1 },
+                { q: "「ひらがな」通常用於？", options: ["A) 外來語", "B) 日常詞彙", "C) 大寫英文字"], answer: 1 },
+                { q: "「へや」的意思？", options: ["A) 房間", "B) 椅子", "C) 水"], answer: 0 },
+                { q: "「きれい」在日語中常表示？", options: ["A) 髒", "B) 漂亮", "C) 生氣"], answer: 1 },
+                { q: "「じゃあね」的用法？", options: ["A) 再見", "B) 歡迎", "C) 等一下"], answer: 0 },
+                { q: "哪個是日語中的「書」？", options: ["A) ほん", "B) みず", "C) こども"], answer: 0 },
+                { q: "助詞「の」通常表示？", options: ["A) 主格", "B) 所有", "C) 目的"], answer: 1 },
+                { q: "「たべます」的意思？", options: ["A) 睡覺", "B) 吃", "C) 走"], answer: 1 },
+                { q: "「今日は」通常怎麼讀？", options: ["A) きょうは", "B) こんにちわ", "C) こんばんは"], answer: 0 },
+                { q: "「いいえ」的意思是？", options: ["A) 是", "B) 不是", "C) 謝謝"], answer: 1 }
+            ]
+        }
     ];
 
+    let currentLevelIndex = 0;
     let score = 0;
+    let questions = [];
     const container = document.getElementById('questions-container');
     const scoreDisplay = document.getElementById('score');
+    const levelSelector = document.getElementById('levelSelector');
+    const finalScoreEl = document.getElementById('finalScore');
+    const recordBtn = document.getElementById('recordBtn');
+    const recordingStatus = document.getElementById('recordingStatus');
+    const playbackAudio = document.getElementById('playbackAudio');
+    const downloadRecordingBtn = document.getElementById('downloadRecordingBtn');
+    let mediaRecorder = null;
+    let audioChunks = [];
+    let recordingRecognition = null;
+    let lastRecordedTranscript = '';
+    let currentComparisonPhrase = '';
+
+    function createLevelButtons() {
+        levels.forEach((level, idx) => {
+            const btn = document.createElement('button');
+            btn.className = 'level-btn' + (idx === currentLevelIndex ? ' active' : '');
+            btn.innerText = level.name;
+            btn.onclick = () => setLevel(idx);
+            levelSelector.appendChild(btn);
+        });
+    }
+
+    function setLevel(index) {
+        currentLevelIndex = index;
+        levelSelector.querySelectorAll('.level-btn').forEach((btn, idx) => {
+            btn.classList.toggle('active', idx === index);
+        });
+        resetGame();
+        loadQuestions();
+    }
+
+    function getCurrentQuestions() {
+        return levels[currentLevelIndex].questions;
+    }
 
     function loadQuestions() {
+        questions = getCurrentQuestions();
         questions.forEach((q, idx) => {
             const qDiv = document.createElement('div');
             qDiv.className = 'question';
@@ -581,6 +777,14 @@
             qDiv.appendChild(opts);
             container.appendChild(qDiv);
         });
+    }
+
+    function resetGame() {
+        score = 0;
+        scoreDisplay.innerText = score;
+        finalScoreEl.style.display = 'none';
+        finalScoreEl.innerText = '';
+        container.innerHTML = '';
     }
 
     function checkAns(btn, qIdx, oIdx) {
@@ -600,12 +804,178 @@
         }
     }
 
+    function playPronunciation(phrase) {
+        const note = document.getElementById('pronunciationNote');
+        if (!phrase) {
+            note.innerText = '請先選擇一個句子再播放發音。';
+            return;
+        }
+        if ('speechSynthesis' in window) {
+            const utterance = new SpeechSynthesisUtterance(phrase);
+            utterance.lang = 'ja-JP';
+            speechSynthesis.speak(utterance);
+            note.innerText = `正在播放：${phrase}`;
+        } else {
+            note.innerText = '此瀏覽器不支援語音合成，請手動練習發音。';
+        }
+    }
+    function normalizeText(text) {
+        return text.toLowerCase().replace(/[^a-z0-9\u3040-\u30ff\u4e00-\u9fff]/g, '');
+    }
+
+    function getSimilarity(a, b) {
+        const textA = normalizeText(a);
+        const textB = normalizeText(b);
+        if (!textA.length || !textB.length) return 0;
+        const dp = Array.from({ length: textA.length + 1 }, () => Array(textB.length + 1).fill(0));
+        for (let i = 0; i <= textA.length; i++) dp[i][0] = i;
+        for (let j = 0; j <= textB.length; j++) dp[0][j] = j;
+        for (let i = 1; i <= textA.length; i++) {
+            for (let j = 1; j <= textB.length; j++) {
+                const cost = textA[i - 1] === textB[j - 1] ? 0 : 1;
+                dp[i][j] = Math.min(dp[i - 1][j] + 1, dp[i][j - 1] + 1, dp[i - 1][j - 1] + cost);
+            }
+        }
+        const distance = dp[textA.length][textB.length];
+        return Math.max(0, Math.round((1 - distance / Math.max(textA.length, textB.length)) * 100));
+    }
+
+    function judgePronunciationSimilarity(phrase) {
+        currentComparisonPhrase = phrase;
+        const note = document.getElementById('pronunciationNote');
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        if (!SpeechRecognition) {
+            note.innerText = '此瀏覽器不支援語音辨識，無法進行相似度判斷。';
+            return;
+        }
+        const recognition = new SpeechRecognition();
+        recognition.lang = 'ja-JP';
+        recognition.interimResults = false;
+        recognition.maxAlternatives = 1;
+        recognition.onstart = () => {
+            note.innerText = `請朗讀：${phrase}`;
+        };
+        recognition.onresult = event => {
+            const transcript = event.results[0][0].transcript.trim();
+            const similarity = getSimilarity(transcript, phrase);
+            note.innerText = `辨識結果：${transcript}，相似度：${similarity}%`;
+            lastRecordedTranscript = transcript;
+        };
+        recognition.onerror = event => {
+            note.innerText = `語音辨識錯誤：${event.error}`;
+        };
+        recognition.onend = () => {
+            if (!note.innerText.startsWith('辨識結果')) {
+                note.innerText = '語音辨識結束，請再試一次。';
+            }
+        };
+        recognition.start();
+    }
+
+    async function startRecording() {
+        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+            recordingStatus.innerText = '錄音功能在此瀏覽器中不可用。';
+            return;
+        }
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            audioChunks = [];
+            mediaRecorder = new MediaRecorder(stream);
+            mediaRecorder.ondataavailable = event => {
+                if (event.data && event.data.size > 0) {
+                    audioChunks.push(event.data);
+                }
+            };
+            mediaRecorder.onstop = () => {
+                const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+                const audioUrl = URL.createObjectURL(audioBlob);
+                playbackAudio.src = audioUrl;
+                playbackAudio.style.display = 'block';
+                downloadRecordingBtn.style.display = 'inline-block';
+                recordingStatus.innerText = '錄音完成，已準備好播放與下載。';
+                recordBtn.innerText = '開始錄音';
+                if (recordingRecognition && recordingRecognition.stop) {
+                    recordingRecognition.stop();
+                }
+            };
+            mediaRecorder.start();
+            if (window.SpeechRecognition || window.webkitSpeechRecognition) {
+                const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+                recordingRecognition = new SpeechRecognition();
+                recordingRecognition.lang = 'ja-JP';
+                recordingRecognition.interimResults = false;
+                recordingRecognition.maxAlternatives = 1;
+                recordingRecognition.onresult = event => {
+                    lastRecordedTranscript = event.results[0][0].transcript.trim();
+                    recordingStatus.innerText = `錄音文字：${lastRecordedTranscript}`;
+                };
+                recordingRecognition.onerror = event => {
+                    recordingStatus.innerText = `語音辨識錯誤：${event.error}`;
+                };
+                recordingRecognition.onend = () => {
+                    if (!lastRecordedTranscript) {
+                        recordingStatus.innerText = '錄音已停止，尚未取得辨識文字。';
+                    }
+                };
+                recordingRecognition.start();
+            }
+            recordBtn.innerText = '停止錄音';
+            recordingStatus.innerText = '正在錄音中...';
+            downloadRecordingBtn.style.display = 'none';
+        } catch (error) {
+            recordingStatus.innerText = '無法啟用麥克風，請允許錄音權限。';
+        }
+    }
+
+    function stopRecording() {
+        if (mediaRecorder && mediaRecorder.state === 'recording') {
+            mediaRecorder.stop();
+        }
+    }
+
+    function toggleRecording() {
+        if (mediaRecorder && mediaRecorder.state === 'recording') {
+            stopRecording();
+        } else {
+            startRecording();
+        }
+    }
+
+    function compareRecording() {
+        const note = document.getElementById('pronunciationNote');
+        if (!currentComparisonPhrase) {
+            note.innerText = '請先點選要比對的句子。';
+            return;
+        }
+        if (!lastRecordedTranscript) {
+            note.innerText = '尚未取得錄音文字，請先錄音並清晰朗讀。';
+            return;
+        }
+        const similarity = getSimilarity(lastRecordedTranscript, currentComparisonPhrase);
+        note.innerText = `錄音後比對：${lastRecordedTranscript}，相似度：${similarity}%`;
+    }
+
+    function downloadRecording() {
+        if (audioChunks.length === 0) {
+            recordingStatus.innerText = '尚未有錄音內容可下載。';
+            return;
+        }
+        const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+        const url = URL.createObjectURL(audioBlob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'pronunciation_recording.webm';
+        a.click();
+        URL.revokeObjectURL(url);
+    }
+
     function showFinalScore() {
         const f = document.getElementById('finalScore');
         f.style.display = 'block';
         f.innerText = `🎉 最終得分：${score}/10 🎉`;
     }
 
+    createLevelButtons();
     loadQuestions();
 </script>
 </body>
