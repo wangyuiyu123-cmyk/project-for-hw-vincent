@@ -132,7 +132,7 @@
 
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.7); backdrop-filter: blur(6px);
+            background: rgba(0,0,0,0.8); backdrop-filter: blur(8px);
             display: none; justify-content: center; align-items: center; z-index: 9999;
         }
         .modal-box {
@@ -152,6 +152,31 @@
             position: absolute; top: 16px; right: 18px;
             background: none; border: none; color: #ffb882;
             font-size: 1.4rem; cursor: pointer;
+        }
+        .answer-input {
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: 12px;
+            border: 1px solid rgba(255,184,130,0.3);
+            background: rgba(255,255,255,0.07);
+            color: #fff;
+            font-size: 1rem;
+            margin: 12px 0;
+        }
+        .submit-btn {
+            background: var(--accent);
+            color: #000;
+            border: none;
+            border-radius: 999px;
+            padding: 10px 20px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 8px;
+        }
+        .result-text {
+            margin-top: 12px;
+            font-weight: bold;
+            font-size: 1rem;
         }
     </style>
 </head>
@@ -229,18 +254,14 @@
     <div class="modal-box">
         <button class="close-btn" onclick="closeModal()">✕</button>
         <h2>🧠 遺忘曲線記憶遊戲</h2>
-        <p>根據艾賓浩斯遺忘曲線設計，幫你強化長期記憶！</p>
-        <p>系統會自動安排你在：</p>
-        <p>✅ 10 分鐘後 → 複習</p>
-        <p>✅ 1 天後 → 複習</p>
-        <p>✅ 7 天後 → 大複習</p>
-        <p>讓日文永不忘記！</p>
-        <hr style="margin:20px 0; border-color: rgba(255,184,130,0.2);">
-        <h2>📌 日文敬語小知識</h2>
-        <p><strong>です・ます體</strong>：禮貌體，對陌生人、長輩使用。</p>
-        <p><strong>でございます</strong>：更禮貌，服務業、辦公常用。</p>
-        <p><strong>お～します</strong>：自謙表現，表達對他人的尊敬。</p>
-        <p><strong>ご～ください</strong>：委託敬語，客氣請求動作。</p>
+        <p>根據艾賓浩斯遺忘曲線加強記憶！</p>
+        <br>
+        <h3>📝 讓我考考你</h3>
+        <p><strong>書きます（かきます）的て形是什麼？</strong></p>
+
+        <input type="text" id="answerInput" class="answer-input" placeholder="請輸入答案">
+        <button class="submit-btn" onclick="checkTeForm()">提交答案</button>
+        <div id="resultText" class="result-text"></div>
     </div>
 </div>
 
@@ -468,9 +489,27 @@ function judgePronunciationSimilarity(phrase) {
 
 function openForgettingGame() {
     document.getElementById("forgetModal").style.display = "flex";
+    document.getElementById("resultText").innerText = "";
+    document.getElementById("answerInput").value = "";
 }
 function closeModal() {
     document.getElementById("forgetModal").style.display = "none";
+}
+
+function checkTeForm() {
+    const input = document.getElementById("answerInput").value.trim();
+    const result = document.getElementById("resultText");
+    const correctAnswer = "書いて";
+
+    if (input === correctAnswer || input === "かいて") {
+        result.innerText = "✅ 正確！書きます → 書いて（かいて）";
+        result.style.color = "var(--correct)";
+        soundCorrect.play();
+    } else {
+        result.innerText = "❌ 錯誤！正解：書いて（かいて）";
+        result.style.color = "var(--wrong)";
+        soundWrong.play();
+    }
 }
 
 createLevels();
