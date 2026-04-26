@@ -5,23 +5,34 @@
 <title>て形射擊遊戲</title>
 <style>
   body { margin:0; padding:0; background:#000; color:#0f0; font-family:sans-serif; text-align:center; overflow:hidden; }
+  .game-container {
+    position: relative;
+    width: 800px;
+    margin: 20px auto;
+  }
   canvas { display:block; margin:10px auto; border:4px solid #0f0; background:#111; }
   #ui { position:absolute; top:10px; left:50%; transform:translateX(-50%); background:rgba(0,0,0,0.85); padding:10px 25px; border-radius:12px; font-size:19px; z-index:10; }
+  .controls { margin: 10px 0; }
   button { margin:12px; padding:14px 28px; font-size:19px; background:#0f0; color:#000; border:none; border-radius:10px; cursor:pointer; font-weight:bold; }
 </style>
 </head>
 <body>
 
-<div id="ui">
-  時間: <span id="timer">0</span>s　|　
-  分數: <span id="score">0</span>　|　
-  血量: <span id="lives">❤️❤️❤️</span>
+<div class="game-container">
+  <div id="ui">
+    時間: <span id="timer">0</span>s　|　
+    分數: <span id="score">0</span>　|　
+    血量: <span id="lives">❤️❤️❤️</span>
+  </div>
+
+  <!-- 把按钮移到画布上方，避免被容器挡住 -->
+  <div class="controls">
+    <button onclick="startGame()">開始遊戲 / Start</button>
+    <button onclick="location.reload()">重新開始</button>
+  </div>
+
+  <canvas id="game" width="800" height="620"></canvas>
 </div>
-
-<canvas id="game" width="800" height="620"></canvas>
-
-<button onclick="startGame()">開始遊戲 / Start</button>
-<button onclick="location.reload()">重新開始</button>
 
 <script>
 const verbs = [
