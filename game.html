@@ -112,12 +112,17 @@
         .pronunciation-btn-row {
             display: flex; gap: 10px;
             flex-wrap: wrap;
+            margin-bottom:8px;
         }
         .pronunciation-btn-row button {
             background: var(--accent);
             color: #000;
             border: none; border-radius: 999px;
             padding: 8px 16px; font-weight: bold; cursor: pointer;
+        }
+        .accuracy-score{
+            font-weight:bold;
+            font-size:1.1rem;
         }
 
         .final-score {
@@ -147,7 +152,7 @@
             font-size: 1.4rem; cursor: pointer;
         }
 
-        /* ========== 彻底修复：弹窗不遮挡开始按钮 ========== */
+        /* Shooter Modal - BIG & NO cover start button */
         #shooterModal {
             position: fixed;
             top: 0;
@@ -158,9 +163,9 @@
             z-index: 10000;
             display: none;
             justify-content: center;
-            align-items: flex-start; /* 靠上显示，不挤压按钮 */
+            align-items: flex-start;
             padding: 20px;
-            overflow-y: auto; /* 允许滚动 */
+            overflow-y: auto;
         }
         #shooterModal .modal-content {
             background: #000;
@@ -240,31 +245,38 @@
     <button class="finish-btn" onclick="finishGame()">完成並查看成績</button>
     <div class="final-score" id="finalScore"></div>
 
+    <!-- 🎤 FULL Pronunciation Training with Voice Record + Accuracy % -->
     <div id="pronunciationPanel">
-        <h2 style="color:var(--accent); text-align:center; margin-bottom:20px;">🎤 讀音訓練</h2>
+        <h2 style="color:var(--accent); text-align:center; margin-bottom:20px;">🎤 讀音訓練｜日文發音評分</h2>
+
         <div class="pronunciation-sample">
             <p class="jp-sentence">おはようございます</p>
             <p class="cn-sentence">早上好</p>
             <div class="pronunciation-btn-row">
-                <button onclick="playGoogleJapaneseVoice('おはようございます')">🔊 播放發音</button>
-                <button onclick="judgePronunciationSimilarity('おはようございます')">🎙 AI 判斷讀音</button>
+                <button onclick="playGoogleJapaneseVoice('おはようございます')">🔊 標準發音</button>
+                <button onclick="startVoiceJudge('おはようございます')">🎙 錄音評分</button>
             </div>
+            <div class="accuracy-score" id="acc1"></div>
         </div>
+
         <div class="pronunciation-sample">
             <p class="jp-sentence">こんにちは</p>
             <p class="cn-sentence">你好</p>
             <div class="pronunciation-btn-row">
-                <button onclick="playGoogleJapaneseVoice('こんにちは')">🔊 播放發音</button>
-                <button onclick="judgePronunciationSimilarity('こんにちは')">🎙 AI 判斷讀音</button>
+                <button onclick="playGoogleJapaneseVoice('こんにちは')">🔊 標準發音</button>
+                <button onclick="startVoiceJudge('こんにちは')">🎙 錄音評分</button>
             </div>
+            <div class="accuracy-score" id="acc2"></div>
         </div>
+
         <div class="pronunciation-sample">
             <p class="jp-sentence">ありがとうございます</p>
             <p class="cn-sentence">謝謝你</p>
             <div class="pronunciation-btn-row">
-                <button onclick="playGoogleJapaneseVoice('ありがとうございます')">🔊 播放發音</button>
-                <button onclick="judgePronunciationSimilarity('ありがとうございます')">🎙 AI 判斷讀音</button>
+                <button onclick="playGoogleJapaneseVoice('ありがとうございます')">🔊 標準發音</button>
+                <button onclick="startVoiceJudge('ありがとうございます')">🎙 錄音評分</button>
             </div>
+            <div class="accuracy-score" id="acc3"></div>
         </div>
     </div>
 </div>
@@ -321,6 +333,77 @@ let gameFinished = false;
 const soundCorrect = new Audio("https://assets.mixkit.co/sfx/preview/mixkit-achievement-bell-600.mp3");
 const soundWrong = new Audio("https://assets.mixkit.co/sfx/preview/mixkit-wrong-answer-buzz-955.mp3");
 const soundFinish = new Audio("https://assets.mixkit.co/sfx/preview/mixkit-complete-2031.mp3");
+
+// ========== 讀音訓練｜Google 發音 + 錄音辨識 + 準確度百分比 ==========
+function togglePronunciationPanel() {
+    const panel = document.getElementById("pronunciationPanel");
+    panel.style.display = panel.style.display === "block" ? "none" : "block";
+}
+
+// Google Translate 日文發音
+function playGoogleJapaneseVoice(text) {
+    const audio = new Audio(`https://translate.google.com/translate_tts?ie=UTF-8&tl=ja&client=tw-ob&q=${encodeURIComponent(text)}`);
+    audio.volume = 1;
+    audio.play();
+}
+
+// 語音辨識 + 自動計算準確度 %
+function startVoiceJudge(standardText) {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+        alert("❌ 你的瀏覽器不支援語音辨識，請使用 Chrome / Edge");
+        return;
+    }
+
+    const recog = new SpeechRecognition();
+    recog.lang = "ja-JP";
+    recog.interimResults = false;
+
+    alert("🎤 請開始讀日文句子，3秒後自動停止");
+
+    recog.onresult = function(e) {
+        const userText = e.results[0][0].transcript.trim();
+        // simple accuracy calculate
+        let matchCount = 0;
+        const stdArr = standardText.split("");
+        const userArr = userText.split("");
+
+        stdArr.forEach((char, idx) => {
+            if(userArr[idx] && userArr[idx] === char) matchCount++;
+        });
+
+               let accuracy = Math.round((matchCount / stdArr.length) * 100);
+        if(isNaN(accuracy)) accuracy = 0;
+
+        // pick display box
+        let accBox;
+        if(standardText === "おはようございます") accBox = document.getElementById("acc1");
+        if(standardText === "こんにちは") accBox = document.getElementById("acc2");
+        if(standardText === "ありがとうございます") accBox = document.getElementById("acc3");
+
+        // color grade
+        let gradeText = "";
+        let color = "";
+        if(accuracy >= 85){
+            gradeText = "✅ 發音優秀"; color="#25d366";
+        }else if(accuracy >= 60){
+            gradeText = "🟡 發音良好"; color="#ffd166";
+        }else{
+            gradeText = "❌ 需要練習"; color="#ff6b6b";
+        }
+
+        accBox.style.color = color;
+        accBox.innerHTML = `
+            你讀：${userText}<br>
+            標準：${standardText}<br>
+            發音準確度：<strong>${accuracy}%</strong> ${gradeText}
+        `;
+    };
+
+    recog.start();
+}
+
+// =========================================
 
 function createLevels() {
     const wrap = document.getElementById("levelSelector");
@@ -415,25 +498,6 @@ function resetGame() {
     startTimer();
 }
 
-function togglePronunciationPanel() {
-    const panel = document.getElementById("pronunciationPanel");
-    panel.style.display = panel.style.display === "block" ? "none" : "block";
-}
-
-function playGoogleJapaneseVoice(text) {
-    const audio = new Audio(`https://translate.google.com/translate_tts?ie=UTF-8&tl=ja&client=tw-ob&q=${encodeURIComponent(text)}`);
-    audio.play();
-}
-
-function judgePronunciationSimilarity(phrase) {
-    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-    if (!SpeechRecognition) return alert("你的瀏覽器不支援語音辨識");
-    const r = new SpeechRecognition();
-    r.lang = 'ja-JP';
-    r.onresult = e => alert(`辨識結果：${e.results[0][0].transcript}\n標準：${phrase}`);
-    r.start();
-}
-
 function openForgettingGame() {
     document.getElementById("forgetModal").style.display = "flex";
     document.getElementById("resultText").innerText = "";
@@ -464,7 +528,7 @@ function toggleKeigo() {
     box.style.display = box.style.display === "block" ? "none" : "block";
 }
 
-// ================== て形射擊遊戲 ==================
+// て形射擊遊戲
 function openTeFormShooter() {
     const modal = document.getElementById("shooterModal");
     const frame = document.getElementById("shooterFrame");
@@ -479,7 +543,7 @@ function closeShooterModal() {
     modal.style.display = "none";
 }
 
-// ================== 初始化 ==================
+// 初始化
 createLevels();
 loadQuestions();
 startTimer();
