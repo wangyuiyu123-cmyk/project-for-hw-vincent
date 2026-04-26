@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>日本語 感・知・學｜N5-N3 日語遊戲</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <!-- canvas-confetti CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
         :root {
             --bg: #0a0c14;
@@ -19,7 +21,6 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { background: var(--bg); color: var(--text); font-family: system-ui, sans-serif; }
 
-        /* 導航欄 */
         .nav {
             position: sticky; top: 0; z-index: 999;
             background: rgba(17,19,31,0.95);
@@ -43,7 +44,6 @@
             background: var(--card); border-radius: 30px;
         }
 
-        /* 頂部按鈕：讀音訓練 */
         .top-btn-bar {
             display: flex; gap: 12px; justify-content: center; margin-bottom: 20px;
         }
@@ -53,7 +53,6 @@
             padding: 10px 20px; font-weight: bold; cursor: pointer;
         }
 
-        /* 遊戲 */
         .game-header {
             display: flex; justify-content: space-between; padding: 15px 20px;
             background: rgba(255,184,130,0.07); border-radius: 18px; margin-bottom: 20px;
@@ -87,7 +86,6 @@
             cursor: pointer;
         }
 
-        /* 讀音訓練面板 */
         #pronunciationPanel {
             display: none;
             margin-top: 30px;
@@ -125,18 +123,6 @@
             color: var(--text-dim);
         }
 
-        /* 慶祝動畫 */
-        .celebration {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            pointer-events: none; z-index: 999; display: none;
-        }
-        .celebration.active { display: block; animation: pop 1.2s ease-out forwards; }
-        @keyframes pop {
-            0% { transform: scale(0.5); opacity: 0; }
-            50% { transform: scale(1.1); opacity: 1; }
-            100% { transform: scale(1); opacity: 0; }
-        }
-
         .final-score {
             text-align: center; font-size: 1.4rem; font-weight: bold;
             color: var(--accent); padding: 20px; border-radius: 20px;
@@ -147,7 +133,6 @@
 
 <body>
 
-<!-- 導航欄 -->
 <nav class="nav">
     <div class="nav-container">
         <a href="index.html" class="logo"><i class="fas fa-wifi"></i> 感・知・學</a>
@@ -170,7 +155,6 @@
         <p style="color:var(--text-dim); margin-top:8px;">計時｜分數｜音效｜慶祝動畫</p>
     </div>
 
-    <!-- 頂部按鈕：讀音訓練 -->
     <div class="top-btn-bar">
         <button class="pronunciation-btn" onclick="togglePronunciationPanel()">🎤 讀音訓練</button>
     </div>
@@ -186,7 +170,6 @@
     <button class="finish-btn" onclick="finishGame()">完成並查看成績</button>
     <div class="final-score" id="finalScore"></div>
 
-    <!-- 讀音訓練面板 -->
     <div id="pronunciationPanel">
         <h2 style="color:var(--accent); text-align:center; margin-bottom:20px;">🎤 讀音訓練</h2>
         <div class="pronunciation-sample">
@@ -213,93 +196,41 @@
                 <button onclick="judgePronunciationSimilarity('ありがとうございます')">🎙 AI 判斷讀音</button>
             </div>
         </div>
-        <div class="pronunciation-sample">
-            <p class="jp-sentence">すみません</p>
-            <p class="cn-sentence">對不起 / 不好意思</p>
-            <div class="pronunciation-btn-row">
-                <button onclick="playPronunciation('すみません')">🔊 播放發音</button>
-                <button onclick="judgePronunciationSimilarity('すみません')">🎙 AI 判斷讀音</button>
-            </div>
-        </div>
-        <div class="pronunciation-sample">
-            <p class="jp-sentence">いただきます</p>
-            <p class="cn-sentence">我要開動了</p>
-            <div class="pronunciation-btn-row">
-                <button onclick="playPronunciation('いただきます')">🔊 播放發音</button>
-                <button onclick="judgePronunciationSimilarity('いただきます')">🎙 AI 判斷讀音</button>
-            </div>
-        </div>
-        <p id="pronunciationNote"></p>
     </div>
 </div>
 
-<div class="celebration" id="celebration">
-    <div style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); font-size:5rem;">🎉</div>
-</div>
-
 <script>
-    // 題庫 N5 → N3
     const levels = [
-        {
-            name: "N5 基礎",
-            questions: [
-                { q: "「我」是？", options: ["あなた", "わたし", "かれ"], answer:1 },
-                { q: "「櫻花」是？", options: ["つき","さくら","みず"], answer:1 },
-                { q: "「3」是？", options: ["いち","に","さん"], answer:2 },
-                { q: "「早安」是？", options: ["おはよう","こんにちは","すみません"], answer:0 },
-                { q: "「貓」是？", options: ["いぬ","ねこ","とり"], answer:1 }
-            ]
-        },
-        {
-            name: "N5 進階",
-            questions: [
-                { q: "「こんにちは」是？", options: ["早上","白天","晚上"], answer:1 },
-                { q: "「謝謝」回應是？", options: ["どういたしまして","ごめん","はい"], answer:0 },
-                { q: "「はい」是？", options: ["不是","是","請"], answer:1 },
-                { q: "「多少錢」是？", options: ["いくら","なんじ","どこ"], answer:0 },
-                { q: "「ごちそうさま」是？", options: ["吃飯前","吃飯後","睡覺前"], answer:1 }
-            ]
-        },
-        {
-            name: "N4 基礎",
-            questions: [
-                { q: "～てください 意思是？", options: ["請做…","不要做…","正在做…"], answer:0 },
-                { q: "～たい 意思是？", options: ["想做…","做過…","正在做…"], answer:0 },
-                { q: "「友達」讀音？", options: ["ともだち","あした","あさって"], answer:0 },
-                { q: "「勉強する」是？", options: ["玩","學習","工作"], answer:1 },
-                { q: "「～てもいい」是？", options: ["可以嗎","不可以","禁止"], answer:0 }
-            ]
-        },
-        {
-            name: "N4 進階",
-            questions: [
-                { q: "～ながら 意思是？", options: ["一邊…一邊…","之後","之前"], answer:0 },
-                { q: "「駅」讀音？", options: ["えき","とり","みせ"], answer:0 },
-                { q: "「便利」讀音？", options: ["べんり","あんぜん","しずか"], answer:0 },
-                { q: "雨が降る 是？", options: ["下雪","下雨","晴天"], answer:1 },
-                { q: "～たり～たり 是？", options: ["有時…有時…","一定","從不"], answer:0 }
-            ]
-        },
-        {
-            name: "N3 基礎",
-            questions: [
-                { q: "～について 意思是？", options: ["關於","之後","之前"], answer:0 },
-                { q: "～によって 意思是？", options: ["根據","一起","代替"], answer:0 },
-                { q: "「経験」讀音？", options: ["けいけん","きけん","けいかく"], answer:0 },
-                { q: "「欠席」讀音？", options: ["けっせき","けっこん","けつあつ"], answer:0 },
-                { q: "～に対して 是？", options: ["對於","代替","關於"], answer:0 }
-            ]
-        },
-        {
-            name: "N3 進階",
-            questions: [
-                { q: "～一方 意思是？", options: ["一方面…另一方面…","代替","關於"], answer:0 },
-                { q: "～に伴って 是？", options: ["伴隨著","根據","代替"], answer:0 },
-                { q: "「影響」讀音？", options: ["えいきょう","えいご","えいが"], answer:0 },
-                { q: "「意識」讀音？", options: ["いしき","いじ","いけん"], answer:0 },
-                { q: "～に応じて 是？", options: ["根據","代替","關於"], answer:0 }
-            ]
-        }
+        { name: "N5 基礎", questions: [
+            { q: "「我」是？", options: ["あなた", "わたし", "かれ"], answer:1 },
+            { q: "「櫻花」是？", options: ["つき","さくら","みず"], answer:1 },
+            { q: "「3」是？", options: ["いち","に","さん"], answer:2 },
+            { q: "「早安」是？", options: ["おはよう","こんにちは","すみません"], answer:0 },
+            { q: "「貓」是？", options: ["いぬ","ねこ","とり"], answer:1 }
+        ]},
+        { name: "N5 進階", questions: [
+            { q: "「こんにちは」是？", options: ["早上","白天","晚上"], answer:1 },
+            { q: "「謝謝」回應是？", options: ["どういたしまして","ごめん","はい"], answer:0 },
+            { q: "「はい」是？", options: ["不是","是","請"], answer:1 },
+            { q: "「多少錢」是？", options: ["いくら","なんじ","どこ"], answer:0 },
+            { q: "「ごちそうさま」是？", options: ["吃飯前","吃飯後","睡覺前"], answer:1 }
+        ]},
+        { name: "N4 基礎", questions: [
+            { q: "～てください 意思是？", options: ["請做…","不要做…","正在做…"], answer:0 },
+            { q: "～たい 意思是？", options: ["想做…","做過…","正在做…"], answer:0 },
+            { q: "「友達」讀音？", options: ["ともだち","あした","あさって"], answer:0 },
+            { q: "「勉強する」是？", options: ["玩","學習","工作"], answer:1 },
+        ]},
+        { name: "N4 進階", questions: [
+            { q: "～ながら 意思是？", options: ["一邊…一邊…","之後","之前"], answer:0 },
+            { q: "「駅」讀音？", options: ["えき","とり","みせ"], answer:0 },
+        ]},
+        { name: "N3 基礎", questions: [
+            { q: "～について 意思是？", options: ["關於","之後","之前"], answer:0 },
+        ]},
+        { name: "N3 進階", questions: [
+            { q: "～一方 意思是？", options: ["一方面…另一方面…","代替","關於"], answer:0 },
+        ]}
     ];
 
     let currentLevel = 0;
@@ -308,12 +239,10 @@
     let timerInterval;
     let gameFinished = false;
 
-    // 音效
     const soundCorrect = new Audio("https://assets.mixkit.co/sfx/preview/mixkit-achievement-bell-600.mp3");
     const soundWrong = new Audio("https://assets.mixkit.co/sfx/preview/mixkit-wrong-answer-buzz-955.mp3");
     const soundFinish = new Audio("https://assets.mixkit.co/sfx/preview/mixkit-complete-2031.mp3");
 
-    // 建立關卡按鈕
     function createLevels() {
         const wrap = document.getElementById("levelSelector");
         levels.forEach((lv, i) => {
@@ -332,7 +261,6 @@
         });
     }
 
-    // 載入題目
     function loadQuestions() {
         const container = document.getElementById("questions-container");
         container.innerHTML = "";
@@ -355,7 +283,6 @@
         });
     }
 
-    // 檢查答案
     function checkAns(btn, qIdx, oIdx) {
         if (gameFinished) return;
         const q = questions[qIdx];
@@ -376,7 +303,6 @@
         document.getElementById("score").innerText = score;
     }
 
-    // 計時器
     function startTimer() {
         let sec = 0;
         timerInterval = setInterval(() => {
@@ -389,102 +315,60 @@
         clearInterval(timerInterval);
     }
 
-    // 結算遊戲
+    // ✅ 这里使用 canvas-confetti 礼花特效
     function finishGame() {
         if (gameFinished) return;
         gameFinished = true;
         stopTimer();
         soundFinish.play();
-        document.getElementById("celebration").classList.add("active");
+
+        // 礼花庆祝效果
+        confetti({
+            particleCount: 150,
+            spread: 70,
+            origin: { y: 0.6 },
+            colors: ['#ffb882', '#25d366', '#ff6b6b', '#ffffff']
+        });
+
         const final = document.getElementById("finalScore");
         final.style.display = "block";
         final.innerText = `🎉 完成！\n分數：${score}/${questions.length}`;
     }
 
-    // 重置
     function resetGame() {
         score = 0;
         gameFinished = false;
         document.getElementById("score").innerText = 0;
         document.getElementById("finalScore").style.display = "none";
-        document.getElementById("celebration").classList.remove("active");
         stopTimer();
         startTimer();
     }
 
-    // 讀音訓練面板切換
     function togglePronunciationPanel() {
         const panel = document.getElementById("pronunciationPanel");
         panel.style.display = panel.style.display === "block" ? "none" : "block";
     }
 
-    // 播放標準讀音
     function playPronunciation(phrase) {
-        const note = document.getElementById("pronunciationNote");
         if ('speechSynthesis' in window) {
-            const utterance = new SpeechSynthesisUtterance(phrase);
-            utterance.lang = 'ja-JP';
-            speechSynthesis.speak(utterance);
-            note.innerText = `正在播放：${phrase}`;
-        } else {
-            note.innerText = '此瀏覽器不支援語音合成';
+            const u = new SpeechSynthesisUtterance(phrase);
+            u.lang = 'ja-JP';
+            speechSynthesis.speak(u);
         }
     }
 
-    // 計算讀音相似度
-    function normalizeText(text) {
-        return text.toLowerCase().replace(/[^a-z0-9\u3040-\u30ff\u4e00-\u9fff]/g, '');
-    }
-
-    function getSimilarity(a, b) {
-        const textA = normalizeText(a);
-        const textB = normalizeText(b);
-        if (!textA.length || !textB.length) return 0;
-        const dp = Array.from({ length: textA.length + 1 }, () => Array(textB.length + 1).fill(0));
-        for (let i = 0; i <= textA.length; i++) dp[i][0] = i;
-        for (let j = 0; j <= textB.length; j++) dp[0][j] = j;
-        for (let i = 1; i <= textA.length; i++) {
-            for (let j = 1; j <= textB.length; j++) {
-                const cost = textA[i - 1] === textB[j - 1] ? 0 : 1;
-                dp[i][j] = Math.min(dp[i - 1][j] + 1, dp[i][j - 1] + 1, dp[i - 1][j - 1] + cost);
-            }
-        }
-        const distance = dp[textA.length][textB.length];
-        return Math.max(0, Math.round((1 - distance / Math.max(textA.length, textB.length)) * 100));
-    }
-
-    // AI 判斷讀音
     function judgePronunciationSimilarity(phrase) {
-        const note = document.getElementById("pronunciationNote");
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-        if (!SpeechRecognition) {
-            note.innerText = '此瀏覽器不支援語音辨識，請使用 Chrome 或 Edge。';
-            return;
-        }
-        const recognition = new SpeechRecognition();
-        recognition.lang = 'ja-JP';
-        recognition.interimResults = false;
-        recognition.maxAlternatives = 1;
-        recognition.onstart = () => {
-            note.innerText = `請朗讀：${phrase}`;
+        if (!SpeechRecognition) return alert("不支援語音辨識");
+        const r = new SpeechRecognition();
+        r.lang = 'ja-JP';
+        r.onresult = e => {
+            const res = e.results[0][0].transcript;
+            alert(`你說：${res}\n標準：${phrase}`);
         };
-        recognition.onresult = event => {
-            const transcript = event.results[0][0].transcript.trim();
-            const similarity = getSimilarity(transcript, phrase);
-            note.innerText = `辨識結果：${transcript}，相似度：${similarity}%`;
-        };
-        recognition.onerror = event => {
-            note.innerText = `語音辨識錯誤：${event.error}`;
-        };
-        recognition.onend = () => {
-            if (!note.innerText.startsWith('辨識結果')) {
-                note.innerText = '辨識結束，請再試一次。';
-            }
-        };
-        recognition.start();
+        r.start();
     }
 
-    // 開始
     createLevels();
     loadQuestions();
     startTimer();
