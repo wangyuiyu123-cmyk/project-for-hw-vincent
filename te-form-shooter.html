@@ -2,31 +2,12 @@
 <html lang="zh-TW">
 <head>
 <meta charset="UTF-8">
-<title>て形射擊遊戲 ｜ Japanese Te-Form Shooter (優化版)</title>
+<title>て形射擊遊戲 ｜ Japanese Te-Form Shooter</title>
 <style>
-  body {
-    margin: 0; padding: 0; background: #111; color: #0f0; 
-    font-family: 'Segoe UI', sans-serif;
-    text-align: center;
-    overflow: hidden;
-  }
-  canvas { 
-    background: #000; 
-    border: 3px solid #0f0; 
-    margin: 10px auto; 
-    display: block; 
-  }
-  #ui {
-    position: absolute; top: 10px; left: 50%; transform: translateX(-50%);
-    background: rgba(0,0,0,0.7); padding: 10px 20px; border-radius: 10px; 
-    font-size: 18px; color: #0f0; z-index: 10;
-  }
-  button {
-    margin: 10px; padding: 12px 24px; font-size: 18px; 
-    background: #0f0; color: #000; border: none; cursor: pointer;
-    border-radius: 5px;
-  }
-  .hearts { font-size: 24px; }
+  body { margin:0; padding:0; background:#000; color:#0f0; font-family:sans-serif; text-align:center; overflow:hidden; }
+  canvas { display:block; margin:10px auto; border:4px solid #0f0; background:#111; }
+  #ui { position:absolute; top:10px; left:50%; transform:translateX(-50%); background:rgba(0,0,0,0.8); padding:8px 20px; border-radius:10px; font-size:18px; z-index:10; }
+  button { margin:10px; padding:12px 24px; font-size:18px; background:#0f0; color:#000; border:none; border-radius:8px; cursor:pointer; }
 </style>
 </head>
 <body>
@@ -34,16 +15,15 @@
 <div id="ui">
   時間: <span id="timer">0</span>s　|　
   分數: <span id="score">0</span>　|　
-  血量: <span id="lives" class="hearts">❤️❤️❤️</span>
+  血量: <span id="lives">❤️❤️❤️</span>
 </div>
 
-<canvas id="game" width="800" height="600"></canvas>
+<canvas id="game" width="800" height="620"></canvas>
 
 <button onclick="startGame()">開始遊戲 / Start</button>
 <button onclick="location.reload()">重新開始</button>
 
 <script>
-// ================== 遊戲資料（新增浴びます） ==================
 const verbs = [
   { dict: "書きます", te: "書いて", wrong1: "書きて", wrong2: "書きました" },
   { dict: "食べます", te: "食べて", wrong1: "食べますて", wrong2: "食べた" },
@@ -52,32 +32,24 @@ const verbs = [
   { dict: "します",   te: "して",   wrong1: "しって", wrong2: "しますて" },
   { dict: "来ます",   te: "来て",   wrong1: "来ますて", wrong2: "来た" },
   { dict: "行きます", te: "行って", wrong1: "行きって", wrong2: "行きました" },
-  { dict: "浴びます", te: "浴びて", wrong1: "浴びますて", wrong2: "浴びた" }   // 新增
+  { dict: "浴びます", te: "浴びて", wrong1: "浴びますて", wrong2: "浴びた" }
 ];
 
-let currentVerb = null;
-
 const canvas = document.getElementById("game");
-const ctx = canvas.getContext("2d", { alpha: true });
+const ctx = canvas.getContext("2d");
 const W = canvas.width;
 const H = canvas.height;
 
-let score = 0, time = 0, lives = 3;   // 改成 3 條命
-let gameRunning = false;
-let timerInterval = null;
-
-let boxes = [];
-let bullets = [];
-let particles = [];
-let errorMarks = [];
-let screenFlash = 0;
+let score = 0, time = 0, lives = 3, gameRunning = false;
+let timerInterval;
+let boxes = [], bullets = [], particles = [], errorMarks = [], screenFlash = 0;
 
 let playerX = W / 2;
 const playerY = H - 40;
 const playerWidth = 60;
 let mouseX = W / 2;
-
 let audioCtx;
+
 function initAudio() {
   if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 }
@@ -87,9 +59,7 @@ canvas.addEventListener("mousemove", e => {
   mouseX = e.clientX - rect.left;
 });
 canvas.addEventListener("click", shoot);
-document.addEventListener("keydown", e => { 
-  if (e.key === " " && gameRunning) { e.preventDefault(); shoot(); }
-});
+document.addEventListener("keydown", e => { if (e.key === " " && gameRunning) shoot(); });
 
 function random(min, max) { return Math.random() * (max - min) + min; }
 
@@ -112,6 +82,7 @@ function spawnBoxes() {
   }
 }
 
+let currentVerb = null;
 function newVerb() {
   currentVerb = verbs[Math.floor(Math.random() * verbs.length)];
   spawnBoxes();
@@ -119,91 +90,65 @@ function newVerb() {
 
 function shoot() {
   if (!gameRunning) return;
-  bullets.push({
-    x: playerX + playerWidth/2 - 5,
-    y: playerY - 10,
-    width: 10,
-    height: 25,
-    speed: 13
-  });
-
+  bullets.push({ x: playerX + playerWidth/2 - 5, y: playerY - 10, width: 10, height: 25, speed: 13 });
   try {
     initAudio();
     const osc = audioCtx.createOscillator();
     osc.frequency.setValueAtTime(880, audioCtx.currentTime);
-    const gain = audioCtx.createGain();
-    gain.gain.value = 0.15;
+    const gain = audioCtx.createGain(); gain.gain.value = 0.15;
     osc.connect(gain).connect(audioCtx.destination);
-    osc.start();
-    osc.stop(audioCtx.currentTime + 0.06);
+    osc.start(); osc.stop(audioCtx.currentTime + 0.06);
   } catch(e) {}
 }
 
-function createParticles(x, y, color, count = 25) {
+function createParticles(x, y, color, count=25) {
   if (particles.length > 120) particles.length = 80;
   for (let i = 0; i < count; i++) {
-    particles.push({
-      x, y,
-      vx: random(-6.5, 6.5),
-      vy: random(-8, 3),
-      life: 38,
-      color
-    });
+    particles.push({ x, y, vx: random(-6.5,6.5), vy: random(-8,3), life: 38, color });
   }
 }
 
 function showError(x, y) {
   errorMarks.push({ x, y, life: 32 });
-  
   try {
     initAudio();
     const osc = audioCtx.createOscillator();
-    osc.type = "sawtooth";
-    osc.frequency.setValueAtTime(160, audioCtx.currentTime);
-    const gain = audioCtx.createGain();
-    gain.gain.value = 0.25;
+    osc.type = "sawtooth"; osc.frequency.setValueAtTime(160, audioCtx.currentTime);
+    const gain = audioCtx.createGain(); gain.gain.value = 0.25;
     osc.connect(gain).connect(audioCtx.destination);
-    osc.start();
-    osc.stop(audioCtx.currentTime + 0.35);
+    osc.start(); osc.stop(audioCtx.currentTime + 0.35);
   } catch(e) {}
-  
   screenFlash = 7;
 }
 
 function updateLivesDisplay() {
-  const hearts = "❤️".repeat(lives) + "♡".repeat(3 - lives);
-  document.getElementById("lives").innerHTML = hearts;
+  document.getElementById("lives").innerHTML = "❤️".repeat(lives) + "♡".repeat(3 - lives);
 }
 
 function gameLoop() {
   if (!gameRunning) return;
-
   ctx.clearRect(0, 0, W, H);
 
   if (screenFlash > 0) {
-    ctx.fillStyle = `rgba(255, 40, 40, ${screenFlash * 0.09})`;
-    ctx.fillRect(0, 0, W, H);
+    ctx.fillStyle = `rgba(255,40,40,${screenFlash*0.09})`;
+    ctx.fillRect(0,0,W,H);
     screenFlash--;
   }
 
+  // 背景格線
   ctx.strokeStyle = "#002200";
-  ctx.lineWidth = 1;
   for (let i = 40; i < W; i += 80) {
-    ctx.beginPath();
-    ctx.moveTo(i, 0);
-    ctx.lineTo(i, H);
-    ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(i,0); ctx.lineTo(i,H); ctx.stroke();
   }
 
-  // 方塊
+  // 方塊更新
   for (let i = boxes.length - 1; i >= 0; i--) {
     const b = boxes[i];
     b.y += b.speed;
 
     ctx.fillStyle = "#006666";
     ctx.fillRect(b.x - b.width/2, b.y, b.width, b.height);
-    ctx.strokeStyle = "#00cccc";
-    ctx.lineWidth = 4;
+    ctx.strokeStyle = "#00cccc"; ctx.lineWidth = 4;
     ctx.strokeRect(b.x - b.width/2, b.y, b.width, b.height);
 
     ctx.fillStyle = "#ffffff";
@@ -212,14 +157,17 @@ function gameLoop() {
     ctx.textBaseline = "middle";
     ctx.fillText(b.text, b.x, b.y + b.height/2 + 2);
 
+    // === 修改重點：只有正確方塊落地才扣血 ===
     if (b.y > H + 30) {
-      showError(b.x, b.y - 30);
-      score = Math.max(0, score - 40);
-      lives--;
-      updateLivesDisplay();
-      document.getElementById("score").textContent = score;
+      if (b.isCorrect) {
+        // 正確方塊落地 → 扣血
+        showError(b.x, b.y - 30);
+        lives--;
+        updateLivesDisplay();
+        if (lives <= 0) endGame();
+      }
+      // 錯誤方塊落地 → 不扣血，只移除
       boxes.splice(i, 1);
-      if (lives <= 0) endGame();
     }
   }
 
@@ -227,25 +175,20 @@ function gameLoop() {
   for (let i = bullets.length - 1; i >= 0; i--) {
     const b = bullets[i];
     b.y -= b.speed;
-
     ctx.fillStyle = "#ffff00";
     ctx.fillRect(b.x, b.y, b.width, b.height);
 
-    if (b.y < -30) {
-      bullets.splice(i, 1);
-      continue;
-    }
+    if (b.y < -30) { bullets.splice(i,1); continue; }
 
     for (let j = boxes.length - 1; j >= 0; j--) {
       const box = boxes[j];
       if (b.x > box.x - box.width/2 && b.x < box.x + box.width/2 &&
           b.y > box.y && b.y < box.y + box.height) {
-        
         bullets.splice(i, 1);
 
         if (box.isCorrect) {
           score += 100;
-          createParticles(box.x, box.y + 40, "#ffff00", 32);
+          createParticles(box.x, box.y + 40, "#ffff00", 35);
           document.getElementById("score").textContent = score;
           setTimeout(newVerb, 500);
         } else {
@@ -265,31 +208,23 @@ function gameLoop() {
   // 粒子
   for (let i = particles.length - 1; i >= 0; i--) {
     const p = particles[i];
-    p.x += p.vx;
-    p.y += p.vy;
-    p.vy += 0.22;
-    p.life--;
-
+    p.x += p.vx; p.y += p.vy; p.vy += 0.22; p.life--;
     ctx.globalAlpha = Math.max(0, p.life / 38);
     ctx.fillStyle = p.color;
     ctx.fillRect(p.x, p.y, 8, 8);
-
     if (p.life <= 0) particles.splice(i, 1);
   }
   ctx.globalAlpha = 1;
 
   // 紅色交叉
-  ctx.strokeStyle = "#ff2222";
-  ctx.lineWidth = 7;
+  ctx.strokeStyle = "#ff2222"; ctx.lineWidth = 7;
   for (let i = errorMarks.length - 1; i >= 0; i--) {
     const m = errorMarks[i];
     const s = 42 * (m.life / 32);
     ctx.globalAlpha = m.life / 32;
     ctx.beginPath();
-    ctx.moveTo(m.x - s, m.y - s);
-    ctx.lineTo(m.x + s, m.y + s);
-    ctx.moveTo(m.x + s, m.y - s);
-    ctx.lineTo(m.x - s, m.y + s);
+    ctx.moveTo(m.x - s, m.y - s); ctx.lineTo(m.x + s, m.y + s);
+    ctx.moveTo(m.x + s, m.y - s); ctx.lineTo(m.x - s, m.y + s);
     ctx.stroke();
     m.life--;
     if (m.life <= 0) errorMarks.splice(i, 1);
@@ -319,9 +254,7 @@ function startTimer() {
 function startGame() {
   score = 0; time = 0; lives = 3;
   boxes = []; bullets = []; particles = []; errorMarks = []; screenFlash = 0;
-  
   document.getElementById("score").textContent = "0";
-  document.getElementById("timer").textContent = "0";
   updateLivesDisplay();
 
   gameRunning = true;
@@ -334,19 +267,10 @@ function startGame() {
 function endGame() {
   gameRunning = false;
   if (timerInterval) clearInterval(timerInterval);
-  alert(`遊戲結束！\n最終分數: ${score}\n時間: ${time} 秒\n\n你已經錯了 3 次，继续加油練習て形吧！`);
+  alert(`遊戲結束！\n最終分數: ${score}\n時間: ${time} 秒\n\n繼續努力練習て形吧！`);
 }
 
-// 初始畫面
-ctx.font = "30px Arial";
-ctx.fillStyle = "#0f0";
-ctx.textAlign = "center";
-ctx.fillText("て形射擊遊戲（3 心模式）", W/2, H/2 - 80);
-ctx.font = "22px Arial";
-ctx.fillText("新增：浴びます → 浴びて", W/2, H/2 - 20);
-ctx.fillText("錯 3 次（❤️ 歸零）即結束", W/2, H/2 + 20);
-ctx.fillText("點擊「開始遊戲」開始", W/2, H/2 + 70);
-
+startGame(); // 自動開始
 </script>
 </body>
 </html>
