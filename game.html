@@ -191,7 +191,6 @@
             display: none;
         }
 
-        /* Shooter Modal - No cover start button */
         #shooterModal {
             position: fixed;
             top: 0;
@@ -254,8 +253,8 @@
             <li><a href="game.html">學習遊戲 Game</a></li>
             <li><a href="about.html">關於我們 About</a></li>
             <li><a href="poster.html">海報 Poster</a></li>
-            <li><a href="learning%20progress.html">學習進度</a></li>
-            <li><a href="learning%20resource.html">學習資源</a></li>
+            <li><a href="learning progress.html">學習進度</a></li>
+            <li><a href="learning resource.html">學習資源</a></li>
             <li><a href="stats.html">排名 Stats</a></li>
         </ul>
     </div>
@@ -267,7 +266,6 @@
         <p style="color:var(--text-dim); margin-top:8px;">計時｜分數｜音效｜慶祝動畫</p>
     </div>
 
-    <!-- 3 buttons: 讀音訓練 / 遺忘曲線記憶 / て形射擊遊戲 -->
     <div class="top-btn-bar">
         <button class="top-btn" onclick="togglePronunciationPanel()">🎤 讀音訓練</button>
         <button class="top-btn" onclick="openForgettingGame()">🧠 遺忘曲線記憶</button>
@@ -320,7 +318,6 @@
     </div>
 </div>
 
-<!-- て形射擊遊戲彈窗 -->
 <div id="shooterModal">
     <div class="modal-content">
         <span class="close-shooter" onclick="closeTeFormShooter()">✕</span>
@@ -355,286 +352,95 @@
 </div>
 
 <script>
-// 5 levels (N5~N1), 10 questions each
 const levels = [
-    {
-        name: "N5",
-        questions: [
-            { q: "「我」是？", options: ["あなた", "わたし", "かれ"], answer: 1 },
-            { q: "「櫻花」是？", options: ["つき", "さくら", "みず"], answer: 1 },
-            { q: "「3」是？", options: ["いち", "に", "さん"], answer: 2 },
-            { q: "「早安」是？", options: ["おはよう", "こんにちは", "すみません"], answer: 0 },
-            { q: "「貓」是？", options: ["いぬ", "ねこ", "とり"], answer: 1 },
-            { q: "「水」是？", options: ["くさ", "みず", "ひと"], answer: 1 },
-            { q: "「日曜日」是？", options: ["月曜日", "火曜日", "星期天"], answer: 2 },
-            { q: "「ありがとう」意思是？", options: ["你好", "謝謝", "再見"], answer: 1 },
-            { q: "「こんにちは」意思是？", options: ["早上好", "你好", "晚上好"], answer: 1 },
-            { q: "「さようなら」意思是？", options: ["你好", "再見", "謝謝"], answer: 1 }
-        ]
-    },
-    {
-        name: "N4",
-        questions: [
-            { q: "～てください 意思是？", options: ["請做…", "不要做…", "正在做…"], answer: 0 },
-            { q: "～たい 意思是？", options: ["想做…", "做過…", "正在做…"], answer: 0 },
-            { q: "「友達」讀音？", options: ["ともだち", "あした", "あさって"], answer: 0 },
-            { q: "「勉強する」是？", options: ["玩", "學習", "工作"], answer: 1 },
-            { q: "「～てもいい」是？", options: ["可以嗎", "不可以", "禁止"], answer: 0 },
-            { q: "「便利」讀音？", options: ["べんり", "あんぜん", "しずか"], answer: 0 },
-            { q: "雨が降る 是？", options: ["下雪", "下雨", "晴天"], answer: 1 },
-            { q: "「駅」讀音？", options: ["えき", "とり", "みせ"], answer: 0 },
-            { q: "～ながら 意思是？", options: ["一邊…一邊…", "之後", "之前"], answer: 0 },
-            { q: "～たり～たり 是？", options: ["有時…有時…", "一定", "從不"], answer: 0 }
-        ]
-    },
-    {
-        name: "N3",
-        questions: [
-            { q: "～について 意思是？", options: ["關於", "之後", "之前"], answer: 0 },
-            { q: "～によって 意思是？", options: ["根據／依靠", "一起", "代替"], answer: 0 },
-            { q: "「経験」讀音？", options: ["けいけん", "きけん", "けいかく"], answer: 0 },
-            { q: "「欠席」讀音？", options: ["けっせき", "けっこん", "けつあつ"], answer: 0 },
-            { q: "～に対して 是？", options: ["對於", "代替", "關於"], answer: 0 },
-            { q: "～べきです 意思是？", options: ["應該", "可能", "想要"], answer: 0 },
-            { q: "「連絡」讀音？", options: ["れんらく", "れんさ", "れんきん"], answer: 0 },
-            { q: "～場合 意思是？", options: ["…的時候", "…的地方", "…的原因"], answer: 0 },
-            { q: "「予定」讀音？", options: ["よてい", "よてつ", "ようてい"], answer: 0 },
-            { q: "～つもりです 意思是？", options: ["打算…", "記得…", "能夠…"], answer: 0 }
-        ]
-    },
-    {
-        name: "N2",
-        questions: [
-            { q: "～一方 意思是？", options: ["一方面…另一方面…", "代替", "關於"], answer: 0 },
-            { q: "～に伴って 是？", options: ["伴隨著", "根據", "代替"], answer: 0 },
-            { q: "「影響」讀音？", options: ["えいきょう", "えいご", "えいが"], answer: 0 },
-            { q: "「意識」讀音？", options: ["いしき", "いじ", "いけん"], answer: 0 },
-            { q: "～に応じて 是？", options: ["根據／按照", "代替", "關於"], answer: 0 },
-            { q: "～にかかわらず 意思是？", options: ["不管…", "關於…", "由於…"], answer: 0 },
-            { q: "～上で 意思是？", options: ["在…之上／在…方面", "在…之後", "在…之間"], answer: 0 },
-            { q: "「比較」讀音？", options: ["ひかく", "ひかん", "ひかり"], answer: 0 },
-            { q: "～限り 意思是？", options: ["只要…", "儘管…", "在…期間"], answer: 0 },
-            { q: "～わけではない 意思是？", options: ["並不是…", "因為…", "難道…"], answer: 0 }
-        ]
-    },
-    {
-        name: "N1",
-        questions: [
-            { q: "～にあたって 意思是？", options: ["在…之際", "根據", "代替"], answer: 0 },
-            { q: "～に際して 意思是？", options: ["當…之時", "儘管", "代替"], answer: 0 },
-            { q: "「相俟って」讀音？", options: ["あいまって", "あいまて", "あいまった"], answer: 0 },
-            { q: "「鑑みて」讀音？", options: ["かんがみて", "かんがえて", "かんがて"], answer: 0 },
-            { q: "～に反して 意思是？", options: ["違反…", "相反…", "代替…"], answer: 0 },
-            { q: "～を皮切りに 意思是？", options: ["以…為開端", "以…為目標", "以…為結束"], answer: 0 },
-            { q: "「手がける」意思是？", options: ["從事、著手", "手碰到", "守護"], answer: 0 },
-            { q: "「見合わせる」意思是？", options: ["暫停、延期", "互相看", "合適"], answer: 0 },
-            { q: "～に至っては 意思是？", options: ["至於…", "到達…", "即使…"], answer: 0 },
-            { q: "～と相まって 意思是？", options: ["與…相結合", "與…相反", "與…相比"], answer: 0 }
-        ]
-    }
+    {name:"N5",questions:[
+        {q:"「我」是？",options:["あなた","わたし","かれ"],answer:1},
+        {q:"「櫻花」是？",options:["つき","さくら","みず"],answer:1},
+        {q:"「3」是？",options:["いち","に","さん"],answer:2},
+        {q:"「早安」是？",options:["おはよう","こんにちは","すみません"],answer:0},
+        {q:"「貓」是？",options:["いぬ","ねこ","とり"],answer:1},
+        {q:"「水」是？",options:["くさ","みず","ひと"],answer:1},
+        {q:"「日曜日」是？",options:["月曜日","火曜日","星期天"],answer:2},
+        {q:"「ありがとう」意思是？",options:["你好","謝謝","再見"],answer:1},
+        {q:"「こんにちは」意思是？",options:["早上好","你好","晚上好"],answer:1},
+        {q:"「さようなら」意思是？",options:["你好","再見","謝謝"],answer:1}
+    ]},
+    {name:"N4",questions:[
+        {q:"～てください 意思是？",options:["請做…","不要做…","正在做…"],answer:0},
+        {q:"～たい 意思是？",options:["想做…","做過…","正在做…"],answer:0},
+        {q:"「友達」讀音？",options:["ともだち","あした","あさって"],answer:0},
+        {q:"「勉強する」是？",options:["玩","學習","工作"],answer:1},
+        {q:"「～てもいい」是？",options:["可以嗎","不可以","禁止"],answer:0},
+        {q:"「便利」讀音？",options:["べんり","あんぜん","しずか"],answer:0},
+        {q:"雨が降る 是？",options:["下雪","下雨","晴天"],answer:1},
+        {q:"「駅」讀音？",options:["えき","とり","みせ"],answer:0},
+        {q:"～ながら 意思是？",options:["一邊…一邊…","之後","之前"],answer:0},
+        {q:"～たり～たり 是？",options:["有時…有時…","一定","從不"],answer:0}
+    ]},
+    {name:"N3",questions:[
+        {q:"～について 意思是？",options:["關於","之後","之前"],answer:0},
+        {q:"～によって 意思是？",options:["根據／依靠","一起","代替"],answer:0},
+        {q:"「経験」讀音？",options:["けいけん","きけん","けいかく"],answer:0},
+        {q:"「欠席」讀音？",options:["けっせき","けっこん","けつあつ"],answer:0},
+        {q:"～に対して 是？",options:["對於","代替","關於"],answer:0},
+        {q:"～べきです 意思是？",options:["應該","可能","想要"],answer:0},
+        {q:"「連絡」讀音？",options:["れんらく","れんさ","れんきん"],answer:0},
+        {q:"～場合 意思是？",options:["…的時候","…的地方","…的原因"],answer:0},
+        {q:"「予定」讀音？",options:["よてい","よてつ","ようてい"],answer:0},
+        {q:"～つもりです 意思是？",options:["打算…","記得…","能夠…"],answer:0}
+    ]},
+    {name:"N2",questions:[
+        {q:"～一方 意思是？",options:["一方面…另一方面…","代替","關於"],answer:0},
+        {q:"～に伴って 是？",options:["伴隨著","根據","代替"],answer:0},
+        {q:"「影響」讀音？",options:["えいきょう","えいご","えいが"],answer:0},
+        {q:"「意識」讀音？",options:["いしき","いじ","いけん"],answer:0},
+        {q:"～に応じて 是？",options:["根據／按照","代替","關於"],answer:0},
+        {q:"～にかかわらず 意思是？",options:["不管…","關於…","由於…"],answer:0},
+        {q:"～上で 意思是？",options:["在…之上／在…方面","在…之後","在…之間"],answer:0},
+        {q:"「比較」讀音？",options:["ひかく","ひかん","ひかり"],answer:0},
+        {q:"～限り 意思是？",options:["只要…","儘管…","在…期間"],answer:0},
+        {q:"～わけではない 意思是？",options:["並不是…","因為…","難道…"],answer:0}
+    ]},
+    {name:"N1",questions:[
+        {q:"～にあたって 意思是？",options:["在…之際","根據","代替"],answer:0},
+        {q:"～に際して 意思是？",options:["當…之時","儘管","代替"],answer:0},
+        {q:"「相俟って」讀音？",options:["あいまって","あいまて","あいまった"],answer:0},
+        {q:"「鑑みて」讀音？",options:["かんがみて","かんがえて","かんがて"],answer:0},
+        {q:"～に反して 意思是？",options:["違反…","相反…","代替…"],answer:0},
+        {q:"～を皮切りに 意思是？",options:["以…為開端","以…為目標","以…為結束"],answer:0},
+        {q:"「手がける」意思是？",options:["從事、著手","手碰到","守護"],answer:0},
+        {q:"「見合わせる」意思是？",options:["暫停、延期","互相看","合適"],answer:0},
+        {q:"～に至っては 意思是？",options:["至於…","到達…","即使…"],answer:0},
+        {q:"～と相まって 意思是？",options:["與…相結合","與…相反","與…相比"],answer:0}
+    ]}
 ];
 
-let currentLevel = 0;
-let score = 0;
-let questions = [];
-let timerInterval;
-let gameFinished = false;
+let currentLevel=0,score=0,questions=[],timerInterval,gameFinished=false;
+const soundCorrect=new Audio("https://assets.mixkit.co/sfx/preview/mixkit-achievement-bell-600.mp3");
+const soundWrong=new Audio("https://assets.mixkit.co/sfx/preview/mixkit-wrong-answer-buzz-955.mp3");
+const soundFinish=new Audio("https://assets.mixkit.co/sfx/preview/mixkit-complete-2031.mp3");
 
-const soundCorrect = new Audio("https://assets.mixkit.co/sfx/preview/mixkit-achievement-bell-600.mp3");
-const soundWrong = new Audio("https://assets.mixkit.co/sfx/preview/mixkit-wrong-answer-buzz-955.mp3");
-const soundFinish = new Audio("https://assets.mixkit.co/sfx/preview/mixkit-complete-2031.mp3");
+function togglePronunciationPanel(){const p=document.getElementById('pronunciationPanel');p.style.display=p.style.display==='block'?'none':'block';}
+function speakJapanese(text){window.speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.lang='ja-JP';u.rate=0.9;window.speechSynthesis.speak(u);}
+function checkAccuracy(standard,boxId){const SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR){alert("使用 Chrome/Edge 瀏覽器");return;}const rec=new SR();rec.lang='ja-JP';rec.onresult=e=>{const user=e.results[0][0].transcript.trim();let correct=0;const s=standard.split('');const u=user.split('');s.forEach((c,i)=>{if(u[i]===c)correct++;});const percent=Math.round((correct/s.length)*100);const box=document.getElementById(boxId);let color=percent>=80?'#25d366':percent>=50?'#ffd166':'#ff6b6b';box.style.color=color;box.innerText=`你：${user} | 標準：${standard} | 準確度：${percent}%`;};rec.start();}
 
-// === 讀音訓練功能 ===
-function togglePronunciationPanel() {
-  const p = document.getElementById('pronunciationPanel');
-  p.style.display = p.style.display === 'block' ? 'none' : 'block';
-}
+function openTeFormShooter(){const modal=document.getElementById("shooterModal");const frame=document.getElementById("shooterFrame");frame.src="te-form-shooter.html";modal.style.display="flex";}
+function closeTeFormShooter(){const modal=document.getElementById("shooterModal");const frame=document.getElementById("shooterFrame");frame.src="";modal.style.display="none";}
 
-function speakJapanese(text) {
-  window.speechSynthesis.cancel();
-  const u = new SpeechSynthesisUtterance(text);
-  u.lang = 'ja-JP';
-  u.rate = 0.9;
-  window.speechSynthesis.speak(u);
-}
+function openForgettingGame(){document.getElementById("forgetModal").style.display="flex";document.getElementById("resultText").innerText="";document.getElementById("answerInput").value="";document.getElementById("keigoBox").style.display="none";}
+function closeModal(){document.getElementById("forgetModal").style.display="none";}
+function checkTeForm(){const input=document.getElementById("answerInput").value.trim();const result=document.getElementById("resultText");const correctAnswer="書いて";if(input===correctAnswer||input==="かいて"){result.innerText="✅ 正確！書きます → 書いて（かいて）";result.style.color="var(--correct)";soundCorrect.play();}else{result.innerText="❌ 錯誤！正解：書いて（かいて）";result.style.color="var(--wrong)";soundWrong.play();}}
+function toggleKeigo(){const box=document.getElementById("keigoBox");box.style.display=box.style.display==="block"?"none":"block";}
 
-function checkAccuracy(standard, boxId) {
-  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-  if (!SR) { alert("使用 Chrome/Edge 瀏覽器"); return; }
-  const rec = new SR();
-  rec.lang = 'ja-JP';
-  rec.onresult = e => {
-    const user = e.results[0][0].transcript.trim();
-    let correct = 0;
-    const s = standard.split('');
-    const u = user.split('');
-    s.forEach((c,i) => { if (u[i] === c) correct++; });
-    const percent = Math.round((correct/s.length)*100);
-    const box = document.getElementById(boxId);
-    let color = percent >= 80 ? '#25d366' : percent >= 50 ? '#ffd166' : '#ff6b6b';
-    box.style.color = color;
-    box.innerText = `你：${user} | 標準：${standard} | 準確度：${percent}%`;
-  };
-  rec.start();
-}
+function createLevels(){const wrap=document.getElementById("levelSelector");levels.forEach((lv,i)=>{const btn=document.createElement("button");btn.className="level-btn"+(i==0?" active":"");btn.innerText=lv.name;btn.onclick=()=>{currentLevel=i;resetGame();loadQuestions();document.querySelectorAll(".level-btn").forEach((b,idx)=>{b.classList.toggle("active",idx==i);});};wrap.appendChild(btn);});}
+function loadQuestions(){const container=document.getElementById("questions-container");container.innerHTML="";questions=levels[currentLevel].questions;questions.forEach((q,idx)=>{const div=document.createElement("div");div.className="question";div.innerHTML=`<div class="question-text">${idx+1}. ${q.q}</div>`;const opts=document.createElement("div");opts.className="options";q.options.forEach((opt,i)=>{const btn=document.createElement("button");btn.className="option-btn";btn.innerText=opt;btn.onclick=()=>checkAns(btn,idx,i);opts.appendChild(btn);});div.appendChild(opts);container.appendChild(div);});}
+function checkAns(btn,qIdx,oIdx){if(gameFinished)return;const q=questions[qIdx];const all=btn.parentElement.querySelectorAll(".option-btn");all.forEach(b=>b.disabled=true);if(oIdx===q.answer){btn.classList.add("correct");btn.innerText+=" ✅";score++;soundCorrect.play();}else{btn.classList.add("incorrect");btn.innerText+=" ❌";all[q.answer].classList.add("correct");soundWrong.play();}document.getElementById("score").innerText=score;}
+function startTimer(){let sec=0;timerInterval=setInterval(()=>{sec++;document.getElementById("timer").innerText=sec;},1000);}
+function stopTimer(){clearInterval(timerInterval);}
+function finishGame(){if(gameFinished)return;gameFinished=true;stopTimer();soundFinish.play();confetti({particleCount:200,spread:70,origin:{y:0.6},colors:['#ffb882','#25d366','#ff6b6b','#ffffff']});const time=parseInt(document.getElementById("timer").innerText);let percent;if(time<=20)percent=99;else if(time<=35)percent=80;else if(time<=50)percent=60;else percent=30;const final=document.getElementById("finalScore");final.style.display="block";final.innerText=`你的完成速度（${time}秒）\n擊敗全國 ${percent}% 的人！`;}
+function resetGame(){score=0;gameFinished=false;document.getElementById("score").innerText=0;document.getElementById("finalScore").style.display="none";stopTimer();startTimer();}
 
-// === て形射擊遊戲 ===
-function openTeFormShooter() {
-    const modal = document.getElementById("shooterModal");
-    const frame = document.getElementById("shooterFrame");
-    frame.src = "te-form-shooter.html"; // 確保你的射擊遊戲文件名正確
-    modal.style.display = "flex";
-}
-function closeTeFormShooter() {
-    const modal = document.getElementById("shooterModal");
-    const frame = document.getElementById("shooterFrame");
-    frame.src = "";
-    modal.style.display = "none";
-}
-
-// === 遺忘曲線遊戲 ===
-function openForgettingGame() {
-    document.getElementById("forgetModal").style.display = "flex";
-    document.getElementById("resultText").innerText = "";
-    document.getElementById("answerInput").value = "";
-    document.getElementById("keigoBox").style.display = "none";
-}
-function closeModal() {
-    document.getElementById("forgetModal").style.display = "none";
-}
-
-function checkTeForm() {
-    const input = document.getElementById("answerInput").value.trim();
-    const result = document.getElementById("resultText");
-    const correctAnswer = "書いて";
-
-    if (input === correctAnswer || input === "かいて") {
-        result.innerText = "✅ 正確！書きます → 書いて（かいて）";
-        result.style.color = "var(--correct)";
-        soundCorrect.play();
-    } else {
-        result.innerText = "❌ 錯誤！正解：書いて（かいて）";
-        result.style.color = "var(--wrong)";
-        soundWrong.play();
-    }
-}
-
-function toggleKeigo() {
-    const box = document.getElementById("keigoBox");
-    box.style.display = box.style.display === "block" ? "none" : "block";
-}
-
-// === 問答遊戲核心邏輯 ===
-function createLevels() {
-    const wrap = document.getElementById("levelSelector");
-    levels.forEach((lv, i) => {
-        const btn = document.createElement("button");
-        btn.className = "level-btn" + (i == 0 ? " active" : "");
-        btn.innerText = lv.name;
-        btn.onclick = () => {
-            currentLevel = i;
-            resetGame();
-            loadQuestions();
-            document.querySelectorAll(".level-btn").forEach((b, idx) => {
-                b.classList.toggle("active", idx == i);
-            });
-        };
-        wrap.appendChild(btn);
-    });
-}
-
-function loadQuestions() {
-    const container = document.getElementById("questions-container");
-    container.innerHTML = "";
-    questions = levels[currentLevel].questions;
-    questions.forEach((q, idx) => {
-        const div = document.createElement("div");
-        div.className = "question";
-        div.innerHTML = `<div class="question-text">${idx+1}. ${q.q}</div>`;
-        const opts = document.createElement("div");
-        opts.className = "options";
-        q.options.forEach((opt, i) => {
-            const btn = document.createElement("button");
-            btn.className = "option-btn";
-            btn.innerText = opt;
-            btn.onclick = () => checkAns(btn, idx, i);
-            opts.appendChild(btn);
-        });
-        div.appendChild(opts);
-        container.appendChild(div);
-    });
-}
-
-function checkAns(btn, qIdx, oIdx) {
-    if (gameFinished) return;
-    const q = questions[qIdx];
-    const all = btn.parentElement.querySelectorAll(".option-btn");
-    all.forEach(b => b.disabled = true);
-
-    if (oIdx === q.answer) {
-        btn.classList.add("correct");
-        btn.innerText += " ✅";
-        score++;
-        soundCorrect.play();
-    } else {
-        btn.classList.add("incorrect");
-        btn.innerText += " ❌";
-        all[q.answer].classList.add("correct");
-        soundWrong.play();
-    }
-    document.getElementById("score").innerText = score;
-}
-
-function startTimer() {
-    let sec = 0;
-    timerInterval = setInterval(() => {
-        sec++;
-        document.getElementById("timer").innerText = sec;
-    }, 1000);
-}
-
-function stopTimer() {
-    clearInterval(timerInterval);
-}
-
-function finishGame() {
-    if (gameFinished) return;
-    gameFinished = true;
-    stopTimer();
-    soundFinish.play();
-
-    confetti({
-        particleCount: 200,
-        spread: 70,
-        origin: { y: 0.6 },
-        colors: ['#ffb882', '#25d366', '#ff6b6b', '#ffffff']
-    });
-
-    const time = parseInt(document.getElementById("timer").innerText);
-    let percent;
-    if (time <= 20) percent = 99;
-    else if (time <= 35) percent = 80;
-    else if (time <= 50) percent = 60;
-    else percent = 30;
-
-    const final = document.getElementById("finalScore");
-    final.style.display = "block";
-    final.innerText = `你的完成速度（${time}秒）\n擊敗全國 ${percent}% 的人！`;
-}
-
-function resetGame() {
-    score = 0;
-    gameFinished = false;
-    document.getElementById("score").innerText = 0;
-    document.getElementById("finalScore").style.display = "none";
-    stopTimer();
-    startTimer();
-}
-
-// === 初始化 ===
-createLevels();
-loadQuestions();
-startTimer();
+createLevels();loadQuestions();startTimer();
 </script>
 
 </body>
