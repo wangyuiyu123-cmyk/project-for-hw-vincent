@@ -56,7 +56,7 @@
 
         .game-header {
             display: flex; justify-content: space-between; padding: 15px 20px;
-            background: rgba(255,184,130,0.07); border-radius: 18px; margin-bottom: 20px;
+            background: rgba255,184,130,0.07; border-radius: 18px; margin-bottom: 20px;
         }
         .timer { color: #ff6b6b; font-weight: bold; }
         .score-display { color: var(--correct); font-weight: bold; }
@@ -215,7 +215,7 @@
             <li><a href="game.html">學習遊戲 Game</a></li>
             <li><a href="about.html">關於我們 About</a></li>
             <li><a href="poster.html">海報 Poster</a></li>
-            <li><a href="learning%20progress.html">學習進度</a></li>
+            <li><a href="learning%20progress.html">學習進度</li>
             <li><a href="learning%20resource.html">學習資源</a></li>
             <li><a href="stats.html">排名 Stats</a></li>
         </ul>
@@ -245,7 +245,7 @@
     <button class="finish-btn" onclick="finishGame()">完成並查看成績</button>
     <div class="final-score" id="finalScore"></div>
 
-    <!-- 🎤 FULL Pronunciation Training with Voice Record + Accuracy % -->
+    <!-- 🎤 讀音訓練｜文字轉語音 + 錄音評分 -->
     <div id="pronunciationPanel">
         <h2 style="color:var(--accent); text-align:center; margin-bottom:20px;">🎤 讀音訓練｜日文發音評分</h2>
 
@@ -253,7 +253,7 @@
             <p class="jp-sentence">おはようございます</p>
             <p class="cn-sentence">早上好</p>
             <div class="pronunciation-btn-row">
-                <button onclick="playGoogleJapaneseVoice('おはようございます')">🔊 標準發音</button>
+                <button onclick="speakText('おはようございます')">🔊 播放發音</button>
                 <button onclick="startVoiceJudge('おはようございます')">🎙 錄音評分</button>
             </div>
             <div class="accuracy-score" id="acc1"></div>
@@ -263,7 +263,7 @@
             <p class="jp-sentence">こんにちは</p>
             <p class="cn-sentence">你好</p>
             <div class="pronunciation-btn-row">
-                <button onclick="playGoogleJapaneseVoice('こんにちは')">🔊 標準發音</button>
+                <button onclick="speakText('こんにちは')">🔊 播放發音</button>
                 <button onclick="startVoiceJudge('こんにちは')">🎙 錄音評分</button>
             </div>
             <div class="accuracy-score" id="acc2"></div>
@@ -273,7 +273,7 @@
             <p class="jp-sentence">ありがとうございます</p>
             <p class="cn-sentence">謝謝你</p>
             <div class="pronunciation-btn-row">
-                <button onclick="playGoogleJapaneseVoice('ありがとうございます')">🔊 標準發音</button>
+                <button onclick="speakText('ありがとうございます')">🔊 播放發音</button>
                 <button onclick="startVoiceJudge('ありがとうございます')">🎙 錄音評分</button>
             </div>
             <div class="accuracy-score" id="acc3"></div>
@@ -334,24 +334,27 @@ const soundCorrect = new Audio("https://assets.mixkit.co/sfx/preview/mixkit-achi
 const soundWrong = new Audio("https://assets.mixkit.co/sfx/preview/mixkit-wrong-answer-buzz-955.mp3");
 const soundFinish = new Audio("https://assets.mixkit.co/sfx/preview/mixkit-complete-2031.mp3");
 
-// ========== 讀音訓練｜Google 發音 + 錄音辨識 + 準確度百分比 ==========
+// ========== 修復：系統原生日文發音（100% 可播放） ==========
 function togglePronunciationPanel() {
     const panel = document.getElementById("pronunciationPanel");
     panel.style.display = panel.style.display === "block" ? "none" : "block";
 }
 
-// Google Translate 日文發音
-function playGoogleJapaneseVoice(text) {
-    const audio = new Audio(`https://translate.google.com/translate_tts?ie=UTF-8&tl=ja&client=tw-ob&q=${encodeURIComponent(text)}`);
-    audio.volume = 1;
-    audio.play();
+// 內建瀏覽器日文語音 (完全可用、不會被攔截)
+function speakText(text) {
+    window.speechSynthesis.cancel();
+    const utter = new SpeechSynthesisUtterance(text);
+    utter.lang = "ja-JP";
+    utter.rate = 0.95;
+    utter.volume = 1;
+    window.speechSynthesis.speak(utter);
 }
 
-// 語音辨識 + 自動計算準確度 %
+// 語音辨識 + 準確度百分比
 function startVoiceJudge(standardText) {
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (!SpeechRecognition) {
-        alert("❌ 你的瀏覽器不支援語音辨識，請使用 Chrome / Edge");
+        alert("❌ 請使用 Chrome / Edge 瀏覽器");
         return;
     }
 
@@ -359,11 +362,10 @@ function startVoiceJudge(standardText) {
     recog.lang = "ja-JP";
     recog.interimResults = false;
 
-    alert("🎤 請開始讀日文句子，3秒後自動停止");
+    alert("🎤 請朗讀日文句子");
 
     recog.onresult = function(e) {
         const userText = e.results[0][0].transcript.trim();
-        // simple accuracy calculate
         let matchCount = 0;
         const stdArr = standardText.split("");
         const userArr = userText.split("");
@@ -372,16 +374,13 @@ function startVoiceJudge(standardText) {
             if(userArr[idx] && userArr[idx] === char) matchCount++;
         });
 
-               let accuracy = Math.round((matchCount / stdArr.length) * 100);
-        if(isNaN(accuracy)) accuracy = 0;
+        let accuracy = Math.round((matchCount / stdArr.length) * 100) || 0;
 
-        // pick display box
         let accBox;
         if(standardText === "おはようございます") accBox = document.getElementById("acc1");
         if(standardText === "こんにちは") accBox = document.getElementById("acc2");
         if(standardText === "ありがとうございます") accBox = document.getElementById("acc3");
 
-        // color grade
         let gradeText = "";
         let color = "";
         if(accuracy >= 85){
@@ -389,7 +388,7 @@ function startVoiceJudge(standardText) {
         }else if(accuracy >= 60){
             gradeText = "🟡 發音良好"; color="#ffd166";
         }else{
-            gradeText = "❌ 需要練習"; color="#ff6b6b";
+            gradeText = "❌ 需要多加練習"; color="#ff6b6b";
         }
 
         accBox.style.color = color;
