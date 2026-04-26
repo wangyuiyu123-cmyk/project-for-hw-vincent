@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>日本語 感・知・學 – Pure Beacon Pulse | 沉浸式創新日語體驗</title>
+    <title>日本語 感・知・學 – 遊戲加強版</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
         :root {
@@ -17,966 +17,262 @@
             --wrong: #ff6b6b;
         }
 
-        * { 
-            margin: 0; 
-            padding: 0; 
-            box-sizing: border-box; 
-        }
-
-        body { 
-            background: var(--bg); 
-            color: var(--text); 
-            font-family: 'Seg UI', system-ui, sans-serif; 
-            min-height: 100vh; 
-            line-height: 1.5; 
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: var(--bg); color: var(--text); font-family: system-ui, sans-serif; min-height: 100vh; }
 
         .nav {
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            background: rgba(17, 19, 31, 0.95);
-            backdrop-filter: blur(12px);
+            position: sticky; top: 0; z-index: 100;
+            background: rgba(17,19,31,0.95); backdrop-filter: blur(12px);
             border-bottom: 1px solid rgba(255,184,130,0.15);
         }
-
         .nav-container {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 0 32px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            height: 76px;
+            max-width: 1100px; margin: 0 auto; padding: 0 20px;
+            display: flex; align-items: center; justify-content: space-between; height: 70px;
         }
-
-        .logo {
-            font-size: 1.45rem;
-            font-weight: 700;
-            letter-spacing: 3px;
-            color: var(--accent);
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 32px;
-            list-style: none;
-        }
-
-        .nav-links a {
-            color: var(--text-dim);
-            text-decoration: none;
-            font-weight: 500;
-            font-size: 1.05rem;
-            transition: all 0.3s;
-            cursor: pointer;
-        }
-
-        .nav-links a:hover,
-        .nav-links a.active {
-            color: var(--accent);
-            text-shadow: 0 0 15px var(--accent-glow);
-        }
-
-        .nav-cta {
-            background: var(--accent);
-            color: #0a0c14;
-            padding: 10px 24px;
-            border-radius: 999px;
-            font-weight: 700;
-            text-decoration: none;
-            font-size: 1rem;
-            transition: all 0.3s;
-            box-shadow: 0 0 25px rgba(255,184,130,0.4);
-        }
-
-        .nav-cta:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 0 35px rgba(255,184,130,0.6);
-        }
+        .logo { font-size: 1.3rem; font-weight: bold; color: var(--accent); text-decoration: none; display: flex; align-items: center; gap: 8px; }
+        .nav-links { display: flex; gap: 16px; list-style: none; flex-wrap: wrap; }
+        .nav-links a { color: var(--text-dim); text-decoration: none; font-size: 0.95rem; transition: 0.3s; }
+        .nav-links a:hover, .nav-links a.active { color: var(--accent); text-shadow: 0 0 10px var(--accent-glow); }
+        .nav-cta { background: var(--accent); color: #000; padding: 8px 16px; border-radius: 999px; font-weight: bold; text-decoration: none; }
 
         .container {
-            max-width: 1100px;
-            margin: 0 auto;
-            background: var(--card);
-            border-radius: 44px;
-            padding: 48px 32px;
-            box-shadow: 0 0 80px rgba(255,140,0,0.18), inset 0 0 40px rgba(255,184,130,0.06);
+            max-width: 900px; margin: 30px auto; padding: 30px 20px;
+            background: var(--card); border-radius: 30px;
             border: 1px solid rgba(255,184,130,0.12);
-            margin-top: -12px;
         }
 
-        .content-section {
-            display: none;
-            width: 100%;
-        }
-        .content-section.active {
-            display: block;
-        }
+        .content-section { display: none; }
+        .content-section.active { display: block; }
 
-        header {
-            text-align: center;
-            margin-bottom: 48px;
-        }
+        header { text-align: center; margin-bottom: 30px; }
+        h1 { font-size: 2.2rem; background: linear-gradient(90deg,#ffaa7a,#ffb882); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 10px; }
+        .subtitle { color: var(--text-dim); }
 
-        h1 {
-            font-size: 3.4rem;
-            letter-spacing: 6px;
-            background: linear-gradient(90deg, #ffaa7a, #ffb882, #ffcb9a);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 30px var(--accent-glow);
-            margin-bottom: 8px;
+        /* 遊戲介面 */
+        .game-box { max-width: 700px; margin: 0 auto; }
+        .game-header {
+            display: flex; justify-content: space-between;
+            padding: 15px 20px; background: rgba(255,184,130,0.07);
+            border-radius: 18px; margin-bottom: 20px;
+            font-size: 1.1rem; font-weight: bold;
         }
+        .timer { color: #ff6b6b; }
+        .score-display { color: var(--correct); }
 
-        .subtitle {
-            font-size: 1.28rem;
-            color: var(--text-dim);
-            opacity: 0.9;
-        }
+        .level-selector { display: flex; gap: 10px; justify-content: center; margin-bottom: 20px; flex-wrap: wrap; }
+        .level-btn { padding: 10px 14px; border: 1px solid rgba(255,184,130,0.3); border-radius: 999px; background: rgba(255,184,130,0.08); color: #fff; cursor: pointer; }
+        .level-btn.active, .level-btn:hover { background: var(--accent); color: #000; }
 
-        .intro-text {
-            max-width: 720px;
-            margin: 32px auto 0;
-            font-size: 1.15rem;
-            color: var(--text-dim);
-            line-height: 1.65;
-            text-align: center;
-        }
-
-        .badges {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 16px;
-            justify-content: center;
-            margin: 28px 0 40px;
-        }
-
-        .badge {
-            background: rgba(255,184,130,0.08);
-            border: 1px solid rgba(255,184,130,0.25);
-            border-radius: 999px;
-            padding: 10px 20px;
-            font-size: 1.05rem;
-            color: var(--accent);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: all 0.3s;
-        }
-
-        .badge:hover {
-            background: rgba(255,184,130,0.18);
-            box-shadow: 0 0 20px rgba(255,184,130,0.3);
-            transform: translateY(-2px);
-        }
-
-        .badge i { font-size: 1.4rem; }
-
-        .sense-row {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 16px;
-            justify-content: center;
-            margin: 32px 0 56px;
-        }
-
-        .sense-icon {
-            width: 64px;
-            height: 64px;
-            background: rgba(255,184,130,0.07);
-            border: 1px solid rgba(255,184,130,0.3);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.8rem;
-            color: var(--accent);
-            transition: all 0.4s;
-        }
-
-        .sense-icon:hover {
-            transform: scale(1.15);
-            box-shadow: 0 0 25px var(--accent-glow);
-        }
-
-        section h2 {
-            text-align: center;
-            font-size: 2.1rem;
-            margin: 0 0 32px;
-            color: var(--accent);
-            text-shadow: 0 0 20px rgba(255,184,130,0.4);
-            letter-spacing: 2px;
-        }
-
-        .feature-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 28px;
-            margin-bottom: 60px;
-        }
-
-        .feature-card {
-            background: rgba(20,22,35,0.6);
-            border: 1px solid rgba(255,184,130,0.18);
-            border-radius: 28px;
-            padding: 32px 20px;
-            text-align: center;
-            transition: all 0.4s;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .feature-card::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: radial-gradient(circle at 50% 30%, rgba(255,184,130,0.14) 0%, transparent 70%);
-            opacity: 0;
-            transition: opacity 0.5s;
-            pointer-events: none;
-        }
-
-        .feature-card:hover::before {
-            opacity: 1;
-        }
-
-        .feature-card:hover {
-            border-color: var(--accent);
-            box-shadow: 0 0 50px var(--accent-glow);
-            transform: translateY(-6px) scale(1.03);
-        }
-
-        .feature-icon {
-            font-size: 4.8rem;
-            color: var(--accent);
-            margin-bottom: 20px;
-            filter: drop-shadow(0 0 12px var(--accent-glow));
-            animation: pulse 4s infinite ease-in-out;
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 0.88; transform: scale(1); }
-            50%      { opacity: 1;    transform: scale(1.08); }
-        }
-
-        .feature-card h3 {
-            font-size: 1.35rem;
-            margin-bottom: 12px;
-            color: var(--text);
-        }
-
-        .feature-card p {
-            font-size: 1rem;
-            color: var(--text-dim);
-            line-height: 1.45;
-        }
-
-        .cta-section {
-            text-align: center;
-            padding: 48px 20px;
-            background: rgba(255,184,130,0.06);
-            border-radius: 32px;
-            border: 1px solid rgba(255,184,130,0.18);
-        }
-
-        .cta-btn {
-            display: inline-block;
-            background: linear-gradient(90deg, #ffaa7a, #ffb882);
-            color: #0a0c14;
-            font-size: 1.35rem;
-            font-weight: 700;
-            padding: 18px 48px;
-            border-radius: 999px;
-            text-decoration: none;
-            box-shadow: 0 0 40px var(--accent-glow);
-            transition: all 0.4s;
-            margin-top: 16px;
-        }
-
-        .cta-btn:hover {
-            transform: scale(1.08) translateY(-4px);
-            box-shadow: 0 0 60px var(--accent-glow);
-        }
-
-        footer {
-            text-align: center;
-            margin-top: 60px;
-            padding-top: 30px;
-            border-top: 1px solid rgba(255,184,130,0.1);
-            color: var(--text-dim);
-            font-size: 0.95rem;
-        }
-
-        /* ====================== GAME PAGE STYLE ====================== */
-        .game-box {
-            max-width: 700px;
-            margin: 0 auto;
-        }
-        .score {
-            text-align: center;
-            font-size: 20px;
-            font-weight: bold;
-            margin-bottom: 30px;
-            color: var(--accent);
-            text-shadow: 0 0 12px var(--accent-glow);
-        }
-        .level-selector {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-            justify-content: center;
-            margin-bottom: 24px;
-        }
-        .level-btn {
-            padding: 12px 18px;
-            border: 1px solid rgba(255,184,130,0.3);
-            border-radius: 999px;
-            background: rgba(255,184,130,0.08);
-            color: var(--text);
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        .level-btn.active,
-        .level-btn:hover {
-            background: var(--accent);
-            color: #0a0c14;
-            border-color: var(--accent);
-            box-shadow: 0 0 20px rgba(255,184,130,0.25);
-        }
         .question {
-            margin: 20px 0;
-            padding: 20px;
-            background: rgba(20,22,35,0.6);
-            border-radius: 20px;
-            border: 1px solid rgba(255,184,130,0.15);
+            background: rgba(20,22,35,0.6); padding: 20px; border-radius: 18px;
+            margin-bottom: 16px; border: 1px solid rgba(255,184,130,0.15);
         }
-        .question-text {
-            font-size: 18px;
-            margin-bottom: 14px;
-            font-weight: 600;
-        }
-        .options {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
+        .question-text { font-size: 1.1rem; margin-bottom: 12px; font-weight: 500; }
+        .options { display: flex; flex-direction: column; gap: 10px; }
         .option-btn {
-            padding: 14px 18px;
-            border: 1px solid rgba(255,184,130,0.2);
-            border-radius: 14px;
-            background: rgba(255,255,255,0.04);
-            color: var(--text);
-            cursor: pointer;
-            text-align: left;
-            font-size: 16px;
-            transition: all 0.3s ease;
+            padding: 12px 16px; border-radius: 12px; text-align: left;
+            background: rgba(255,255,255,0.05); border: 1px solid rgba(255,184,130,0.2);
+            color: #fff; cursor: pointer; transition: 0.2s;
         }
-        .option-btn:hover {
-            background: rgba(255,184,130,0.1);
-            border-color: var(--accent);
-            transform: translateX(4px);
-        }
-        .option-btn:disabled {
-            cursor: not-allowed;
-        }
-        .correct {
-            background-color: rgba(37, 211, 102, 0.15) !important;
-            border-color: var(--correct) !important;
-            color: #fff;
-        }
-        .incorrect {
-            background-color: rgba(255, 107, 107, 0.15) !important;
-            border-color: var(--wrong) !important;
-            color: #fff;
-        }
-        .result-icon {
-            margin-left: 10px;
-            font-size: 18px;
-        }
+        .option-btn:hover { background: rgba(255,184,130,0.1); border-color: var(--accent); }
+        .option-btn:disabled { opacity: 0.7; cursor: not-allowed; }
+        .option-btn.correct { background: rgba(37,211,102,0.2); border-color: var(--correct); }
+        .option-btn.incorrect { background: rgba(255,107,107,0.2); border-color: var(--wrong); }
+
         .finish-btn {
-            display: block;
-            margin: 40px auto;
-            padding: 16px 40px;
-            background: linear-gradient(90deg, #ffaa7a, #ffb882);
-            color: #0a0c14;
-            border: none;
-            border-radius: 999px;
-            font-size: 18px;
-            font-weight: 700;
+            margin: 30px auto; display: block; padding: 14px 30px;
+            background: linear-gradient(90deg,#ffaa7a,#ffb882);
+            border: none; border-radius: 999px; font-weight: bold; font-size: 1rem;
             cursor: pointer;
-            transition: all 0.3s;
-            box-shadow: 0 0 30px rgba(255,184,130,0.4);
-        }
-        .finish-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 0 45px rgba(255,184,130,0.6);
-        }
-        .play-pronunciation-btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            padding: 12px 22px;
-            margin-top: 10px;
-            border: none;
-            border-radius: 999px;
-            background: linear-gradient(90deg, #ffb882, #ffaa7a);
-            color: #0a0c14;
-            font-size: 15px;
-            cursor: pointer;
-            transition: transform 0.25s ease, box-shadow 0.25s ease, opacity 0.25s ease;
-        }
-        .play-pronunciation-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 0 18px rgba(255,184,130,0.3);
-        }
-        .record-controls {
-            margin-top: 22px;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-            justify-content: center;
-            align-items: center;
-        }
-        .final-score {
-            text-align: center;
-            font-size: 24px;
-            font-weight: bold;
-            color: var(--accent);
-            text-shadow: 0 0 20px var(--accent-glow);
-            display: none;
-            padding: 20px;
-            border-radius: 20px;
-            background: rgba(255,184,130,0.06);
         }
 
-        @media (max-width: 640px) {
-            h1 { font-size: 2.6rem; }
-            .nav-links { gap: 16px; }
+        /* 慶祝動畫 */
+        .celebration {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: 999;
+            display: none;
+        }
+        .celebration.active { display: block; animation: celebrate 1.5s ease-out forwards; }
+        @keyframes celebrate {
+            0% { transform: scale(0.5); opacity: 0; }
+            50% { transform: scale(1.1); opacity: 1; }
+            100% { transform: scale(1); opacity: 0; }
+        }
+
+        .final-score {
+            text-align: center; font-size: 1.5rem; font-weight: bold;
+            color: var(--accent); padding: 20px; border-radius: 20px;
+            background: rgba(255,184,130,0.08); display: none;
         }
     </style>
 </head>
 <body>
 
-<!-- NAV -->
 <nav class="nav">
     <div class="nav-container">
-        <a href="homepage.html" class="logo">
-            <i class="fas fa-wifi"></i> 感・知・學
-        </a>
+        <a class="logo"><i class="fas fa-wifi"></i> 感・知・學</a>
         <ul class="nav-links">
-            <li><a href="homepage.html" class="nav-link">首頁 Home</a></li>
-            <li><a href="learning progress.html" class="nav-link">學習進度 Progress</a></li>
-            <li><a href="features.html" class="nav-link">智能特色 Features</a></li>
-            <li><a href="poster.html" class="nav-link">海報 Poster</a></li>
-            <li><a href="learning resource.html" class="nav-link">學習資源 Resources</a></li>
-            <li><a href="stats.html" class="nav-link">排名 Stats</a></li>
-            <li><a href="about.html" class="nav-link">關於我們 About</a></li>
-            <li><a href="#game" class="nav-link active" data-target="game">學習遊戲 Game</a></li>
+            <li><a class="nav-link active" onclick="show('game')">遊戲 Game</a></li>
         </ul>
-        <a href="#game" class="nav-cta">立即開始體驗</a>
+        <a class="nav-cta">日語小遊戲</a>
     </div>
 </nav>
 
 <div class="container">
+    <div id="game" class="content-section active">
+        <header>
+            <h1>🌸 N5 日语小遊戲 🌸</h1>
+            <div class="subtitle">計時 + 音效 + 慶祝動畫完整版</div>
+        </header>
 
-<!-- 首頁 -->
-<div id="home" class="content-section active">
-    <header>
-        <h1>日本語 感・知・學</h1>
-        <div class="subtitle">沉浸式日語體驗 · 連繫真實</div>
-        <p class="intro-text">掃 QR、拍 NFC、靠近信標……把日語從課本帶到日常每一刻。</p>
-    </header>
-
-    <div class="badges">
-        <div class="badge"><i class="fas fa-star"></i> 自由學・隨時感</div>
-        <div class="badge"><i class="fas fa-map-marker-alt"></i> 真實語境體驗</div>
-    </div>
-
-    <div class="sense-row">
-        <div class="sense-icon"><i class="fas fa-ear-listen"></i></div>
-        <div class="sense-icon"><i class="fas fa-volume-high"></i></div>
-        <div class="sense-icon"><i class="fas fa-camera"></i></div>
-        <div class="sense-icon"><i class="fas fa-location-dot"></i></div>
-    </div>
-
-    <section>
-        <h2>學習體驗 × 智能感應</h2>
-        <div class="feature-grid">
-            <div class="feature-card"><div class="feature-icon"><i class="fas fa-qrcode"></i></div><h3>QR 即學</h3><p>掃描閃卡 → 真人發音 + 情境單字</p></div>
-            <div class="feature-card"><div class="feature-icon"><i class="fas fa-map-pin"></i></div><h3>地域解鎖</h3><p>行到邊學到邊 → 餐廳/神社詞彙</p></div>
-            <div class="feature-card"><div class="feature-icon"><i class="fas fa-microphone"></i></div><h3>發音教練</h3><p>即時回饋 → 自信開口</p></div>
-        </div>
-    </section>
-</div>
-
-<!-- 智能特色 -->
-<div id="features" class="content-section">
-    <header><h1>智能特色</h1><div class="subtitle">Features</div></header>
-    <p class="intro-text">內容可自行填寫</p>
-</div>
-
-<!-- 體驗海報 -->
-<div id="poster" class="content-section">
-    <header><h1>體驗海報</h1><div class="subtitle">Poster</div></header>
-    <p class="intro-text">內容可自行填寫</p>
-</div>
-
-<!-- 學習資源 -->
-<div id="resources" class="content-section">
-    <header><h1>學習資源</h1><div class="subtitle">Resources</div></header>
-    <p class="intro-text">內容可自行填寫</p>
-</div>
-
-<!-- 關於我們 -->
-<div id="about" class="content-section">
-    <header><h1>關於我們</h1><div class="subtitle">About</div></header>
-    <p class="intro-text">內容可自行填寫</p>
-</div>
-
-<!-- ====================== GAME PAGE (頂部直接是可玩小遊戲) ====================== -->
-<div id="game" class="content-section">
-    <header>
-        <h1>🌸 N5 日语小遊戲 🌸</h1>
-        <div class="subtitle">立即開始測驗你的日語基礎！</div>
-    </header>
-
-    <div class="game-box">
-        <div class="level-selector" id="levelSelector"></div>
-        <div class="score">得分：<span id="score">0</span>/10</div>
-        <div id="questions-container"></div>
-        <button class="finish-btn" onclick="showFinalScore()">查看最終成績</button>
-        <div class="final-score" id="finalScore"></div>
-        <div class="pronunciation-practice">
-            <h2>發音練習</h2>
-            <p>請跟讀下面句子並練習日語發音：</p>
-            <div class="pronunciation-sample">
-                <p class="jp-sentence">おはようございます</p>
-                <p class="cn-sentence">早上好</p>
-                <button class="play-pronunciation-btn" onclick="playPronunciation('おはようございます')">播放發音</button>
-                <button class="play-pronunciation-btn" onclick="judgePronunciationSimilarity('おはようございます')">AI 判斷</button>
+        <div class="game-box">
+            <div class="game-header">
+                <div class="timer">⏱ 時間：<span id="timer">0</span> 秒</div>
+                <div class="score-display">⭐ 分數：<span id="score">0</span></div>
             </div>
-            <div class="pronunciation-sample">
-                <p class="jp-sentence">こんにちは</p>
-                <p class="cn-sentence">你好</p>
-                <button class="play-pronunciation-btn" onclick="playPronunciation('こんにちは')">播放發音</button>
-                <button class="play-pronunciation-btn" onclick="judgePronunciationSimilarity('こんにちは')">AI 判斷</button>
-            </div>
-            <div class="pronunciation-sample">
-                <p class="jp-sentence">ありがとうございます</p>
-                <p class="cn-sentence">謝謝你</p>
-                <button class="play-pronunciation-btn" onclick="playPronunciation('ありがとうございます')">播放發音</button>
-                <button class="play-pronunciation-btn" onclick="judgePronunciationSimilarity('ありがとうございます')">AI 判斷</button>
-            </div>
-            <div class="pronunciation-sample">
-                <p class="jp-sentence">すみません</p>
-                <p class="cn-sentence">對不起 / 不好意思</p>
-                <button class="play-pronunciation-btn" onclick="playPronunciation('すみません')">播放發音</button>
-                <button class="play-pronunciation-btn" onclick="judgePronunciationSimilarity('すみません')">AI 判斷</button>
-            </div>
-            <div class="pronunciation-sample">
-                <p class="jp-sentence">いただきます</p>
-                <p class="cn-sentence">我要開動了</p>
-                <button class="play-pronunciation-btn" onclick="playPronunciation('いただきます')">播放發音</button>
-                <button class="play-pronunciation-btn" onclick="judgePronunciationSimilarity('いただきます')">AI 判斷</button>
-            </div>
-            <p class="pronunciation-note" id="pronunciationNote"></p>
-            <div class="record-controls">
-                <button id="recordBtn" class="play-pronunciation-btn" onclick="toggleRecording()">開始錄音</button>
-                <button id="compareRecordingBtn" class="play-pronunciation-btn" onclick="compareRecording()">錄音後比對</button>
-                <button id="downloadRecordingBtn" class="play-pronunciation-btn" onclick="downloadRecording()" style="display:none; margin-left: 12px;">下載錄音</button>
-                <p class="pronunciation-note" id="recordingStatus"></p>
-                <audio id="playbackAudio" controls style="display:none; width: 100%; margin-top: 16px;"></audio>
-            </div>
+
+            <div class="level-selector" id="levelSelector"></div>
+            <div id="questions-container"></div>
+            <button class="finish-btn" onclick="finishGame()">完成並查看成績</button>
+            <div class="final-score" id="finalScore"></div>
         </div>
     </div>
 </div>
 
+<!-- 慶祝動畫層 -->
+<div class="celebration" id="celebration">
+    <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:5rem;">🎉</div>
 </div>
 
 <script>
     // 頁面切換
-    const navLinks = document.querySelectorAll('.nav-link');
-    const contentSections = document.querySelectorAll('.content-section');
-
-    function showSection(targetId) {
-        navLinks.forEach(l => l.classList.remove('active'));
-        contentSections.forEach(s => s.classList.remove('active'));
-        const targetSection = document.getElementById(targetId);
-        if (targetSection) {
-            targetSection.classList.add('active');
-            const activeLink = Array.from(navLinks).find(l => l.getAttribute('data-target') === targetId);
-            if (activeLink) activeLink.classList.add('active');
-        }
+    function show(id) {
+        document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
     }
 
-    function initFromHash() {
-        const hash = window.location.hash.substring(1);
-        if (hash && document.getElementById(hash)) {
-            showSection(hash);
-        } else {
-            showSection('home');
-        }
-    }
-
-    navLinks.forEach(link => {
-        const href = link.getAttribute('href');
-        if (!href || !href.startsWith('#')) {
-            return;
-        }
-        link.addEventListener('click', event => {
-            event.preventDefault();
-            const target = link.getAttribute('data-target');
-            if (target) {
-                showSection(target);
-                history.replaceState(null, '', `#${target}`);
-            }
-        });
-    });
-
-    initFromHash();
-
-    // ====================== GAME LOGIC ======================
+    // 題庫
     const levels = [
         {
-            name: 'N5 Level 1',
-            questions: [
-                { q: "禮貌日語中的「我」是？", options: ["A) あなた (anata)", "B) わたし (watashi)", "C) かれ (kare)"], answer: 1 },
-                { q: "平假名「ki」是哪一個？", options: ["A) さ", "B) き", "C) く"], answer: 1 },
-                { q: "さくら (sakura) 意思是？", options: ["A) 月亮", "B) 櫻花", "C) 水"], answer: 1 },
-                { q: "數字「3」的日語是？", options: ["A) いち", "B) に", "C) さん"], answer: 2 },
-                { q: "おはよう (ohayou) 意思是？", options: ["A) 早上好", "B) 晚上好", "C) 謝謝"], answer: 0 },
-                { q: "「日/太陽」的漢字是？", options: ["A) 月", "B) 日", "C) 木"], answer: 1 },
-                { q: "ねこ (neko) 意思是？", options: ["A) 狗", "B) 貓", "C) 鳥"], answer: 1 },
-                { q: "哪個助詞提示主題？", options: ["A) は", "B) を", "C) が"], answer: 0 },
-                { q: "ありがとう 意思是？", options: ["A) 對不起", "B) 謝謝", "C) 你好"], answer: 1 },
-                { q: "平假名「me」是？", options: ["A) め", "B) も", "C) ま"], answer: 0 }
-            ]
-        },
-        {
-            name: 'N5 Level 2',
-            questions: [
-                { q: "「こんにちは」是什麼時候使用？", options: ["A) 早上", "B) 下午", "C) 晚上"], answer: 1 },
-                { q: "平假名「su」是哪一個？", options: ["A) す", "B) そ", "C) せ"], answer: 0 },
-                { q: "「ありがとう」的回應通常是？", options: ["A) どういたしまして", "B) ごめんなさい", "C) はい"], answer: 0 },
-                { q: "「はい」表示？", options: ["A) 不是", "B) 是", "C) 請"], answer: 1 },
-                { q: "數字「5」的日語是？", options: ["A) よん", "B) ご", "C) ろく"], answer: 1 },
-                { q: "「ありがとう」的漢字寫法是？", options: ["A) 有難う", "B) ありがとう", "C) 亜理多"], answer: 0 },
-                { q: "「何時」的日語是？", options: ["A) なんじ", "B) なんにち", "C) なんさつ"], answer: 0 },
-                { q: "「先生」是指？", options: ["A) 老師", "B) 學生", "C) 醫生"], answer: 0 },
-                { q: "「すみません」通常用來表示？", options: ["A) 吃飯", "B) 抱歉", "C) 再見"], answer: 1 },
-                { q: "假名「か」的發音是？", options: ["A) ka", "B) ki", "C) ku"], answer: 0 }
-            ]
-        },
-        {
-            name: 'N5 Level 3',
-            questions: [
-                { q: "「おはようございます」是？", options: ["A) 早安", "B) 晚安", "C) 請問"], answer: 0 },
-                { q: "「ありがとう」在英文中是？", options: ["A) Sorry", "B) Thanks", "C) Yes"], answer: 1 },
-                { q: "「猫」的假名是？", options: ["A) いぬ", "B) ねこ", "C) とり"], answer: 1 },
-                { q: "平假名「na」是哪一個？", options: ["A) な", "B) に", "C) ぬ"], answer: 0 },
-                { q: "「これは何ですか？」意思是？", options: ["A) 這是什麼？", "B) 你去哪？", "C) 你叫什麼？"], answer: 0 },
-                { q: "「いらっしゃいませ」在店裡表示？", options: ["A) 歡迎光臨", "B) 再見", "C) 請稍等"], answer: 0 },
-                { q: "「美味しい」是什麼意思？", options: ["A) 好吃", "B) 難吃", "C) 很大"], answer: 0 },
-                { q: "「何歳ですか？」在問什麼？", options: ["A) 你叫什麼名字？", "B) 你幾歲？", "C) 你住哪裡？"], answer: 1 },
-                { q: "「さようなら」通常表示？", options: ["A) 哈囉", "B) 再見", "C) 對不起"], answer: 1 },
-                { q: "哪個助詞表示目的地？", options: ["A) に", "B) が", "C) で"], answer: 0 }
-            ]
-        },
-        {
-            name: 'N5 Level 4',
-            questions: [
-                { q: "「ありがとうございます」比「ありがとう」更？", options: ["A) 隨便", "B) 客氣", "C) 沒有禮貌"], answer: 1 },
-                { q: "「駅」讀作？", options: ["A) えき", "B) とり", "C) みせ"], answer: 0 },
-                { q: "哪個是平假名「fu」？", options: ["A) ふ", "B) へ", "C) ほ"], answer: 0 },
-                { q: "日語「水」的讀音？", options: ["A) みず", "B) みち", "C) つき"], answer: 0 },
-                { q: "「こちらこそ」用於？", options: ["A) 我也是", "B) 不用謝", "C) 對不起"], answer: 1 },
-                { q: "「失礼します」常用於？", options: ["A) 離開房間前", "B) 睡覺時", "C) 用餐時"], answer: 0 },
-                { q: "「行きます」是什麼意思？", options: ["A) 來", "B) 去", "C) 看"], answer: 1 },
-                { q: "「何時」的假名是？", options: ["A) なんじ", "B) なんで", "C) なんにち"], answer: 0 },
-                { q: "「ごちそうさまでした」通常在？", options: ["A) 吃完飯後", "B) 早上起床", "C) 走路時"], answer: 0 },
-                { q: "「はい」和「ええ」哪個更口語？", options: ["A) はい", "B) ええ", "C) いいえ"], answer: 1 }
-            ]
-        },
-        {
-            name: 'N5 Level 5',
-            questions: [
-                { q: "「ありがとうございます」與「どういたしまして」之間，哪個是回應？", options: ["A) ありがとうございます", "B) どういたしまして", "C) ごめんなさい"], answer: 1 },
-                { q: "「ひらがな」通常用於？", options: ["A) 外來語", "B) 日常詞彙", "C) 大寫英文字"], answer: 1 },
-                { q: "「へや」的意思？", options: ["A) 房間", "B) 椅子", "C) 水"], answer: 0 },
-                { q: "「きれい」在日語中常表示？", options: ["A) 髒", "B) 漂亮", "C) 生氣"], answer: 1 },
-                { q: "「じゃあね」的用法？", options: ["A) 再見", "B) 歡迎", "C) 等一下"], answer: 0 },
-                { q: "哪個是日語中的「書」？", options: ["A) ほん", "B) みず", "C) こども"], answer: 0 },
-                { q: "助詞「の」通常表示？", options: ["A) 主格", "B) 所有", "C) 目的"], answer: 1 },
-                { q: "「たべます」的意思？", options: ["A) 睡覺", "B) 吃", "C) 走"], answer: 1 },
-                { q: "「今日は」通常怎麼讀？", options: ["A) きょうは", "B) こんにちわ", "C) こんばんは"], answer: 0 },
-                { q: "「いいえ」的意思是？", options: ["A) 是", "B) 不是", "C) 謝謝"], answer: 1 }
+            name:"Level 1",
+            questions:[
+                {q:"「我」是？",options:["あなた","わたし","かれ"],answer:1},
+                {q:"「櫻花」是？",options:["月","櫻","水"],answer:1},
+                {q:"「3」是？",options:["いち","に","さん"],answer:2},
+                {q:"「早安」是？",options:["おはよう","こんにちは","すみません"],answer:0},
+                {q:"「貓」是？",options:["いぬ","ねこ","とり"],answer:1}
             ]
         }
     ];
 
-    let currentLevelIndex = 0;
+    let currentLevel = 0;
     let score = 0;
     let questions = [];
-    const container = document.getElementById('questions-container');
-    const scoreDisplay = document.getElementById('score');
-    const levelSelector = document.getElementById('levelSelector');
-    const finalScoreEl = document.getElementById('finalScore');
-    const recordBtn = document.getElementById('recordBtn');
-    const recordingStatus = document.getElementById('recordingStatus');
-    const playbackAudio = document.getElementById('playbackAudio');
-    const downloadRecordingBtn = document.getElementById('downloadRecordingBtn');
-    let mediaRecorder = null;
-    let audioChunks = [];
-    let recordingRecognition = null;
-    let lastRecordedTranscript = '';
-    let currentComparisonPhrase = '';
+    let startTime;
+    let timerInterval;
+    let gameFinished = false;
 
-    function createLevelButtons() {
-        levels.forEach((level, idx) => {
-            const btn = document.createElement('button');
-            btn.className = 'level-btn' + (idx === currentLevelIndex ? ' active' : '');
-            btn.innerText = level.name;
-            btn.onclick = () => setLevel(idx);
-            levelSelector.appendChild(btn);
-        });
-    }
+    // 音效
+    const soundCorrect = new Audio("https://assets.mixkit.co/sfx/preview/mixkit-achievement-bell-600.mp3");
+    const soundWrong = new Audio("https://assets.mixkit.co/sfx/preview/mixkit-wrong-answer-buzz-955.mp3");
+    const soundFinish = new Audio("https://assets.mixkit.co/sfx/preview/mixkit-complete-2031.mp3");
 
-    function setLevel(index) {
-        currentLevelIndex = index;
-        levelSelector.querySelectorAll('.level-btn').forEach((btn, idx) => {
-            btn.classList.toggle('active', idx === index);
-        });
+    // 初始化
+    function init() {
         resetGame();
-        loadQuestions();
+        loadLevel();
+        startTimer();
     }
 
-    function getCurrentQuestions() {
-        return levels[currentLevelIndex].questions;
+    function createLevels() {
+        const el = document.getElementById("levelSelector");
+        levels.forEach((l,i)=>{
+            const b = document.createElement("button");
+            b.className="level-btn"+(i==0?" active":"");
+            b.innerText=l.name;
+            b.onclick=()=>{currentLevel=i;resetGame();loadLevel();};
+            el.appendChild(b);
+        });
     }
 
-    function loadQuestions() {
-        questions = getCurrentQuestions();
-        questions.forEach((q, idx) => {
-            const qDiv = document.createElement('div');
-            qDiv.className = 'question';
-            qDiv.innerHTML = `<p class="question-text">${idx+1}. ${q.q}</p>`;
-            const opts = document.createElement('div');
-            opts.className = 'options';
-            q.options.forEach((opt, i) => {
-                const btn = document.createElement('button');
-                btn.className = 'option-btn';
-                btn.innerText = opt;
-                btn.onclick = () => checkAns(btn, idx, i);
+    function loadLevel() {
+        questions = levels[currentLevel].questions;
+        const container = document.getElementById("questions-container");
+        container.innerHTML = "";
+        questions.forEach((q,idx)=>{
+            const d = document.createElement("div");
+            d.className="question";
+            d.innerHTML=`<div class="question-text">${idx+1}. ${q.q}</div>`;
+            const opts = document.createElement("div");
+            opts.className="options";
+            q.options.forEach((opt,i)=>{
+                const btn = document.createElement("button");
+                btn.className="option-btn";
+                btn.innerText=opt;
+                btn.onclick=()=>check(btn,idx,i);
                 opts.appendChild(btn);
             });
-            qDiv.appendChild(opts);
-            container.appendChild(qDiv);
+            d.appendChild(opts);
+            container.appendChild(d);
         });
+    }
+
+    function check(btn, qIdx, oIdx) {
+        if(gameFinished) return;
+        const q = questions[qIdx];
+        const all = btn.parentElement.querySelectorAll(".option-btn");
+        all.forEach(b=>b.disabled=true);
+
+        if(oIdx===q.answer){
+            btn.classList.add("correct");
+            btn.innerText += " ✅";
+            score++;
+            soundCorrect.play();
+        }else{
+            btn.classList.add("incorrect");
+            btn.innerText += " ❌";
+            all[q.answer].classList.add("correct");
+            soundWrong.play();
+        }
+        document.getElementById("score").innerText=score;
+    }
+
+    // 計時器
+    function startTimer() {
+        startTime = Date.now();
+        timerInterval = setInterval(()=>{
+            const sec = Math.floor((Date.now()-startTime)/1000);
+            document.getElementById("timer").innerText=sec;
+        },1000);
+    }
+
+    function stopTimer() {
+        clearInterval(timerInterval);
+    }
+
+    // 結算 & 慶祝
+    function finishGame() {
+        if(gameFinished) return;
+        gameFinished=true;
+        stopTimer();
+        soundFinish.play();
+        document.getElementById("celebration").classList.add("active");
+        const final = document.getElementById("finalScore");
+        final.style.display="block";
+        final.innerText=`🎉 完成！\n分數：${score}/${questions.length}`;
     }
 
     function resetGame() {
-        score = 0;
-        scoreDisplay.innerText = score;
-        finalScoreEl.style.display = 'none';
-        finalScoreEl.innerText = '';
-        container.innerHTML = '';
+        score=0;
+        gameFinished=false;
+        document.getElementById("score").innerText=0;
+        document.getElementById("finalScore").style.display="none";
+        document.getElementById("celebration").classList.remove("active");
+        stopTimer();
     }
 
-    function checkAns(btn, qIdx, oIdx) {
-        const q = questions[qIdx];
-        const all = btn.parentElement.querySelectorAll('.option-btn');
-        all.forEach(b => b.disabled = true);
-        if (oIdx === q.answer) {
-            btn.classList.add('correct');
-            btn.innerHTML += ' ✅';
-            score++;
-            scoreDisplay.innerText = score;
-        } else {
-            btn.classList.add('incorrect');
-            btn.innerHTML += ' ❌';
-            all[q.answer].classList.add('correct');
-            all[q.answer].innerHTML += ' ✅';
-        }
-    }
-
-    function playPronunciation(phrase) {
-        const note = document.getElementById('pronunciationNote');
-        if (!phrase) {
-            note.innerText = '請先選擇一個句子再播放發音。';
-            return;
-        }
-        if ('speechSynthesis' in window) {
-            const utterance = new SpeechSynthesisUtterance(phrase);
-            utterance.lang = 'ja-JP';
-            speechSynthesis.speak(utterance);
-            note.innerText = `正在播放：${phrase}`;
-        } else {
-            note.innerText = '此瀏覽器不支援語音合成，請手動練習發音。';
-        }
-    }
-    function normalizeText(text) {
-        return text.toLowerCase().replace(/[^a-z0-9\u3040-\u30ff\u4e00-\u9fff]/g, '');
-    }
-
-    function getSimilarity(a, b) {
-        const textA = normalizeText(a);
-        const textB = normalizeText(b);
-        if (!textA.length || !textB.length) return 0;
-        const dp = Array.from({ length: textA.length + 1 }, () => Array(textB.length + 1).fill(0));
-        for (let i = 0; i <= textA.length; i++) dp[i][0] = i;
-        for (let j = 0; j <= textB.length; j++) dp[0][j] = j;
-        for (let i = 1; i <= textA.length; i++) {
-            for (let j = 1; j <= textB.length; j++) {
-                const cost = textA[i - 1] === textB[j - 1] ? 0 : 1;
-                dp[i][j] = Math.min(dp[i - 1][j] + 1, dp[i][j - 1] + 1, dp[i - 1][j - 1] + cost);
-            }
-        }
-        const distance = dp[textA.length][textB.length];
-        return Math.max(0, Math.round((1 - distance / Math.max(textA.length, textB.length)) * 100));
-    }
-
-    function judgePronunciationSimilarity(phrase) {
-        currentComparisonPhrase = phrase;
-        const note = document.getElementById('pronunciationNote');
-        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-        if (!SpeechRecognition) {
-            note.innerText = '此瀏覽器不支援語音辨識，無法進行相似度判斷。';
-            return;
-        }
-        const recognition = new SpeechRecognition();
-        recognition.lang = 'ja-JP';
-        recognition.interimResults = false;
-        recognition.maxAlternatives = 1;
-        recognition.onstart = () => {
-            note.innerText = `請朗讀：${phrase}`;
-        };
-        recognition.onresult = event => {
-            const transcript = event.results[0][0].transcript.trim();
-            const similarity = getSimilarity(transcript, phrase);
-            note.innerText = `辨識結果：${transcript}，相似度：${similarity}%`;
-            lastRecordedTranscript = transcript;
-        };
-        recognition.onerror = event => {
-            note.innerText = `語音辨識錯誤：${event.error}`;
-        };
-        recognition.onend = () => {
-            if (!note.innerText.startsWith('辨識結果')) {
-                note.innerText = '語音辨識結束，請再試一次。';
-            }
-        };
-        recognition.start();
-    }
-
-    async function startRecording() {
-        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-            recordingStatus.innerText = '錄音功能在此瀏覽器中不可用。';
-            return;
-        }
-        try {
-            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-            audioChunks = [];
-            mediaRecorder = new MediaRecorder(stream);
-            mediaRecorder.ondataavailable = event => {
-                if (event.data && event.data.size > 0) {
-                    audioChunks.push(event.data);
-                }
-            };
-            mediaRecorder.onstop = () => {
-                const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
-                const audioUrl = URL.createObjectURL(audioBlob);
-                playbackAudio.src = audioUrl;
-                playbackAudio.style.display = 'block';
-                downloadRecordingBtn.style.display = 'inline-block';
-                recordingStatus.innerText = '錄音完成，已準備好播放與下載。';
-                recordBtn.innerText = '開始錄音';
-                if (recordingRecognition && recordingRecognition.stop) {
-                    recordingRecognition.stop();
-                }
-            };
-            mediaRecorder.start();
-            if (window.SpeechRecognition || window.webkitSpeechRecognition) {
-                const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-                recordingRecognition = new SpeechRecognition();
-                recordingRecognition.lang = 'ja-JP';
-                recordingRecognition.interimResults = false;
-                recordingRecognition.maxAlternatives = 1;
-                recordingRecognition.onresult = event => {
-                    lastRecordedTranscript = event.results[0][0].transcript.trim();
-                    recordingStatus.innerText = `錄音文字：${lastRecordedTranscript}`;
-                };
-                recordingRecognition.onerror = event => {
-                    recordingStatus.innerText = `語音辨識錯誤：${event.error}`;
-                };
-                recordingRecognition.onend = () => {
-                    if (!lastRecordedTranscript) {
-                        recordingStatus.innerText = '錄音已停止，尚未取得辨識文字。';
-                    }
-                };
-                recordingRecognition.start();
-            }
-            recordBtn.innerText = '停止錄音';
-            recordingStatus.innerText = '正在錄音中...';
-            downloadRecordingBtn.style.display = 'none';
-        } catch (error) {
-            recordingStatus.innerText = '無法啟用麥克風，請允許錄音權限。';
-        }
-    }
-
-    function stopRecording() {
-        if (mediaRecorder && mediaRecorder.state === 'recording') {
-            mediaRecorder.stop();
-        }
-    }
-
-    function toggleRecording() {
-        if (mediaRecorder && mediaRecorder.state === 'recording') {
-            stopRecording();
-        } else {
-            startRecording();
-        }
-    }
-
-    function compareRecording() {
-        const note = document.getElementById('pronunciationNote');
-        if (!currentComparisonPhrase) {
-            note.innerText = '請先點選要比對的句子。';
-            return;
-        }
-        if (!lastRecordedTranscript) {
-            note.innerText = '尚未取得錄音文字，請先錄音並清晰朗讀。';
-            return;
-        }
-        const similarity = getSimilarity(lastRecordedTranscript, currentComparisonPhrase);
-        note.innerText = `錄音後比對：${lastRecordedTranscript}，相似度：${similarity}%`;
-    }
-
-    function downloadRecording() {
-        if (audioChunks.length === 0) {
-            recordingStatus.innerText = '尚未有錄音內容可下載。';
-            return;
-        }
-        const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
-        const url = URL.createObjectURL(audioBlob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'pronunciation_recording.webm';
-        a.click();
-        URL.revokeObjectURL(url);
-    }
-
-    function showFinalScore() {
-        const f = document.getElementById('finalScore');
-        f.style.display = 'block';
-        f.innerText = `🎉 最終得分：${score}/10 🎉`;
-    }
-
-    createLevelButtons();
-    loadQuestions();
+    createLevels();
+    init();
 </script>
 </body>
 </html>
