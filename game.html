@@ -178,6 +178,13 @@
             font-weight: bold;
             font-size: 1rem;
         }
+        .keigo-box {
+            margin-top: 16px;
+            padding: 14px;
+            background: rgba(255,184,130,0.08);
+            border-radius: 12px;
+            display: none;
+        }
     </style>
 </head>
 
@@ -255,6 +262,7 @@
         <button class="close-btn" onclick="closeModal()">✕</button>
         <h2>🧠 遺忘曲線記憶遊戲</h2>
         <p>根據艾賓浩斯遺忘曲線加強記憶！</p>
+
         <br>
         <h3>📝 讓我考考你</h3>
         <p><strong>書きます（かきます）的て形是什麼？</strong></p>
@@ -262,6 +270,17 @@
         <input type="text" id="answerInput" class="answer-input" placeholder="請輸入答案">
         <button class="submit-btn" onclick="checkTeForm()">提交答案</button>
         <div id="resultText" class="result-text"></div>
+
+        <br>
+        <!-- 你要的：顯示敬語小知識 按鈕 -->
+        <button class="submit-btn" onclick="toggleKeigo()" style="background: #ffcb9a; margin-top:8px;">📌 顯示敬語小知識</button>
+        <div id="keigoBox" class="keigo-box">
+            <p><strong>📌 日文敬語小知識</strong></p>
+            <p>• です・ます體：禮貌體，對陌生人、長輩使用</p>
+            <p>• でございます：更禮貌，服務業、辦公常用</p>
+            <p>• お～します：自謙表現，表達對他人的尊敬</p>
+            <p>• ご～ください：委託敬語，客氣請求動作</p>
+        </div>
     </div>
 </div>
 
@@ -491,6 +510,7 @@ function openForgettingGame() {
     document.getElementById("forgetModal").style.display = "flex";
     document.getElementById("resultText").innerText = "";
     document.getElementById("answerInput").value = "";
+    document.getElementById("keigoBox").style.display = "none";
 }
 function closeModal() {
     document.getElementById("forgetModal").style.display = "none";
@@ -510,6 +530,12 @@ function checkTeForm() {
         result.style.color = "var(--wrong)";
         soundWrong.play();
     }
+}
+
+// 切換敬語小知識顯示
+function toggleKeigo() {
+    const box = document.getElementById("keigoBox");
+    box.style.display = box.style.display === "block" ? "none" : "block";
 }
 
 createLevels();
