@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>日本語 感・知・學｜N5-N3 日語遊戲</title>
+    <title>日本語 感・知・學｜N5-N1 日語遊戲</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
@@ -213,7 +213,7 @@
 
 <div class="container">
     <div style="text-align:center; margin-bottom:20px;">
-        <h1 style="color:var(--accent);">🌸 N5 → N3 日語小遊戲 🌸</h1>
+        <h1 style="color:var(--accent);">🌸 N5 → N1 日語小遊戲 🌸</h1>
         <p style="color:var(--text-dim); margin-top:8px;">計時｜分數｜音效｜慶祝動畫</p>
     </div>
 
@@ -227,6 +227,7 @@
         <div class="score-display">⭐ 分數：<span id="score">0</span></div>
     </div>
 
+    <!-- 5 level buttons: N5~N1 -->
     <div class="level-selector" id="levelSelector"></div>
     <div id="questions-container"></div>
 
@@ -295,54 +296,40 @@
 </div>
 
 <script>
+// 5 levels (N5~N1), 10 questions each
 const levels = [
     {
-        name: "N5 基礎",
+        name: "N5",
         questions: [
             { q: "「我」是？", options: ["あなた", "わたし", "かれ"], answer: 1 },
             { q: "「櫻花」是？", options: ["つき", "さくら", "みず"], answer: 1 },
             { q: "「3」是？", options: ["いち", "に", "さん"], answer: 2 },
             { q: "「早安」是？", options: ["おはよう", "こんにちは", "すみません"], answer: 0 },
-            { q: "「貓」是？", options: ["いぬ", "ねこ", "とり"], answer: 1 }
+            { q: "「貓」是？", options: ["いぬ", "ねこ", "とり"], answer: 1 },
+            { q: "「水」是？", options: ["くさ", "みず", "ひと"], answer: 1 },
+            { q: "「日曜日」是？", options: ["月曜日", "火曜日", "星期天"], answer: 2 },
+            { q: "「ありがとう」意思是？", options: ["你好", "謝謝", "再見"], answer: 1 },
+            { q: "「こんにちは」意思是？", options: ["早上好", "你好", "晚上好"], answer: 1 },
+            { q: "「さようなら」意思是？", options: ["你好", "再見", "謝謝"], answer: 1 }
         ]
     },
     {
-        name: "N5 進階",
-        questions: [
-            { q: "「こんにちは」是？", options: ["早上", "白天", "晚上"], answer: 1 },
-            { q: "「謝謝」回應是？", options: ["どういたしまして", "ごめん", "はい"], answer: 0 },
-            { q: "「はい」是？", options: ["不是", "是", "請"], answer: 1 },
-            { q: "「多少錢」是？", options: ["いくら", "なんじ", "どこ"], answer: 0 },
-            { q: "「ごちそうさま」是？", options: ["吃飯前", "吃飯後", "睡覺前"], answer: 1 }
-        ]
-    },
-    {
-        name: "N4 基礎",
+        name: "N4",
         questions: [
             { q: "～てください 意思是？", options: ["請做…", "不要做…", "正在做…"], answer: 0 },
             { q: "～たい 意思是？", options: ["想做…", "做過…", "正在做…"], answer: 0 },
             { q: "「友達」讀音？", options: ["ともだち", "あした", "あさって"], answer: 0 },
             { q: "「勉強する」是？", options: ["玩", "學習", "工作"], answer: 1 },
-            { q: "～てもいい」是？", options: ["可以嗎", "不可以", "禁止"], answer: 0 }
-        ]
-    },
-    {
-        name: "N4 進階",
-        questions: [
-            { q: "～ながら 意思是？", options: ["一邊…一邊…", "之後", "之前"], answer: 0 },
-            { q: "「駅」讀音？", options: ["えき", "とり", "みせ"], answer: 0 },
+            { q: "「～てもいい」是？", options: ["可以嗎", "不可以", "禁止"], answer: 0 },
             { q: "「便利」讀音？", options: ["べんり", "あんぜん", "しずか"], answer: 0 },
             { q: "雨が降る 是？", options: ["下雪", "下雨", "晴天"], answer: 1 },
-            { q: "～たり～たり 是？", options: ["有時…有時…", "一定", "從不"], answer: 0 },
-            { q: "～のほうが 意思是？", options: ["比較…", "大約", "一起"], answer: 0 },
-            { q: "「有名」讀音？", options: ["ゆうめい", "うんめい", "やくそく"], answer: 0 },
-            { q: "～やすい／にくい 表示？", options: ["容易／難", "想要", "應該"], answer: 0 },
-            { q: "「手帳」意思是？", options: ["記事本", "手錶", "手套"], answer: 0 },
-            { q: "～そうです（樣態）意思是？", options: ["看起來…", "聽說…", "好像…"], answer: 0 }
+            { q: "「駅」讀音？", options: ["えき", "とり", "みせ"], answer: 0 },
+            { q: "～ながら 意思是？", options: ["一邊…一邊…", "之後", "之前"], answer: 0 },
+            { q: "～たり～たり 是？", options: ["有時…有時…", "一定", "從不"], answer: 0 }
         ]
     },
     {
-        name: "N3 基礎",
+        name: "N3",
         questions: [
             { q: "～について 意思是？", options: ["關於", "之後", "之前"], answer: 0 },
             { q: "～によって 意思是？", options: ["根據／依靠", "一起", "代替"], answer: 0 },
@@ -357,7 +344,7 @@ const levels = [
         ]
     },
     {
-        name: "N3 進階",
+        name: "N2",
         questions: [
             { q: "～一方 意思是？", options: ["一方面…另一方面…", "代替", "關於"], answer: 0 },
             { q: "～に伴って 是？", options: ["伴隨著", "根據", "代替"], answer: 0 },
@@ -369,6 +356,21 @@ const levels = [
             { q: "「比較」讀音？", options: ["ひかく", "ひかん", "ひかり"], answer: 0 },
             { q: "～限り 意思是？", options: ["只要…", "儘管…", "在…期間"], answer: 0 },
             { q: "～わけではない 意思是？", options: ["並不是…", "因為…", "難道…"], answer: 0 }
+        ]
+    },
+    {
+        name: "N1",
+        questions: [
+            { q: "～にあたって 意思是？", options: ["在…之際", "根據", "代替"], answer: 0 },
+            { q: "～に際して 意思是？", options: ["當…之時", "儘管", "代替"], answer: 0 },
+            { q: "「相俟って」讀音？", options: ["あいまって", "あいまて", "あいまった"], answer: 0 },
+            { q: "「鑑みて」讀音？", options: ["かんがみて", "かんがえて", "かんがて"], answer: 0 },
+            { q: "～に反して 意思是？", options: ["違反…", "相反…", "代替…"], answer: 0 },
+            { q: "～を皮切りに 意思是？", options: ["以…為開端", "以…為目標", "以…為結束"], answer: 0 },
+            { q: "「手がける」意思是？", options: ["從事、著手", "手碰到", "守護"], answer: 0 },
+            { q: "「見合わせる」意思是？", options: ["暫停、延期", "互相看", "合適"], answer: 0 },
+            { q: "～に至っては 意思是？", options: ["至於…", "到達…", "即使…"], answer: 0 },
+            { q: "～と相まって 意思是？", options: ["與…相結合", "與…相反", "與…相比"], answer: 0 }
         ]
     }
 ];
@@ -383,7 +385,7 @@ const soundCorrect = new Audio("https://assets.mixkit.co/sfx/preview/mixkit-achi
 const soundWrong = new Audio("https://assets.mixkit.co/sfx/preview/mixkit-wrong-answer-buzz-955.mp3");
 const soundFinish = new Audio("https://assets.mixkit.co/sfx/preview/mixkit-complete-2031.mp3");
 
-// === FIXED: Native Japanese Speech (100% working) ===
+// === 發音播放 + 錄音評分 ===
 function speakJapanese(text) {
   window.speechSynthesis.cancel();
   const u = new SpeechSynthesisUtterance(text);
@@ -392,10 +394,9 @@ function speakJapanese(text) {
   window.speechSynthesis.speak(u);
 }
 
-// === Voice Recording + Accuracy % ===
 function checkAccuracy(standard, boxId) {
   const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-  if (!SR) { alert("Use Chrome/Edge"); return; }
+  if (!SR) { alert("使用 Chrome/Edge 瀏覽器"); return; }
   const rec = new SR();
   rec.lang = 'ja-JP';
   rec.onresult = e => {
@@ -418,7 +419,7 @@ function togglePronunciationPanel() {
   p.style.display = p.style.display === 'block' ? 'none' : 'block';
 }
 
-// === ORIGINAL GAME FULLY RESTORED ===
+// === 遊戲核心邏輯 ===
 function createLevels() {
     const wrap = document.getElementById("levelSelector");
     levels.forEach((lv, i) => {
@@ -525,6 +526,7 @@ function resetGame() {
     startTimer();
 }
 
+// === 遺忘曲線遊戲 ===
 function openForgettingGame() {
     document.getElementById("forgetModal").style.display = "flex";
     document.getElementById("resultText").innerText = "";
@@ -556,6 +558,7 @@ function toggleKeigo() {
     box.style.display = box.style.display === "block" ? "none" : "block";
 }
 
+// === 初始化 ===
 createLevels();
 loadQuestions();
 startTimer();
