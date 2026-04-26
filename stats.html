@@ -53,3 +53,408 @@
         .nav-links {
             display: flex;
             gap: 26px;
+            list-style: none;
+            flex-wrap: wrap;
+        }
+        .nav-links a {
+            color: var(--text-dim);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+        .nav-links a.active,
+        .nav-links a:hover {
+            color: var(--accent);
+            text-shadow: 0 0 15px var(--accent-glow);
+        }
+        .nav-cta {
+            background: var(--accent);
+            color: #0a0c14;
+            padding: 10px 24px;
+            border-radius: 999px;
+            font-weight: 700;
+            text-decoration: none;
+            font-size: 1rem;
+            transition: all 0.3s;
+            box-shadow: 0 0 25px rgba(255,184,130,0.4);
+        }
+        .nav-cta:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 35px rgba(255,184,130,0.6);
+        }
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            background: var(--card);
+            border-radius: 44px;
+            padding: 64px 32px 48px;
+            box-shadow: 0 0 80px rgba(255,140,0,0.18), inset 0 0 40px rgba(255,184,130,0.06);
+            border: 1px solid rgba(255,184,130,0.12);
+            margin-top: -12px;
+        }
+        header {
+            text-align: center;
+            margin-bottom: 48px;
+        }
+        h1 {
+            font-size: 3rem;
+            letter-spacing: 5px;
+            background: linear-gradient(90deg, #ffaa7a, #ffb882, #ffcb9a);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 30px var(--accent-glow);
+            margin-bottom: 14px;
+        }
+        .subtitle {
+            font-size: 1.3rem;
+            color: var(--text-dim);
+            opacity: 0.92;
+        }
+        .intro-text {
+            max-width: 760px;
+            margin: 24px auto 0;
+            font-size: 1.1rem;
+            color: var(--text-dim);
+            line-height: 1.7;
+        }
+        .chart-section {
+            margin-top: 48px;
+            padding: 28px 24px;
+            background: rgba(255,184,130,0.06);
+            border: 1px solid rgba(255,184,130,0.16);
+            border-radius: 28px;
+        }
+        .chart-section h2 {
+            color: var(--accent);
+            font-size: 1.8rem;
+            margin-bottom: 24px;
+            text-align: center;
+        }
+        .chart-list {
+            display: grid;
+            gap: 16px;
+        }
+        .chart-item {
+            display: grid;
+            grid-template-columns: 1.4fr 6fr 0.8fr;
+            align-items: center;
+            gap: 16px;
+            min-height: 40px;
+        }
+        .chart-label {
+            color: var(--text);
+            font-size: 0.95rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .bar {
+            width: 100%;
+            height: 18px;
+            background: rgba(255,184,130,0.12);
+            border-radius: 999px;
+            overflow: hidden;
+        }
+        .bar-fill {
+            height: 100%;
+            border-radius: 999px;
+            background: linear-gradient(90deg, #ffaa7a, #ffb882);
+            transition: filter 0.2s;
+        }
+        .chart-item { cursor: pointer; }
+        .chart-item:hover .bar-fill {
+            filter: brightness(1.15);
+        }
+        .bar-colors {
+            --bar-0: linear-gradient(90deg, #ff6b6b, #ee5a5a);
+            --bar-1: linear-gradient(90deg, #4ecdc4, #44a8a0);
+            --bar-2: linear-gradient(90deg, #a55eea, #8b4cdb);
+            --bar-3: linear-gradient(90deg, #45b7d1, #3aa3bd);
+            --bar-4: linear-gradient(90deg, #f9ca24, #e5b71f);
+            --bar-5: linear-gradient(90deg, #6ab04c, #5a9a3d);
+        }
+        .chart-item[data-color="0"] .bar-fill { background: var(--bar-0, linear-gradient(90deg, #ff6b6b, #ee5a5a)); }
+        .chart-item[data-color="1"] .bar-fill { background: var(--bar-1, linear-gradient(90deg, #4ecdc4, #44a8a0)); }
+        .chart-item[data-color="2"] .bar-fill { background: var(--bar-2, linear-gradient(90deg, #a55eea, #8b4cdb)); }
+        .chart-item[data-color="3"] .bar-fill { background: var(--bar-3, linear-gradient(90deg, #45b7d1, #3aa3bd)); }
+        .tooltip {
+            position: fixed;
+            background: rgba(30, 30, 35, 0.95);
+            border: 1px solid rgba(255,184,130,0.3);
+            border-radius: 12px;
+            padding: 14px 18px;
+            color: #fff;
+            font-size: 0.9rem;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.2s;
+            z-index: 1000;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+            min-width: 180px;
+        }
+        .tooltip.visible { opacity: 1; }
+        .tooltip-rank {
+            font-size: 0.75rem;
+            color: rgba(255,255,255,0.6);
+            margin-bottom: 4px;
+        }
+        .tooltip-name {
+            font-weight: 600;
+            font-size: 1.05rem;
+            margin-bottom: 8px;
+            color: #ffd700;
+        }
+        .tooltip-row {
+            display: flex;
+            justify-content: space-between;
+            margin: 4px 0;
+            font-size: 0.85rem;
+        }
+        .tooltip-label { color: rgba(255,255,255,0.7); }
+        .tooltip-value { font-weight: 500; }
+        .bar-value {
+            color: var(--text-dim);
+            font-size: 0.95rem;
+            text-align: right;
+            white-space: nowrap;
+        }
+        .stats-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 40px;
+            box-shadow: 0 0 40px rgba(255,184,130,0.08);
+        }
+        .stats-table thead {
+            background: rgba(255,184,130,0.12);
+        }
+        .stats-table th,
+        .stats-table td {
+            padding: 18px 16px;
+            border: 1px solid rgba(255,184,130,0.16);
+            text-align: left;
+        }
+        .stats-table th {
+            color: var(--accent);
+            font-size: 1rem;
+            letter-spacing: 1px;
+        }
+        .stats-table tbody tr {
+            transition: background 0.25s;
+        }
+        .stats-table tbody tr:nth-child(odd) {
+            background: rgba(255,184,130,0.04);
+        }
+        .stats-table tbody tr:hover {
+            background: rgba(255,184,130,0.14);
+        }
+        .rank-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background: rgba(255,184,130,0.2);
+            color: var(--accent);
+            font-weight: 700;
+        }
+        .type-pill {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 999px;
+            background: rgba(255,184,130,0.12);
+            color: var(--text-dim);
+            font-size: 0.95rem;
+        }
+        .page-note {
+            margin-top: 24px;
+            color: var(--text-dim);
+            font-size: 1rem;
+            text-align: center;
+        }
+        footer {
+            text-align: center;
+            margin-top: 80px;
+            padding-top: 40px;
+            border-top: 1px solid rgba(255,184,130,0.1);
+            color: var(--text-dim);
+            font-size: 0.98rem;
+        }
+        @media (max-width: 900px) {
+            .stats-table th,
+            .stats-table td {
+                padding: 14px 12px;
+            }
+        }
+        @media (max-width: 720px) {
+            .nav-container {
+                flex-direction: column;
+                gap: 12px;
+                height: auto;
+                padding: 16px 20px;
+            }
+            .nav-links {
+                justify-content: center;
+                gap: 14px;
+            }
+            .stats-table {
+                font-size: 0.95rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav">
+        <div class="nav-container">
+            <a href="homepage.html" class="logo">
+                <i class="fas fa-wifi"></i> 感・知・學
+            </a>
+            <ul class="nav-links">
+                <li><a href="homepage.html">首頁 Home</a></li>
+                <li><a href="learning progress.html">學習進度 Progress</a></li>
+                <li><a href="features.html">智能特色 Features</a></li>
+                <li><a href="poster.html">海報 Poster</a></li>
+                <li><a href="learning resource.html">學習資源 Resources</a></li>
+                <li><a href="stats.html" class="active">排名 Stats</a></li>
+                <li><a href="about.html">關於我們 About</a></li>
+                <li><a href="game.html#game">學習遊戲 Game</a></li>
+            </ul>
+            <a href="game.html#game" class="nav-cta">立即開始體驗</a>
+        </div>
+    </nav>
+    <div class="container">
+        <header>
+            <h1>東京熱門景點排行榜</h1>
+            <div class="subtitle">2025 年最受歡迎的日本觀光景點</div>
+            <p class="intro-text">以下為 2025 年全年旅客人數排行，包含城市地標、主題樂園、寺廟、展望台、公園等熱門目的地。</p>
+        </header>
+        <section class="chart-section">
+            <h2>2025 年旅客人數排行榜圖表</h2>
+            <div class="chart-list">
+                <div class="chart-item" data-name="Shibuya Crossing" data-visitors="48M" data-type="城市地標" data-rank="#1">
+                    <span class="chart-label">Shibuya Crossing</span>
+                    <div class="bar"><div class="bar-fill" style="width:100%" data-color="0"></div></div>
+                    <span class="bar-value">48M</span>
+                </div>
+                <div class="chart-item" data-name="Tokyo Disneyland" data-visitors="17.2M" data-type="主題樂園" data-rank="#2">
+                    <span class="chart-label">Tokyo Disneyland</span>
+                    <div class="bar"><div class="bar-fill" style="width:36%" data-color="1"></div></div>
+                    <span class="bar-value">17.2M</span>
+                </div>
+                <div class="chart-item" data-name="Tokyo DisneySea" data-visitors="14.8M" data-type="主題樂園" data-rank="#3">
+                    <span class="chart-label">Tokyo DisneySea</span>
+                    <div class="bar"><div class="bar-fill" style="width:31%" data-color="1"></div></div>
+                    <span class="bar-value">14.8M</span>
+                </div>
+                <div class="chart-item" data-name="Senso-ji Temple" data-visitors="13.5M" data-type="寺廟" data-rank="#4">
+                    <span class="chart-label">Senso-ji Temple</span>
+                    <div class="bar"><div class="bar-fill" style="width:28%" data-color="2"></div></div>
+                    <span class="bar-value">13.5M</span>
+                </div>
+                <div class="chart-item" data-name="Tokyo Skytree" data-visitors="5.9M" data-type="展望台" data-rank="#5">
+                    <span class="chart-label">Tokyo Skytree</span>
+                    <div class="bar"><div class="bar-fill" style="width:12%" data-color="3"></div></div>
+                    <span class="bar-value">5.9M</span>
+                </div>
+                <div class="chart-item" data-name="Shinjuku Gyoen" data-visitors="4.2M" data-type="公園" data-rank="#6">
+                    <span class="chart-label">Shinjuku Gyoen</span>
+                    <div class="bar"><div class="bar-fill" style="width:9%" data-color="3"></div></div>
+                    <span class="bar-value">4.2M</span>
+                </div>
+                <div class="chart-item" data-name="Meiji Jingu Shrine" data-visitors="3.8M" data-type="寺廟" data-rank="#7">
+                    <span class="chart-label">Meiji Jingu Shrine</span>
+                    <div class="bar"><div class="bar-fill" style="width:8%" data-color="2"></div></div>
+                    <span class="bar-value">3.8M</span>
+                </div>
+                <div class="chart-item" data-name="Ueno Park & Zoo" data-visitors="3.65M" data-type="公園" data-rank="#8">
+                    <span class="chart-label">Ueno Park & Zoo</span>
+                    <div class="bar"><div class="bar-fill" style="width:8%" data-color="3"></div></div>
+                    <span class="bar-value">3.65M</span>
+                </div>
+                <div class="chart-item" data-name="Tokyo Tower" data-visitors="3.1M" data-type="展望台" data-rank="#9">
+                    <span class="chart-label">Tokyo Tower</span>
+                    <div class="bar"><div class="bar-fill" style="width:6.5%" data-color="3"></div></div>
+                    <span class="bar-value">3.1M</span>
+                </div>
+                <div class="chart-item" data-name="Odaiba & Gundam" data-visitors="2.9M" data-type="主題樂園" data-rank="#10">
+                    <span class="chart-label">Odaiba & Gundam</span>
+                    <div class="bar"><div class="bar-fill" style="width:6%" data-color="1"></div></div>
+                    <span class="bar-value">2.9M</span>
+                </div>
+            </div>
+            <div class="tooltip" id="chartTooltip"></div>
+        </section>
+        <div style="overflow-x:auto;">
+            <table class="stats-table">
+                <thead>
+                    <tr>
+                        <th>排名</th>
+                        <th>景點名稱</th>
+                        <th>英文譯名</th>
+                        <th>2025 全年旅客人數</th>
+                        <th>景點類型</th>
+                        <th>外國觀光客占比</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td><span class="rank-badge">1</span></td><td>澀谷十字路口</td><td>Shibuya Crossing</td><td>48,000,000</td><td>城市地標</td><td>65%</td></tr>
+                    <tr><td><span class="rank-badge">2</span></td><td>東京迪士尼樂園</td><td>Tokyo Disneyland</td><td>17,200,000</td><td>主題樂園</td><td>42%</td></tr>
+                    <tr><td><span class="rank-badge">3</span></td><td>東京迪士尼海洋</td><td>Tokyo DisneySea</td><td>14,800,000</td><td>主題樂園</td><td>38%</td></tr>
+                    <tr><td><span class="rank-badge">4</span></td><td>淺草寺・雷門</td><td>Senso-ji Temple</td><td>13,500,000</td><td>寺廟觀光</td><td>72%</td></tr>
+                    <tr><td><span class="rank-badge">5</span></td><td>東京晴空塔</td><td>Tokyo Skytree</td><td>5,900,000</td><td>展望台</td><td>65%</td></tr>
+                    <tr><td><span class="rank-badge">6</span></td><td>新宿御苑</td><td>Shinjuku Gyoen</td><td>4,200,000</td><td>公園/賞櫻</td><td>48%</td></tr>
+                    <tr><td><span class="rank-badge">7</span></td><td>明治神宮</td><td>Meiji Jingu Shrine</td><td>3,800,000</td><td>神社</td><td>58%</td></tr>
+                    <tr><td><span class="rank-badge">8</span></td><td>上野公園&動物園</td><td>Ueno Park & Zoo</td><td>3,650,000</td><td>公園/動物園</td><td>45%</td></tr>
+                    <tr><td><span class="rank-badge">9</span></td><td>東京鐵塔</td><td>Tokyo Tower</td><td>3,100,000</td><td>展望台</td><td>59%</td></tr>
+                    <tr><td><span class="rank-badge">10</span></td><td>台場&鋼彈立像</td><td>Odaiba & Gundam</td><td>2,900,000</td><td>商業觀光</td><td>52%</td></tr>
+                    <tr><td><span class="rank-badge">11</span></td><td>秋葉原電器街</td><td>Akihabara</td><td>2,700,000</td><td>商圈</td><td>68%</td></tr>
+                    <tr><td><span class="rank-badge">12</span></td><td>築地外市場</td><td>Tsukiji Outer Market</td><td>2,400,000</td><td>美食商圈</td><td>70%</td></tr>
+                    <tr><td><span class="rank-badge">13</span></td><td>六本木之丘展望台</td><td>Roppongi Hills</td><td>2,100,000</td><td>觀景台</td><td>61%</td></tr>
+                    <tr><td><span class="rank-badge">14</span></td><td>池袋SunShine 60</td><td>Ikebukuro Sunshine 60</td><td>1,400,000</td><td>觀景台</td><td>39%</td></tr>
+                    <tr><td><span class="rank-badge">15</span></td><td>國立新美術館</td><td>National Art Center</td><td>950,000</td><td>美術館</td><td>44%</td></tr>
+                </tbody>
+            </table>
+        </div>
+        <p class="page-note">資料來源：2025 全年旅客人數統計。排名為人氣與外國觀光客比例綜合指標。</p>
+        <p class="page-note">數據來源範例：<a href="https://www.gotokyo.org/en/" target="_blank" rel="noopener noreferrer" style="color: var(--accent); text-decoration: underline;">https://www.gotokyo.org/en/</a></p>
+        <footer>
+            By Yu Wang Yui — 資訊科技 × 旅遊日語
+        </footer>
+    </div>
+<script>
+        (function() {
+            const tooltip = document.getElementById('chartTooltip');
+            const items = document.querySelectorAll('.chart-item');
+
+            items.forEach(item => {
+                item.addEventListener('mouseenter', e => {
+                    const name = item.dataset.name;
+                    const visitors = item.dataset.visitors;
+                    const type = item.dataset.type;
+                    const rank = item.dataset.rank;
+
+                    tooltip.innerHTML = `
+                        <div class="tooltip-rank">${rank}</div>
+                        <div class="tooltip-name">${name}</div>
+                        <div class="tooltip-row"><span class="tooltip-label">旅客人數</span><span class="tooltip-value">${visitors}</span></div>
+                        <div class="tooltip-row"><span class="tooltip-label">景點類型</span><span class="tooltip-value">${type}</span></div>
+                    `;
+                    tooltip.classList.add('visible');
+                });
+
+                item.addEventListener('mousemove', e => {
+                    const x = e.clientX + 15;
+                    const y = e.clientY + 15;
+                    tooltip.style.left = x + 'px';
+                    tooltip.style.top = y + 'px';
+                });
+
+                item.addEventListener('mouseleave', () => {
+                    tooltip.classList.remove('visible');
+                });
+            });
+        })();
+    </script>
+</body>
+</html>
