@@ -46,7 +46,7 @@
         .top-btn-bar {
             display: flex; gap: 12px; justify-content: center; margin-bottom: 20px;
         }
-        .pronunciation-btn {
+        .top-btn {
             background: linear-gradient(90deg,#ffaa7a,#ffb882);
             color: #000; border: none; border-radius: 999px;
             padding: 10px 20px; font-weight: bold; cursor: pointer;
@@ -129,6 +129,30 @@
             white-space: pre-line;
             line-height: 1.6;
         }
+
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.7); backdrop-filter: blur(6px);
+            display: none; justify-content: center; align-items: center; z-index: 9999;
+        }
+        .modal-box {
+            background: #161825; color: #fce9da;
+            width: 90%; max-width: 500px;
+            padding: 30px; border-radius: 20px;
+            border: 1px solid rgba(255,184,130,0.3);
+            position: relative;
+        }
+        .modal-box h2 {
+            color: #ffb882; margin-bottom: 16px;
+        }
+        .modal-box p {
+            margin: 10px 0; line-height: 1.6;
+        }
+        .close-btn {
+            position: absolute; top: 16px; right: 18px;
+            background: none; border: none; color: #ffb882;
+            font-size: 1.4rem; cursor: pointer;
+        }
     </style>
 </head>
 
@@ -157,7 +181,8 @@
     </div>
 
     <div class="top-btn-bar">
-        <button class="pronunciation-btn" onclick="togglePronunciationPanel()">🎤 讀音訓練</button>
+        <button class="top-btn" onclick="togglePronunciationPanel()">🎤 讀音訓練</button>
+        <button class="top-btn" onclick="openForgettingGame()">🧠 遺忘曲線記憶</button>
     </div>
 
     <div class="game-header">
@@ -200,6 +225,25 @@
     </div>
 </div>
 
+<div class="modal-overlay" id="forgetModal">
+    <div class="modal-box">
+        <button class="close-btn" onclick="closeModal()">✕</button>
+        <h2>🧠 遺忘曲線記憶遊戲</h2>
+        <p>根據艾賓浩斯遺忘曲線設計，幫你強化長期記憶！</p>
+        <p>系統會自動安排你在：</p>
+        <p>✅ 10 分鐘後 → 複習</p>
+        <p>✅ 1 天後 → 複習</p>
+        <p>✅ 7 天後 → 大複習</p>
+        <p>讓日文永不忘記！</p>
+        <hr style="margin:20px 0; border-color: rgba(255,184,130,0.2);">
+        <h2>📌 日文敬語小知識</h2>
+        <p><strong>です・ます體</strong>：禮貌體，對陌生人、長輩使用。</p>
+        <p><strong>でございます</strong>：更禮貌，服務業、辦公常用。</p>
+        <p><strong>お～します</strong>：自謙表現，表達對他人的尊敬。</p>
+        <p><strong>ご～ください</strong>：委託敬語，客氣請求動作。</p>
+    </div>
+</div>
+
 <script>
 const levels = [
     {
@@ -222,22 +266,61 @@ const levels = [
             { q: "「ごちそうさま」是？", options: ["吃飯前", "吃飯後", "睡覺前"], answer: 1 }
         ]
     },
-    { name: "N4 基礎", questions: [
-        { q: "～てください 意思是？", options: ["請做…", "不要做…", "正在做…"], answer: 0 },
-        { q: "～たい 意思是？", options: ["想做…", "做過…", "正在做…"], answer: 0 },
-        { q: "「友達」讀音？", options: ["ともだち", "あした", "あさって"], answer: 0 },
-        { q: "「勉強する」是？", options: ["玩", "學習", "工作"], answer: 1 },
-    ]},
-    { name: "N4 進階", questions: [
-        { q: "～ながら 意思是？", options: ["一邊…一邊…", "之後", "之前"], answer: 0 },
-        { q: "「駅」讀音？", options: ["えき", "とり", "みせ"], answer: 0 },
-    ]},
-    { name: "N3 基礎", questions: [
-        { q: "～について 意思是？", options: ["關於", "之後", "之前"], answer: 0 },
-    ]},
-    { name: "N3 進階", questions: [
-        { q: "～一方 意思是？", options: ["一方面…另一方面…", "代替", "關於"], answer: 0 },
-    ]}
+    {
+        name: "N4 基礎",
+        questions: [
+            { q: "～てください 意思是？", options: ["請做…", "不要做…", "正在做…"], answer: 0 },
+            { q: "～たい 意思是？", options: ["想做…", "做過…", "正在做…"], answer: 0 },
+            { q: "「友達」讀音？", options: ["ともだち", "あした", "あさって"], answer: 0 },
+            { q: "「勉強する」是？", options: ["玩", "學習", "工作"], answer: 1 },
+            { q: "「～てもいい」是？", options: ["可以嗎", "不可以", "禁止"], answer: 0 }
+        ]
+    },
+    {
+        name: "N4 進階",
+        questions: [
+            { q: "～ながら 意思是？", options: ["一邊…一邊…", "之後", "之前"], answer: 0 },
+            { q: "「駅」讀音？", options: ["えき", "とり", "みせ"], answer: 0 },
+            { q: "「便利」讀音？", options: ["べんり", "あんぜん", "しずか"], answer: 0 },
+            { q: "雨が降る 是？", options: ["下雪", "下雨", "晴天"], answer: 1 },
+            { q: "～たり～たり 是？", options: ["有時…有時…", "一定", "從不"], answer: 0 },
+            { q: "～のほうが 意思是？", options: ["比較…", "大約", "一起"], answer: 0 },
+            { q: "「有名」讀音？", options: ["ゆうめい", "うんめい", "やくそく"], answer: 0 },
+            { q: "～やすい／にくい 表示？", options: ["容易／難", "想要", "應該"], answer: 0 },
+            { q: "「手帳」意思是？", options: ["記事本", "手錶", "手套"], answer: 0 },
+            { q: "～そうです（樣態）意思是？", options: ["看起來…", "聽說…", "好像…"], answer: 0 }
+        ]
+    },
+    {
+        name: "N3 基礎",
+        questions: [
+            { q: "～について 意思是？", options: ["關於", "之後", "之前"], answer: 0 },
+            { q: "～によって 意思是？", options: ["根據／依靠", "一起", "代替"], answer: 0 },
+            { q: "「経験」讀音？", options: ["けいけん", "きけん", "けいかく"], answer: 0 },
+            { q: "「欠席」讀音？", options: ["けっせき", "けっこん", "けつあつ"], answer: 0 },
+            { q: "～に対して 是？", options: ["對於", "代替", "關於"], answer: 0 },
+            { q: "～べきです 意思是？", options: ["應該", "可能", "想要"], answer: 0 },
+            { q: "「連絡」讀音？", options: ["れんらく", "れんさ", "れんきん"], answer: 0 },
+            { q: "～場合 意思是？", options: ["…的時候", "…的地方", "…的原因"], answer: 0 },
+            { q: "「予定」讀音？", options: ["よてい", "よてつ", "ようてい"], answer: 0 },
+            { q: "～つもりです 意思是？", options: ["打算…", "記得…", "能夠…"], answer: 0 }
+        ]
+    },
+    {
+        name: "N3 進階",
+        questions: [
+            { q: "～一方 意思是？", options: ["一方面…另一方面…", "代替", "關於"], answer: 0 },
+            { q: "～に伴って 是？", options: ["伴隨著", "根據", "代替"], answer: 0 },
+            { q: "「影響」讀音？", options: ["えいきょう", "えいご", "えいが"], answer: 0 },
+            { q: "「意識」讀音？", options: ["いしき", "いじ", "いけん"], answer: 0 },
+            { q: "～に応じて 是？", options: ["根據／按照", "代替", "關於"], answer: 0 },
+            { q: "～にかかわらず 意思是？", options: ["不管…", "關於…", "由於…"], answer: 0 },
+            { q: "～上で 意思是？", options: ["在…之上／在…方面", "在…之後", "在…之間"], answer: 0 },
+            { q: "「比較」讀音？", options: ["ひかく", "ひかん", "ひかり"], answer: 0 },
+            { q: "～限り 意思是？", options: ["只要…", "儘管…", "在…期間"], answer: 0 },
+            { q: "～わけではない 意思是？", options: ["並不是…", "因為…", "難道…"], answer: 0 }
+        ]
+    }
 ];
 
 let currentLevel = 0;
@@ -337,16 +420,10 @@ function finishGame() {
 
     const time = parseInt(document.getElementById("timer").innerText);
     let percent;
-
-    if (time <= 20) {
-        percent = 99;
-    } else if (time <= 35) {
-        percent = 80;
-    } else if (time <= 50) {
-        percent = 60;
-    } else {
-        percent = 30;
-    }
+    if (time <= 20) percent = 99;
+    else if (time <= 35) percent = 80;
+    else if (time <= 50) percent = 60;
+    else percent = 30;
 
     const final = document.getElementById("finalScore");
     final.style.display = "block";
@@ -387,6 +464,13 @@ function judgePronunciationSimilarity(phrase) {
         alert(`辨識結果：${res}\n標準句子：${phrase}`);
     };
     r.start();
+}
+
+function openForgettingGame() {
+    document.getElementById("forgetModal").style.display = "flex";
+}
+function closeModal() {
+    document.getElementById("forgetModal").style.display = "none";
 }
 
 createLevels();
