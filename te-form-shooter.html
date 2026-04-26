@@ -2,12 +2,12 @@
 <html lang="zh-TW">
 <head>
 <meta charset="UTF-8">
-<title>て形射擊遊戲 ｜ Japanese Te-Form Shooter</title>
+<title>て形射擊遊戲</title>
 <style>
   body { margin:0; padding:0; background:#000; color:#0f0; font-family:sans-serif; text-align:center; overflow:hidden; }
   canvas { display:block; margin:10px auto; border:4px solid #0f0; background:#111; }
-  #ui { position:absolute; top:10px; left:50%; transform:translateX(-50%); background:rgba(0,0,0,0.8); padding:8px 20px; border-radius:10px; font-size:18px; z-index:10; }
-  button { margin:10px; padding:12px 24px; font-size:18px; background:#0f0; color:#000; border:none; border-radius:8px; cursor:pointer; }
+  #ui { position:absolute; top:10px; left:50%; transform:translateX(-50%); background:rgba(0,0,0,0.85); padding:10px 25px; border-radius:12px; font-size:19px; z-index:10; }
+  button { margin:12px; padding:14px 28px; font-size:19px; background:#0f0; color:#000; border:none; border-radius:10px; cursor:pointer; font-weight:bold; }
 </style>
 </head>
 <body>
@@ -25,154 +25,190 @@
 
 <script>
 const verbs = [
-  { dict: "書きます", te: "書いて", wrong1: "書きて", wrong2: "書きました" },
-  { dict: "食べます", te: "食べて", wrong1: "食べますて", wrong2: "食べた" },
-  { dict: "飲みます", te: "飲んで", wrong1: "飲みて", wrong2: "飲みました" },
-  { dict: "見ます",   te: "見て",   wrong1: "見ますて", wrong2: "見ました" },
-  { dict: "します",   te: "して",   wrong1: "しって", wrong2: "しますて" },
-  { dict: "来ます",   te: "来て",   wrong1: "来ますて", wrong2: "来た" },
-  { dict: "行きます", te: "行って", wrong1: "行きって", wrong2: "行きました" },
-  { dict: "浴びます", te: "浴びて", wrong1: "浴びますて", wrong2: "浴びた" },
-  { dict: "起きます", te: "起きて", wrong1: "起きますて", wrong2: "起きた" },
-  { dict: "寝ます",   te: "寝て",   wrong1: "寝ますて", wrong2: "寝た" },
-  { dict: "帰ります", te: "帰って", wrong1: "帰りて", wrong2: "帰りました" },
-  { dict: "遊びます", te: "遊んで", wrong1: "遊びますて", wrong2: "遊んだ" },
-  { dict: "読みます", te: "読んで", wrong1: "読みて", wrong2: "読みました" },
-  { dict: "聞きます", te: "聞いて", wrong1: "聞きって", wrong2: "聞きました" },
-  { dict: "買います", te: "買って", wrong1: "買いって", wrong2: "買いました" },
-  { dict: "会います", te: "会って", wrong1: "会いて", wrong2: "会いました" },
-  { dict: "話します", te: "話して", wrong1: "話しますて", wrong2: "話した" },
-  { dict: "教えます", te: "教えて", wrong1: "教えますて", wrong2: "教えた" },
-  { dict: "開けます", te: "開けて", wrong1: "開けますて", wrong2: "開けた" }
+  {te:"食べて", w1:"食べますて", w2:"食べた"},
+  {te:"飲んで", w1:"飲みて", w2:"飲みました"},
+  {te:"見て",   w1:"見ますて", w2:"見ました"},
+  {te:"浴びて", w1:"浴びますて", w2:"浴びた"},
+  {te:"起きて", w1:"起きますて", w2:"起きた"},
+  {te:"寝て",   w1:"寝ますて", w2:"寝た"},
+  {te:"帰って", w1:"帰りて", w2:"帰りました"},
+  {te:"遊んで", w1:"遊びますて", w2:"遊んだ"},
+  {te:"読んで", w1:"読みて", w2:"読みました"},
+  {te:"聞いて", w1:"聞きって", w2:"聞きました"},
+  {te:"買って", w1:"買いって", w2:"買いました"},
+  {te:"会って", w1:"会いて", w2:"会いました"},
+  {te:"話して", w1:"話しますて", w2:"話した"},
+  {te:"教えて", w1:"教えますて", w2:"教えた"},
+  {te:"開けて", w1:"開けますて", w2:"開けた"},
+  {te:"勉強して", w1:"勉強ますて", w2:"勉強した"},
+  {te:"出て",   w1:"出ますて", w2:"出た"},
+  {te:"入って", w1:"入りて", w2:"入りました"}
 ];
 
 const canvas = document.getElementById("game");
 const ctx = canvas.getContext("2d");
-const W = canvas.width;
-const H = canvas.height;
+const W = 800, H = 620;
 
 let score = 0, time = 0, lives = 3, gameRunning = false;
-let timerInterval;
-let boxes = [], bullets = [], particles = [], errorMarks = [], screenFlash = 0;
+let timerInterval, boxes = [], bullets = [], particles = [], errorMarks = [], screenFlash = 0;
+let playerX = W/2, currentVerb = null;
 
-let playerX = W / 2;
-const playerY = H - 40;
-const playerWidth = 60;
-let mouseX = W / 2;
-let audioCtx;
-let currentVerb = null;
-
-function initAudio() {
-  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-}
-
-canvas.addEventListener("mousemove", e => {
-  const rect = canvas.getBoundingClientRect();
-  mouseX = e.clientX - rect.left;
-});
-canvas.addEventListener("click", shoot);
-document.addEventListener("keydown", e => { if (e.key === " " && gameRunning) shoot(); });
-
-function random(min, max) { return Math.random() * (max - min) + min; }
+function random(a,b){return Math.random()*(b-a)+a;}
 
 function spawnBoxes() {
   boxes = [];
-  const positions = [160, 400, 640];
-  let options = [currentVerb.te, currentVerb.wrong1, currentVerb.wrong2];
-  options.sort(() => Math.random() - 0.5);
-
-  for (let i = 0; i < 3; i++) {
+  const pos = [170, 400, 630];
+  let opts = [currentVerb.te, currentVerb.w1, currentVerb.w2];
+  opts.sort(()=>Math.random()-0.5);
+  for(let i=0; i<3; i++){
     boxes.push({
-      x: positions[i],
-      y: random(-180, -40),
-      width: 130,
-      height: 85,
-      text: options[i],
-      isCorrect: options[i] === currentVerb.te,
-      speed: random(1.8, 3.3)
+      x: pos[i], y: random(-200,-60), width:135, height:88,
+      text: opts[i], isCorrect: opts[i]===currentVerb.te, speed: random(1.9, 3.4)
     });
   }
 }
 
 function newVerb() {
-  currentVerb = verbs[Math.floor(Math.random() * verbs.length)];
+  currentVerb = verbs[Math.floor(Math.random()*verbs.length)];
   spawnBoxes();
 }
 
 function shoot() {
-  if (!gameRunning) return;
-  bullets.push({ x: playerX + playerWidth/2 - 5, y: playerY - 10, width: 10, height: 25, speed: 13 });
-  try {
-    initAudio();
-    const osc = audioCtx.createOscillator();
-    osc.frequency.setValueAtTime(880, audioCtx.currentTime);
-    const gain = audioCtx.createGain(); gain.gain.value = 0.15;
-    osc.connect(gain).connect(audioCtx.destination);
-    osc.start(); osc.stop(audioCtx.currentTime + 0.06);
-  } catch(e) {}
+  if(!gameRunning) return;
+  bullets.push({x: playerX+25, y: H-50, speed:14});
 }
 
-function createParticles(x, y, color, count=28) {
-  if (particles.length > 100) particles.length = 60;
-  for (let i = 0; i < count; i++) {
-    particles.push({ x, y, vx: random(-6.5,6.5), vy: random(-8,3), life: 38, color });
+function createParticles(x,y,color){
+  for(let i=0; i<25; i++){
+    particles.push({x,y, vx:random(-7,7), vy:random(-9,2), life:40, color});
   }
 }
 
-function showError(x, y) {
-  errorMarks.push({ x, y, life: 32 });
-  try {
-    initAudio();
-    const osc = audioCtx.createOscillator();
-    osc.type = "sawtooth"; osc.frequency.setValueAtTime(160, audioCtx.currentTime);
-    const gain = audioCtx.createGain(); gain.gain.value = 0.25;
-    osc.connect(gain).connect(audioCtx.destination);
-    osc.start(); osc.stop(audioCtx.currentTime + 0.35);
-  } catch(e) {}
-  screenFlash = 7;
+function showError(x,y){
+  errorMarks.push({x,y,life:35});
+  screenFlash = 8;
 }
 
-function updateLivesDisplay() {
-  document.getElementById("lives").innerHTML = "❤️".repeat(lives) + "♡".repeat(3 - lives);
-}
+function updateLives(){ document.getElementById("lives").innerHTML = "❤️".repeat(lives) + "♡".repeat(3-lives); }
 
-function gameLoop() {
-  if (!gameRunning) return;
-  ctx.clearRect(0, 0, W, H);
+function gameLoop(){
+  if(!gameRunning) return;
+  ctx.clearRect(0,0,W,H);
 
-  if (screenFlash > 0) {
-    ctx.fillStyle = `rgba(255,40,40,${screenFlash*0.09})`;
-    ctx.fillRect(0,0,W,H);
-    screenFlash--;
-  }
-
-  ctx.strokeStyle = "#002200";
-  for (let i = 40; i < W; i += 80) {
-    ctx.beginPath(); ctx.moveTo(i,0); ctx.lineTo(i,H); ctx.stroke();
+  if(screenFlash>0){
+    ctx.fillStyle = `rgba(255,60,60,${screenFlash*0.1})`;
+    ctx.fillRect(0,0,W,H); screenFlash--;
   }
 
   // 方塊
-  for (let i = boxes.length - 1; i >= 0; i--) {
-    const b = boxes[i];
+  for(let i=boxes.length-1; i>=0; i--){
+    let b = boxes[i];
     b.y += b.speed;
 
     ctx.fillStyle = "#006666";
-    ctx.fillRect(b.x - b.width/2, b.y, b.width, b.height);
-    ctx.strokeStyle = "#00cccc"; ctx.lineWidth = 4;
-    ctx.strokeRect(b.x - b.width/2, b.y, b.width, b.height);
+    ctx.fillRect(b.x-b.width/2, b.y, b.width, b.height);
+    ctx.strokeStyle="#00dddd"; ctx.lineWidth=5;
+    ctx.strokeRect(b.x-b.width/2, b.y, b.width, b.height);
 
-    ctx.fillStyle = "#ffffff";
-    ctx.font = "bold 26px Arial";
-    ctx.textAlign = "center";
-    ctx.textBaseline = "middle";
-    ctx.fillText(b.text, b.x, b.y + b.height/2 + 2);
+    ctx.fillStyle = "#fff";
+    ctx.font = "bold 27px Arial";
+    ctx.textAlign="center";
+    ctx.fillText(b.text, b.x, b.y+48);
 
-    if (b.y > H + 30) {
-      if (b.isCorrect) {
-        showError(b.x, b.y - 30);
+    if(b.y > H+40){
+      if(b.isCorrect){
+        showError(b.x, b.y-40);
         lives--;
-        updateLivesDisplay();
-        if (lives <= 0) { endGame(); return; }
+        updateLives();
+        if(lives<=0){ endGame(); return; }
       }
-      boxes.splice(i, 1);
-      newVerb();        // ← 修正重點：落地
+      boxes.splice(i,1);
+      newVerb();   // 確保繼續出新方塊
+    }
+  }
+
+  // 子彈
+  for(let i=bullets.length-1; i>=0; i--){
+    let b = bullets[i];
+    b.y -= b.speed;
+    ctx.fillStyle="#ffff00";
+    ctx.fillRect(b.x-5, b.y, 10, 30);
+    if(b.y < -30){ bullets.splice(i,1); continue; }
+
+    for(let j=boxes.length-1; j>=0; j--){
+      let box = boxes[j];
+      if(b.x > box.x-box.width/2 && b.x < box.x+box.width/2 && b.y > box.y && b.y < box.y+box.height){
+        bullets.splice(i,1);
+        if(box.isCorrect){
+          score += 100;
+          createParticles(box.x, box.y+40, "#ffff00");
+          document.getElementById("score").textContent = score;
+          boxes.splice(j,1);
+          newVerb();
+        } else {
+          showError(box.x, box.y+30);
+          score = Math.max(0, score-50);
+          lives--;
+          updateLives();
+          document.getElementById("score").textContent = score;
+          boxes.splice(j,1);
+          if(lives>0) newVerb();
+          else endGame();
+        }
+        break;
+      }
+    }
+  }
+
+  // 粒子與交叉效果（簡化）
+  for(let i=particles.length-1; i>=0; i--){
+    let p = particles[i];
+    p.x += p.vx; p.y += p.vy; p.vy += 0.25; p.life--;
+    ctx.globalAlpha = p.life/40;
+    ctx.fillStyle = p.color;
+    ctx.fillRect(p.x, p.y, 9, 9);
+    if(p.life<=0) particles.splice(i,1);
+  }
+  ctx.globalAlpha = 1;
+
+  // 玩家
+  playerX = Math.max(50, Math.min(W-110, mouseX || W/2));
+  ctx.fillStyle = "#00ccff";
+  ctx.fillRect(playerX, H-45, 60, 30);
+
+  requestAnimationFrame(gameLoop);
+}
+
+function startTimer(){
+  if(timerInterval) clearInterval(timerInterval);
+  time = 0;
+  timerInterval = setInterval(()=>{ if(gameRunning){ time++; document.getElementById("timer").textContent = time; }},1000);
+}
+
+function startGame(){
+  score=0; time=0; lives=3;
+  boxes=[]; bullets=[]; particles=[]; errorMarks=[]; screenFlash=0;
+  document.getElementById("score").textContent="0";
+  updateLives();
+
+  gameRunning = true;
+  startTimer();
+  newVerb();        // 確保一開始就有方塊
+  gameLoop();
+}
+
+function endGame(){
+  gameRunning = false;
+  if(timerInterval) clearInterval(timerInterval);
+  alert(`遊戲結束！\n最終分數: ${score}\n時間: ${time}秒\n\n繼續加油練習て形！`);
+}
+
+canvas.addEventListener("mousemove", e => {
+  const r = canvas.getBoundingClientRect();
+  mouseX = e.clientX - r.left;
+});
+
+startGame();   // 自動開始
+</script>
+</body>
+</html>
