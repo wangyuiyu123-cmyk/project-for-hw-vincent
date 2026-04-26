@@ -19,7 +19,7 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { background: var(--bg); color: var(--text); font-family: system-ui, sans-serif; }
 
-        /* 導航欄（可跳轉所有頁面） */
+        /* 導航欄 */
         .nav {
             position: sticky; top: 0; z-index: 999;
             background: rgba(17,19,31,0.95);
@@ -41,6 +41,16 @@
         .container {
             max-width: 900px; margin: 40px auto; padding: 30px 20px;
             background: var(--card); border-radius: 30px;
+        }
+
+        /* 頂部按鈕：讀音訓練 */
+        .top-btn-bar {
+            display: flex; gap: 12px; justify-content: center; margin-bottom: 20px;
+        }
+        .pronunciation-btn {
+            background: linear-gradient(90deg,#ffaa7a,#ffb882);
+            color: #000; border: none; border-radius: 999px;
+            padding: 10px 20px; font-weight: bold; cursor: pointer;
         }
 
         /* 遊戲 */
@@ -77,6 +87,44 @@
             cursor: pointer;
         }
 
+        /* 讀音訓練面板 */
+        #pronunciationPanel {
+            display: none;
+            margin-top: 30px;
+            background: rgba(255,184,130,0.07);
+            border-radius: 20px;
+            padding: 24px;
+        }
+        .pronunciation-sample {
+            margin-bottom: 20px;
+            padding: 16px;
+            background: rgba(20,22,35,0.6);
+            border-radius: 16px;
+        }
+        .jp-sentence {
+            font-size: 1.5rem;
+            color: var(--accent);
+            margin-bottom: 8px;
+        }
+        .cn-sentence {
+            color: var(--text-dim);
+            margin-bottom: 12px;
+        }
+        .pronunciation-btn-row {
+            display: flex; gap: 10px;
+            flex-wrap: wrap;
+        }
+        .pronunciation-btn-row button {
+            background: var(--accent);
+            color: #000;
+            border: none; border-radius: 999px;
+            padding: 8px 16px; font-weight: bold; cursor: pointer;
+        }
+        #pronunciationNote {
+            margin-top: 16px;
+            color: var(--text-dim);
+        }
+
         /* 慶祝動畫 */
         .celebration {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -99,7 +147,7 @@
 
 <body>
 
-<!-- 導航欄 → 可跳轉所有頁面 -->
+<!-- 導航欄 -->
 <nav class="nav">
     <div class="nav-container">
         <a href="index.html" class="logo"><i class="fas fa-wifi"></i> 感・知・學</a>
@@ -117,9 +165,14 @@
 </nav>
 
 <div class="container">
-    <div style="text-align:center; margin-bottom:30px;">
+    <div style="text-align:center; margin-bottom:20px;">
         <h1 style="color:var(--accent);">🌸 N5 → N3 日語小遊戲 🌸</h1>
         <p style="color:var(--text-dim); margin-top:8px;">計時｜分數｜音效｜慶祝動畫</p>
+    </div>
+
+    <!-- 頂部按鈕：讀音訓練 -->
+    <div class="top-btn-bar">
+        <button class="pronunciation-btn" onclick="togglePronunciationPanel()">🎤 讀音訓練</button>
     </div>
 
     <div class="game-header">
@@ -132,6 +185,52 @@
 
     <button class="finish-btn" onclick="finishGame()">完成並查看成績</button>
     <div class="final-score" id="finalScore"></div>
+
+    <!-- 讀音訓練面板 -->
+    <div id="pronunciationPanel">
+        <h2 style="color:var(--accent); text-align:center; margin-bottom:20px;">🎤 讀音訓練</h2>
+        <div class="pronunciation-sample">
+            <p class="jp-sentence">おはようございます</p>
+            <p class="cn-sentence">早上好</p>
+            <div class="pronunciation-btn-row">
+                <button onclick="playPronunciation('おはようございます')">🔊 播放發音</button>
+                <button onclick="judgePronunciationSimilarity('おはようございます')">🎙 AI 判斷讀音</button>
+            </div>
+        </div>
+        <div class="pronunciation-sample">
+            <p class="jp-sentence">こんにちは</p>
+            <p class="cn-sentence">你好</p>
+            <div class="pronunciation-btn-row">
+                <button onclick="playPronunciation('こんにちは')">🔊 播放發音</button>
+                <button onclick="judgePronunciationSimilarity('こんにちは')">🎙 AI 判斷讀音</button>
+            </div>
+        </div>
+        <div class="pronunciation-sample">
+            <p class="jp-sentence">ありがとうございます</p>
+            <p class="cn-sentence">謝謝你</p>
+            <div class="pronunciation-btn-row">
+                <button onclick="playPronunciation('ありがとうございます')">🔊 播放發音</button>
+                <button onclick="judgePronunciationSimilarity('ありがとうございます')">🎙 AI 判斷讀音</button>
+            </div>
+        </div>
+        <div class="pronunciation-sample">
+            <p class="jp-sentence">すみません</p>
+            <p class="cn-sentence">對不起 / 不好意思</p>
+            <div class="pronunciation-btn-row">
+                <button onclick="playPronunciation('すみません')">🔊 播放發音</button>
+                <button onclick="judgePronunciationSimilarity('すみません')">🎙 AI 判斷讀音</button>
+            </div>
+        </div>
+        <div class="pronunciation-sample">
+            <p class="jp-sentence">いただきます</p>
+            <p class="cn-sentence">我要開動了</p>
+            <div class="pronunciation-btn-row">
+                <button onclick="playPronunciation('いただきます')">🔊 播放發音</button>
+                <button onclick="judgePronunciationSimilarity('いただきます')">🎙 AI 判斷讀音</button>
+            </div>
+        </div>
+        <p id="pronunciationNote"></p>
+    </div>
 </div>
 
 <div class="celebration" id="celebration">
@@ -311,6 +410,78 @@
         document.getElementById("celebration").classList.remove("active");
         stopTimer();
         startTimer();
+    }
+
+    // 讀音訓練面板切換
+    function togglePronunciationPanel() {
+        const panel = document.getElementById("pronunciationPanel");
+        panel.style.display = panel.style.display === "block" ? "none" : "block";
+    }
+
+    // 播放標準讀音
+    function playPronunciation(phrase) {
+        const note = document.getElementById("pronunciationNote");
+        if ('speechSynthesis' in window) {
+            const utterance = new SpeechSynthesisUtterance(phrase);
+            utterance.lang = 'ja-JP';
+            speechSynthesis.speak(utterance);
+            note.innerText = `正在播放：${phrase}`;
+        } else {
+            note.innerText = '此瀏覽器不支援語音合成';
+        }
+    }
+
+    // 計算讀音相似度
+    function normalizeText(text) {
+        return text.toLowerCase().replace(/[^a-z0-9\u3040-\u30ff\u4e00-\u9fff]/g, '');
+    }
+
+    function getSimilarity(a, b) {
+        const textA = normalizeText(a);
+        const textB = normalizeText(b);
+        if (!textA.length || !textB.length) return 0;
+        const dp = Array.from({ length: textA.length + 1 }, () => Array(textB.length + 1).fill(0));
+        for (let i = 0; i <= textA.length; i++) dp[i][0] = i;
+        for (let j = 0; j <= textB.length; j++) dp[0][j] = j;
+        for (let i = 1; i <= textA.length; i++) {
+            for (let j = 1; j <= textB.length; j++) {
+                const cost = textA[i - 1] === textB[j - 1] ? 0 : 1;
+                dp[i][j] = Math.min(dp[i - 1][j] + 1, dp[i][j - 1] + 1, dp[i - 1][j - 1] + cost);
+            }
+        }
+        const distance = dp[textA.length][textB.length];
+        return Math.max(0, Math.round((1 - distance / Math.max(textA.length, textB.length)) * 100));
+    }
+
+    // AI 判斷讀音
+    function judgePronunciationSimilarity(phrase) {
+        const note = document.getElementById("pronunciationNote");
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        if (!SpeechRecognition) {
+            note.innerText = '此瀏覽器不支援語音辨識，請使用 Chrome 或 Edge。';
+            return;
+        }
+        const recognition = new SpeechRecognition();
+        recognition.lang = 'ja-JP';
+        recognition.interimResults = false;
+        recognition.maxAlternatives = 1;
+        recognition.onstart = () => {
+            note.innerText = `請朗讀：${phrase}`;
+        };
+        recognition.onresult = event => {
+            const transcript = event.results[0][0].transcript.trim();
+            const similarity = getSimilarity(transcript, phrase);
+            note.innerText = `辨識結果：${transcript}，相似度：${similarity}%`;
+        };
+        recognition.onerror = event => {
+            note.innerText = `語音辨識錯誤：${event.error}`;
+        };
+        recognition.onend = () => {
+            if (!note.innerText.startsWith('辨識結果')) {
+                note.innerText = '辨識結束，請再試一次。';
+            }
+        };
+        recognition.start();
     }
 
     // 開始
