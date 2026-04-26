@@ -44,7 +44,7 @@
         }
 
         .top-btn-bar {
-            display: flex; gap: 12px; justify-content: center; margin-bottom: 20px;
+            display: flex; gap: 12px; justify-content: center; margin-bottom: 20px; flex-wrap: wrap;
         }
         .top-btn {
             background: linear-gradient(90deg,#ffaa7a,#ffb882);
@@ -190,6 +190,56 @@
             border-radius: 12px;
             display: none;
         }
+
+        /* Shooter Modal - No cover start button */
+        #shooterModal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.98);
+            z-index: 10000;
+            display: none;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        #shooterModal .modal-content {
+            background: #000;
+            border: 4px solid #0f0;
+            border-radius: 15px;
+            width: 100%;
+            max-width: 820px;
+            height: auto;
+            padding-bottom: 20px;
+            position: relative;
+            margin: 0 auto;
+        }
+        #shooterFrame {
+            width: 100% !important;
+            height: 680px !important;
+            border: none;
+            border-radius: 10px;
+            display: block;
+        }
+        #shooterModal .close-shooter {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 30px;
+            color: #ff6b6b;
+            cursor: pointer;
+            z-index: 9999;
+            background: black;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
     </style>
 </head>
 
@@ -217,9 +267,11 @@
         <p style="color:var(--text-dim); margin-top:8px;">計時｜分數｜音效｜慶祝動畫</p>
     </div>
 
+    <!-- 3 buttons: 讀音訓練 / 遺忘曲線記憶 / て形射擊遊戲 -->
     <div class="top-btn-bar">
         <button class="top-btn" onclick="togglePronunciationPanel()">🎤 讀音訓練</button>
         <button class="top-btn" onclick="openForgettingGame()">🧠 遺忘曲線記憶</button>
+        <button class="top-btn" onclick="openTeFormShooter()">🎮 て形射擊遊戲</button>
     </div>
 
     <div class="game-header">
@@ -227,7 +279,6 @@
         <div class="score-display">⭐ 分數：<span id="score">0</span></div>
     </div>
 
-    <!-- 5 level buttons: N5~N1 -->
     <div class="level-selector" id="levelSelector"></div>
     <div id="questions-container"></div>
 
@@ -266,6 +317,14 @@
             </div>
             <div id="acc3" class="accuracy"></div>
         </div>
+    </div>
+</div>
+
+<!-- て形射擊遊戲彈窗 -->
+<div id="shooterModal">
+    <div class="modal-content">
+        <span class="close-shooter" onclick="closeTeFormShooter()">✕</span>
+        <iframe id="shooterFrame" allowfullscreen></iframe>
     </div>
 </div>
 
@@ -385,7 +444,12 @@ const soundCorrect = new Audio("https://assets.mixkit.co/sfx/preview/mixkit-achi
 const soundWrong = new Audio("https://assets.mixkit.co/sfx/preview/mixkit-wrong-answer-buzz-955.mp3");
 const soundFinish = new Audio("https://assets.mixkit.co/sfx/preview/mixkit-complete-2031.mp3");
 
-// === 發音播放 + 錄音評分 ===
+// === 讀音訓練功能 ===
+function togglePronunciationPanel() {
+  const p = document.getElementById('pronunciationPanel');
+  p.style.display = p.style.display === 'block' ? 'none' : 'block';
+}
+
 function speakJapanese(text) {
   window.speechSynthesis.cancel();
   const u = new SpeechSynthesisUtterance(text);
@@ -414,12 +478,53 @@ function checkAccuracy(standard, boxId) {
   rec.start();
 }
 
-function togglePronunciationPanel() {
-  const p = document.getElementById('pronunciationPanel');
-  p.style.display = p.style.display === 'block' ? 'none' : 'block';
+// === て形射擊遊戲 ===
+function openTeFormShooter() {
+    const modal = document.getElementById("shooterModal");
+    const frame = document.getElementById("shooterFrame");
+    frame.src = "te-form-shooter.html"; // 確保你的射擊遊戲文件名正確
+    modal.style.display = "flex";
+}
+function closeTeFormShooter() {
+    const modal = document.getElementById("shooterModal");
+    const frame = document.getElementById("shooterFrame");
+    frame.src = "";
+    modal.style.display = "none";
 }
 
-// === 遊戲核心邏輯 ===
+// === 遺忘曲線遊戲 ===
+function openForgettingGame() {
+    document.getElementById("forgetModal").style.display = "flex";
+    document.getElementById("resultText").innerText = "";
+    document.getElementById("answerInput").value = "";
+    document.getElementById("keigoBox").style.display = "none";
+}
+function closeModal() {
+    document.getElementById("forgetModal").style.display = "none";
+}
+
+function checkTeForm() {
+    const input = document.getElementById("answerInput").value.trim();
+    const result = document.getElementById("resultText");
+    const correctAnswer = "書いて";
+
+    if (input === correctAnswer || input === "かいて") {
+        result.innerText = "✅ 正確！書きます → 書いて（かいて）";
+        result.style.color = "var(--correct)";
+        soundCorrect.play();
+    } else {
+        result.innerText = "❌ 錯誤！正解：書いて（かいて）";
+        result.style.color = "var(--wrong)";
+        soundWrong.play();
+    }
+}
+
+function toggleKeigo() {
+    const box = document.getElementById("keigoBox");
+    box.style.display = box.style.display === "block" ? "none" : "block";
+}
+
+// === 問答遊戲核心邏輯 ===
 function createLevels() {
     const wrap = document.getElementById("levelSelector");
     levels.forEach((lv, i) => {
@@ -524,38 +629,6 @@ function resetGame() {
     document.getElementById("finalScore").style.display = "none";
     stopTimer();
     startTimer();
-}
-
-// === 遺忘曲線遊戲 ===
-function openForgettingGame() {
-    document.getElementById("forgetModal").style.display = "flex";
-    document.getElementById("resultText").innerText = "";
-    document.getElementById("answerInput").value = "";
-    document.getElementById("keigoBox").style.display = "none";
-}
-function closeModal() {
-    document.getElementById("forgetModal").style.display = "none";
-}
-
-function checkTeForm() {
-    const input = document.getElementById("answerInput").value.trim();
-    const result = document.getElementById("resultText");
-    const correctAnswer = "書いて";
-
-    if (input === correctAnswer || input === "かいて") {
-        result.innerText = "✅ 正確！書きます → 書いて（かいて）";
-        result.style.color = "var(--correct)";
-        soundCorrect.play();
-    } else {
-        result.innerText = "❌ 錯誤！正解：書いて（かいて）";
-        result.style.color = "var(--wrong)";
-        soundWrong.play();
-    }
-}
-
-function toggleKeigo() {
-    const box = document.getElementById("keigoBox");
-    box.style.display = box.style.display === "block" ? "none" : "block";
 }
 
 // === 初始化 ===
