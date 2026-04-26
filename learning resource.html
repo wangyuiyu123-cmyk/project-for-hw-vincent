@@ -1,157 +1,3 @@
-<!DOCTYPE html>
-<html lang="zh-HK">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>學習資源 - 日本語 感・知・學</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <style>
-        :root {
-            --bg: #0a0c14;
-            --card: #11131f;
-            --accent: #ffb882;
-            --accent-glow: rgba(255, 184, 130, 0.55);
-            --text: #fce9da;
-            --text-dim: #c9b39a;
-            --border: rgba(255,184,130,0.18);
-        }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            background: var(--bg);
-            color: var(--text);
-            font-family: 'Segoe UI', system-ui, sans-serif;
-            min-height: 100vh;
-            line-height: 1.6;
-        }
-        /* Nav */
-        .nav {
-            position: sticky; top:0; z-index:100;
-            background: rgba(17,19,31,0.95);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid rgba(255,184,130,0.15);
-        }
-        .nav-container {
-            max-width:1100px; margin:0 auto; padding:0 32px;
-            display:flex; align-items:center; justify-content:space-between;
-            height:76px;
-        }
-        .logo {
-            font-size:1.45rem; font-weight:700;
-            color:var(--accent); text-decoration:none;
-            display:flex; align-items:center; gap:10px;
-        }
-        .nav-links {
-            display:flex; gap:26px; list-style:none; flex-wrap:wrap;
-        }
-        .nav-links a {
-            color:var(--text-dim); text-decoration:none;
-            font-weight:500; font-size:1rem;
-            transition:all 0.3s;
-        }
-        .nav-links a.active,
-        .nav-links a:hover {
-            color:var(--accent); text-shadow:0 0 15px var(--accent-glow);
-        }
-        .nav-cta {
-            background:var(--accent); color:#0a0c14;
-            padding:10px 24px; border-radius:999px;
-            font-weight:700; text-decoration:none;
-            box-shadow:0 0 25px rgba(255,184,130,0.4);
-        }
-        /* Container */
-        .container {
-            max-width:1100px; margin:40px auto; padding:50px 32px;
-            background:var(--card); border-radius:36px;
-            border:1px solid var(--border);
-        }
-        .page-header {
-            text-align:center; margin-bottom:40px;
-        }
-        .page-header h1 {
-            background: linear-gradient(90deg, #ffaa7a, #ffb882);
-            -webkit-background-clip:text; -webkit-text-fill-color:transparent;
-            font-size:2.6rem; margin-bottom:12px;
-        }
-        .page-header p {
-            color:var(--text-dim); font-size:1.15rem;
-        }
-
-        /* Manga Hero Image - Clean & Full Width */
-        .manga-hero {
-            width: 100%;
-            border-radius: 20px;
-            overflow: hidden;
-            margin-bottom: 50px;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.5);
-            border: 3px solid #222;
-        }
-        .manga-hero img {
-            width: 100%;
-            height: auto;
-            display: block;
-        }
-
-        /* Resource Cards */
-        .resource-grid {
-            display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
-            gap:24px; margin-top:30px;
-        }
-        .resource-card {
-            background:rgba(255,184,130,0.06);
-            border:1px solid var(--border);
-            border-radius:20px; padding:26px;
-            transition:0.3s;
-        }
-        .resource-card:hover {
-            transform:translateY(-4px);
-            box-shadow:0 0 25px rgba(255,184,130,0.15);
-        }
-        .resource-card i {
-            font-size:2rem; color:var(--accent);
-            margin-bottom:14px;
-        }
-        .resource-card h3 {
-            color:var(--text); margin-bottom:10px;
-        }
-        .resource-card p {
-            color:var(--text-dim); font-size:0.98rem;
-        }
-        footer {
-            text-align:center; margin-top:70px; padding-top:30px;
-            border-top:1px solid var(--border); color:var(--text-dim);
-        }
-    </style>
-</head>
-<body>
-    <nav class="nav">
-        <div class="nav-container">
-            <a href="index.html" class="logo">
-                <i class="fas fa-wifi"></i> 感・知・學
-            </a>
-            <ul class="nav-links">
-                <li><a href="index.html">首頁 Home</a></li>
-                <li><a href="learning progress.html">學習進度 Progress</a></li>
-                <li><a href="features.html">智能特色 Features</a></li>
-                <li><a href="poster.html">海報 Poster</a></li>
-                <li><a href="learning resource.html" class="active">學習資源 Resources</a></li>
-                <li><a href="stats.html">排名 Stats</a></li>
-                <li><a href="about.html">關於我們 About</a></li>
-                <li><a href="game.html">學習遊戲 Game</a></li>
-            </ul>
-            <a href="game.html" class="nav-cta">立即開始體驗</a>
-        </div>
-    </nav>
-
-    <div class="container">
-        <div class="page-header">
-            <h1>📚 實用日語學習資源</h1>
-            <p>簡單、有趣、易學的日語知識與工具</p>
-        </div>
-
-        <div class="manga-hero">
-            <img src="manga image.png" alt="すみません、この電車は京都に行きますか？ - 日語學習漫畫場景">
-        </div>
-
         <h2 style="color:var(--accent); margin-bottom:24px; text-align:center;">
             <i class="fas fa-star"></i> 實用學習工具
         </h2>
@@ -188,7 +34,52 @@
             </div>
         </div>
 
-        <footer>By Yu Wang Yui — 資訊科技 × 旅遊日語</footer>
-    </div>
-</body>
-</html>                
+        <h2 style="color:var(--accent); margin:50px 0 24px; text-align:center;">
+            <i class="fas fa-comments"></i> 漫畫下方學習內容
+        </h2>
+        <div class="resource-grid">
+            <div class="resource-card">
+                <i class="fas fa-graduation-cap"></i>
+                <h3>N4 文法：～てもらいます</h3>
+                <p>～てもらいます (~te moraimasu)<br>
+                請別人幫我做某事 / 得到別人為我做某事<br>
+                例句：荷物を運んでもらいます。<br>
+                請別人幫我搬行李。</p>
+            </div>
+
+            <div class="resource-card">
+                <i class="fas fa-handshake"></i>
+                <h3>打招呼最常用</h3>
+                <p>おはよう (ohayou)<br>
+                早安<br><br>
+                こんにちは (konnichiwa)<br>
+                你好 / 午安</p>
+            </div>
+
+            <div class="resource-card">
+                <i class="fas fa-map-signs"></i>
+                <h3>觀光必問句</h3>
+                <p>すみません (sumimasen)<br>
+                不好意思 / 打擾一下<br><br>
+                ～はどこですか？<br>
+                請問～在哪？</p>
+            </div>
+
+            <div class="resource-card">
+                <i class="fas fa-shopping-bag"></i>
+                <h3>購物 &amp; 吃飯</h3>
+                <p>いくらですか？ (ikura desuka)<br>
+                多少錢？<br><br>
+                美味しい (oishii)<br>
+                好吃！</p>
+            </div>
+
+            <div class="resource-card">
+                <i class="fas fa-plane"></i>
+                <h3>旅行超實用</h3>
+                <p>トイレはどこですか？<br>
+                請問廁所在哪？<br><br>
+                駅はどこですか？<br>
+                車站在哪？</p>
+            </div>
+        </div>
