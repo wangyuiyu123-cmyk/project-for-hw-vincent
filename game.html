@@ -126,6 +126,8 @@
             text-align: center; font-size: 1.4rem; font-weight: bold;
             color: var(--accent); padding: 20px; border-radius: 20px;
             background: rgba(255,184,130,0.08); display: none;
+            white-space: pre-line;
+            line-height: 1.6;
         }
     </style>
 </head>
@@ -199,185 +201,197 @@
 </div>
 
 <script>
-    const levels = [
-        { name: "N5 基礎", questions: [
-            { q: "「我」是？", options: ["あなた", "わたし", "かれ"], answer:1 },
-            { q: "「櫻花」是？", options: ["つき","さくら","みず"], answer:1 },
-            { q: "「3」是？", options: ["いち","に","さん"], answer:2 },
-            { q: "「早安」是？", options: ["おはよう","こんにちは","すみません"], answer:0 },
-            { q: "「貓」是？", options: ["いぬ","ねこ","とり"], answer:1 }
-        ]},
-        { name: "N5 進階", questions: [
-            { q: "「こんにちは」是？", options: ["早上","白天","晚上"], answer:1 },
-            { q: "「謝謝」回應是？", options: ["どういたしまして","ごめん","はい"], answer:0 },
-            { q: "「はい」是？", options: ["不是","是","請"], answer:1 },
-            { q: "「多少錢」是？", options: ["いくら","なんじ","どこ"], answer:0 },
-            { q: "「ごちそうさま」是？", options: ["吃飯前","吃飯後","睡覺前"], answer:1 }
-        ]},
-        { name: "N4 基礎", questions: [
-            { q: "～てください 意思是？", options: ["請做…","不要做…","正在做…"], answer:0 },
-            { q: "～たい 意思是？", options: ["想做…","做過…","正在做…"], answer:0 },
-            { q: "「友達」讀音？", options: ["ともだち","あした","あさって"], answer:0 },
-            { q: "「勉強する」是？", options: ["玩","學習","工作"], answer:1 },
-        ]},
-        { name: "N4 進階", questions: [
-            { q: "～ながら 意思是？", options: ["一邊…一邊…","之後","之前"], answer:0 },
-            { q: "「駅」讀音？", options: ["えき","とり","みせ"], answer:0 },
-        ]},
-        { name: "N3 基礎", questions: [
-            { q: "～について 意思是？", options: ["關於","之後","之前"], answer:0 },
-        ]},
-        { name: "N3 進階", questions: [
-            { q: "～一方 意思是？", options: ["一方面…另一方面…","代替","關於"], answer:0 },
-        ]}
-    ];
+const levels = [
+    {
+        name: "N5 基礎",
+        questions: [
+            { q: "「我」是？", options: ["あなた", "わたし", "かれ"], answer: 1 },
+            { q: "「櫻花」是？", options: ["つき", "さくら", "みず"], answer: 1 },
+            { q: "「3」是？", options: ["いち", "に", "さん"], answer: 2 },
+            { q: "「早安」是？", options: ["おはよう", "こんにちは", "すみません"], answer: 0 },
+            { q: "「貓」是？", options: ["いぬ", "ねこ", "とり"], answer: 1 }
+        ]
+    },
+    {
+        name: "N5 進階",
+        questions: [
+            { q: "「こんにちは」是？", options: ["早上", "白天", "晚上"], answer: 1 },
+            { q: "「謝謝」回應是？", options: ["どういたしまして", "ごめん", "はい"], answer: 0 },
+            { q: "「はい」是？", options: ["不是", "是", "請"], answer: 1 },
+            { q: "「多少錢」是？", options: ["いくら", "なんじ", "どこ"], answer: 0 },
+            { q: "「ごちそうさま」是？", options: ["吃飯前", "吃飯後", "睡覺前"], answer: 1 }
+        ]
+    },
+    { name: "N4 基礎", questions: [
+        { q: "～てください 意思是？", options: ["請做…", "不要做…", "正在做…"], answer: 0 },
+        { q: "～たい 意思是？", options: ["想做…", "做過…", "正在做…"], answer: 0 },
+        { q: "「友達」讀音？", options: ["ともだち", "あした", "あさって"], answer: 0 },
+        { q: "「勉強する」是？", options: ["玩", "學習", "工作"], answer: 1 },
+    ]},
+    { name: "N4 進階", questions: [
+        { q: "～ながら 意思是？", options: ["一邊…一邊…", "之後", "之前"], answer: 0 },
+        { q: "「駅」讀音？", options: ["えき", "とり", "みせ"], answer: 0 },
+    ]},
+    { name: "N3 基礎", questions: [
+        { q: "～について 意思是？", options: ["關於", "之後", "之前"], answer: 0 },
+    ]},
+    { name: "N3 進階", questions: [
+        { q: "～一方 意思是？", options: ["一方面…另一方面…", "代替", "關於"], answer: 0 },
+    ]}
+];
 
-    let currentLevel = 0;
-    let score = 0;
-    let questions = [];
-    let timerInterval;
-    let gameFinished = false;
+let currentLevel = 0;
+let score = 0;
+let questions = [];
+let timerInterval;
+let gameFinished = false;
 
-    const soundCorrect = new Audio("https://assets.mixkit.co/sfx/preview/mixkit-achievement-bell-600.mp3");
-    const soundWrong = new Audio("https://assets.mixkit.co/sfx/preview/mixkit-wrong-answer-buzz-955.mp3");
-    const soundFinish = new Audio("https://assets.mixkit.co/sfx/preview/mixkit-complete-2031.mp3");
+const soundCorrect = new Audio("https://assets.mixkit.co/sfx/preview/mixkit-achievement-bell-600.mp3");
+const soundWrong = new Audio("https://assets.mixkit.co/sfx/preview/mixkit-wrong-answer-buzz-955.mp3");
+const soundFinish = new Audio("https://assets.mixkit.co/sfx/preview/mixkit-complete-2031.mp3");
 
-    function createLevels() {
-        const wrap = document.getElementById("levelSelector");
-        levels.forEach((lv, i) => {
-            const btn = document.createElement("button");
-            btn.className = "level-btn" + (i == 0 ? " active" : "");
-            btn.innerText = lv.name;
-            btn.onclick = () => {
-                currentLevel = i;
-                resetGame();
-                loadQuestions();
-                document.querySelectorAll(".level-btn").forEach((b, idx) => {
-                    b.classList.toggle("active", idx == i);
-                });
-            };
-            wrap.appendChild(btn);
-        });
-    }
-
-    function loadQuestions() {
-        const container = document.getElementById("questions-container");
-        container.innerHTML = "";
-        questions = levels[currentLevel].questions;
-        questions.forEach((q, idx) => {
-            const div = document.createElement("div");
-            div.className = "question";
-            div.innerHTML = `<div class="question-text">${idx+1}. ${q.q}</div>`;
-            const opts = document.createElement("div");
-            opts.className = "options";
-            q.options.forEach((opt, i) => {
-                const btn = document.createElement("button");
-                btn.className = "option-btn";
-                btn.innerText = opt;
-                btn.onclick = () => checkAns(btn, idx, i);
-                opts.appendChild(btn);
+function createLevels() {
+    const wrap = document.getElementById("levelSelector");
+    levels.forEach((lv, i) => {
+        const btn = document.createElement("button");
+        btn.className = "level-btn" + (i == 0 ? " active" : "");
+        btn.innerText = lv.name;
+        btn.onclick = () => {
+            currentLevel = i;
+            resetGame();
+            loadQuestions();
+            document.querySelectorAll(".level-btn").forEach((b, idx) => {
+                b.classList.toggle("active", idx == i);
             });
-            div.appendChild(opts);
-            container.appendChild(div);
-        });
-    }
-
-    function checkAns(btn, qIdx, oIdx) {
-        if (gameFinished) return;
-        const q = questions[qIdx];
-        const all = btn.parentElement.querySelectorAll(".option-btn");
-        all.forEach(b => b.disabled = true);
-
-        if (oIdx === q.answer) {
-            btn.classList.add("correct");
-            btn.innerText += " ✅";
-            score++;
-            soundCorrect.play();
-        } else {
-            btn.classList.add("incorrect");
-            btn.innerText += " ❌";
-            all[q.answer].classList.add("correct");
-            soundWrong.play();
-        }
-        document.getElementById("score").innerText = score;
-    }
-
-    function startTimer() {
-        let sec = 0;
-        timerInterval = setInterval(() => {
-            sec++;
-            document.getElementById("timer").innerText = sec;
-        }, 1000);
-    }
-
-    function stopTimer() {
-        clearInterval(timerInterval);
-    }
-
-    function finishGame() {
-        if (gameFinished) return;
-        gameFinished = true;
-        stopTimer();
-        soundFinish.play();
-
-        confetti({
-            particleCount: 150,
-            spread: 70,
-            origin: { y: 0.6 },
-            colors: ['#ffb882', '#25d366', '#ff6b6b', '#ffffff']
-        });
-
-        const final = document.getElementById("finalScore");
-        final.style.display = "block";
-        final.innerText = `🎉 完成！\n分數：${score}/${questions.length}`;
-    }
-
-    function resetGame() {
-        score = 0;
-        gameFinished = false;
-        document.getElementById("score").innerText = 0;
-        document.getElementById("finalScore").style.display = "none";
-        stopTimer();
-        startTimer();
-    }
-
-    function togglePronunciationPanel() {
-        const panel = document.getElementById("pronunciationPanel");
-        panel.style.display = panel.style.display === "block" ? "none" : "block";
-    }
-
-    // ✅ 這裡改成 Google 自然日語女声
-    function playGoogleJapaneseVoice(text) {
-        const audio = new Audio();
-        audio.src = `https://translate.google.com/translate_tts?ie=UTF-8&tl=ja&client=tw-ob&q=${encodeURIComponent(text)}`;
-        audio.play();
-        document.getElementById("pronunciationNote").innerText = `🎧 播放標準發音：${text}`;
-    }
-
-    // 舊版發音（備用）
-    function playPronunciation(phrase) {
-        if ('speechSynthesis' in window) {
-            const u = new SpeechSynthesisUtterance(phrase);
-            u.lang = 'ja-JP';
-            speechSynthesis.speak(u);
-        }
-    }
-
-    function judgePronunciationSimilarity(phrase) {
-        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-        if (!SpeechRecognition) return alert("不支援語音辨識，請用 Chrome / Edge");
-        const r = new SpeechRecognition();
-        r.lang = 'ja-JP';
-        r.onresult = e => {
-            const res = e.results[0][0].transcript;
-            alert(`你說：${res}\n標準：${phrase}`);
         };
-        r.start();
+        wrap.appendChild(btn);
+    });
+}
+
+function loadQuestions() {
+    const container = document.getElementById("questions-container");
+    container.innerHTML = "";
+    questions = levels[currentLevel].questions;
+    questions.forEach((q, idx) => {
+        const div = document.createElement("div");
+        div.className = "question";
+        div.innerHTML = `<div class="question-text">${idx+1}. ${q.q}</div>`;
+        const opts = document.createElement("div");
+        opts.className = "options";
+        q.options.forEach((opt, i) => {
+            const btn = document.createElement("button");
+            btn.className = "option-btn";
+            btn.innerText = opt;
+            btn.onclick = () => checkAns(btn, idx, i);
+            opts.appendChild(btn);
+        });
+        div.appendChild(opts);
+        container.appendChild(div);
+    });
+}
+
+function checkAns(btn, qIdx, oIdx) {
+    if (gameFinished) return;
+    const q = questions[qIdx];
+    const all = btn.parentElement.querySelectorAll(".option-btn");
+    all.forEach(b => b.disabled = true);
+
+    if (oIdx === q.answer) {
+        btn.classList.add("correct");
+        btn.innerText += " ✅";
+        score++;
+        soundCorrect.play();
+    } else {
+        btn.classList.add("incorrect");
+        btn.innerText += " ❌";
+        all[q.answer].classList.add("correct");
+        soundWrong.play();
+    }
+    document.getElementById("score").innerText = score;
+}
+
+function startTimer() {
+    let sec = 0;
+    timerInterval = setInterval(() => {
+        sec++;
+        document.getElementById("timer").innerText = sec;
+    }, 1000);
+}
+
+function stopTimer() {
+    clearInterval(timerInterval);
+}
+
+function finishGame() {
+    if (gameFinished) return;
+    gameFinished = true;
+    stopTimer();
+    soundFinish.play();
+
+    confetti({
+        particleCount: 200,
+        spread: 70,
+        origin: { y: 0.6 },
+        colors: ['#ffb882', '#25d366', '#ff6b6b', '#ffffff']
+    });
+
+    const time = parseInt(document.getElementById("timer").innerText);
+    let percent;
+
+    if (time <= 20) {
+        percent = 99;
+    } else if (time <= 35) {
+        percent = 80;
+    } else if (time <= 50) {
+        percent = 60;
+    } else {
+        percent = 30;
     }
 
-    createLevels();
-    loadQuestions();
+    const final = document.getElementById("finalScore");
+    final.style.display = "block";
+    final.innerText = `你的完成速度（${time}秒）\n擊敗全國 ${percent}% 的人！`;
+}
+
+function resetGame() {
+    score = 0;
+    gameFinished = false;
+    document.getElementById("score").innerText = 0;
+    document.getElementById("finalScore").style.display = "none";
+    stopTimer();
     startTimer();
+}
+
+function togglePronunciationPanel() {
+    const panel = document.getElementById("pronunciationPanel");
+    panel.style.display = panel.style.display === "block" ? "none" : "block";
+}
+
+function playGoogleJapaneseVoice(text) {
+    const audio = new Audio();
+    audio.src = `https://translate.google.com/translate_tts?ie=UTF-8&tl=ja&client=tw-ob&q=${encodeURIComponent(text)}`;
+    audio.play();
+    document.getElementById("pronunciationNote").innerText = `🎧 播放標準發音：${text}`;
+}
+
+function judgePronunciationSimilarity(phrase) {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+        alert("你的瀏覽器不支援語音辨識，請使用 Chrome 或 Edge");
+        return;
+    }
+    const r = new SpeechRecognition();
+    r.lang = 'ja-JP';
+    r.onresult = e => {
+        const res = e.results[0][0].transcript;
+        alert(`辨識結果：${res}\n標準句子：${phrase}`);
+    };
+    r.start();
+}
+
+createLevels();
+loadQuestions();
+startTimer();
 </script>
 
 </body>
