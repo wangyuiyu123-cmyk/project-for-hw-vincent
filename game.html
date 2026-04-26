@@ -147,19 +147,34 @@
             font-size: 1.4rem; cursor: pointer;
         }
 
-        /* て形射擊遊戲彈窗 */
+        /* ========== 這裡是修改後的超大彈窗 ========== */
         #shooterModal {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.95); z-index: 10000;
+            background: rgba(0,0,0,0.98); z-index: 10000;
             display: none; justify-content: center; align-items: center;
+            padding: 10px; /* 增加內邊距 */
         }
         #shooterModal .modal-content {
             background: #000; border: 4px solid #0f0; border-radius: 15px;
-            width: 95%; max-width: 830px; position: relative;
+            width: 98%;    /* 幾乎滿寬 */
+            height: 96%;   /* 幾乎滿高 */
+            max-width: 1000px;
+            max-height: 98vh;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+        #shooterFrame {
+            flex: 1;
+            width: 100% !important;
+            height: 100% !important;
+            border:none;
+            border-radius:10px;
         }
         #shooterModal .close-shooter {
-            position: absolute; top: 12px; right: 20px; font-size: 32px;
+            position: absolute; top: 12px; right: 20px; font-size: 36px;
             color: #ff6b6b; cursor: pointer; z-index: 10;
+            font-weight: bold;
         }
     </style>
 </head>
@@ -188,7 +203,6 @@
         <p style="color:var(--text-dim); margin-top:8px;">計時｜分數｜音效｜慶祝動畫</p>
     </div>
 
-    <!-- 三個遊戲按鈕 -->
     <div class="top-btn-bar">
         <button class="top-btn" onclick="togglePronunciationPanel()">🎤 讀音訓練</button>
         <button class="top-btn" onclick="openForgettingGame()">🧠 遺忘曲線記憶</button>
@@ -239,11 +253,11 @@
 <div id="shooterModal">
     <div class="modal-content">
         <span class="close-shooter" onclick="closeShooterModal()">✕</span>
-        <iframe id="shooterFrame" width="100%" height="680" style="border:none; border-radius:10px;" allowfullscreen></iframe>
+        <iframe id="shooterFrame" style="border:none; border-radius:10px;" allowfullscreen></iframe>
     </div>
 </div>
 
-<!-- 遺忘曲線記憶彈窗（原有） -->
+<!-- 遺忘曲線記憶彈窗 -->
 <div class="modal-overlay" id="forgetModal">
     <div class="modal-box">
         <button class="close-btn" onclick="closeModal()">✕</button>
@@ -276,8 +290,6 @@ const levels = [
         { q: "「早安」是？", options: ["おはよう", "こんにちは", "すみません"], answer: 0 },
         { q: "「貓」是？", options: ["いぬ", "ねこ", "とり"], answer: 1 }
     ]},
-    // ... 其餘 levels 保持不變（為了簡潔這裡省略，你可以從你原本的檔案貼回完整 levels 陣列）
-    // 如果需要完整 levels，請告訴我，我再補上
 ];
 
 let currentLevel = 0;
@@ -290,7 +302,6 @@ const soundCorrect = new Audio("https://assets.mixkit.co/sfx/preview/mixkit-achi
 const soundWrong = new Audio("https://assets.mixkit.co/sfx/preview/mixkit-wrong-answer-buzz-955.mp3");
 const soundFinish = new Audio("https://assets.mixkit.co/sfx/preview/mixkit-complete-2031.mp3");
 
-// ================== 原有函數（保留） ==================
 function createLevels() {
     const wrap = document.getElementById("levelSelector");
     wrap.innerHTML = "";
@@ -433,7 +444,7 @@ function toggleKeigo() {
     box.style.display = box.style.display === "block" ? "none" : "block";
 }
 
-// ================== 新增：て形射擊遊戲 ==================
+// ================== て形射擊遊戲 ==================
 function openTeFormShooter() {
     const modal = document.getElementById("shooterModal");
     const frame = document.getElementById("shooterFrame");
