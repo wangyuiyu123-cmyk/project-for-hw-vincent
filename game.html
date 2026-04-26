@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>日本語 感・知・學｜N5-N3 日語遊戲</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <!-- canvas-confetti CDN -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
         :root {
@@ -176,7 +175,7 @@
             <p class="jp-sentence">おはようございます</p>
             <p class="cn-sentence">早上好</p>
             <div class="pronunciation-btn-row">
-                <button onclick="playPronunciation('おはようございます')">🔊 播放發音</button>
+                <button onclick="playGoogleJapaneseVoice('おはようございます')">🔊 播放發音</button>
                 <button onclick="judgePronunciationSimilarity('おはようございます')">🎙 AI 判斷讀音</button>
             </div>
         </div>
@@ -184,7 +183,7 @@
             <p class="jp-sentence">こんにちは</p>
             <p class="cn-sentence">你好</p>
             <div class="pronunciation-btn-row">
-                <button onclick="playPronunciation('こんにちは')">🔊 播放發音</button>
+                <button onclick="playGoogleJapaneseVoice('こんにちは')">🔊 播放發音</button>
                 <button onclick="judgePronunciationSimilarity('こんにちは')">🎙 AI 判斷讀音</button>
             </div>
         </div>
@@ -192,7 +191,7 @@
             <p class="jp-sentence">ありがとうございます</p>
             <p class="cn-sentence">謝謝你</p>
             <div class="pronunciation-btn-row">
-                <button onclick="playPronunciation('ありがとうございます')">🔊 播放發音</button>
+                <button onclick="playGoogleJapaneseVoice('ありがとうございます')">🔊 播放發音</button>
                 <button onclick="judgePronunciationSimilarity('ありがとうございます')">🎙 AI 判斷讀音</button>
             </div>
         </div>
@@ -315,14 +314,12 @@
         clearInterval(timerInterval);
     }
 
-    // ✅ 这里使用 canvas-confetti 礼花特效
     function finishGame() {
         if (gameFinished) return;
         gameFinished = true;
         stopTimer();
         soundFinish.play();
 
-        // 礼花庆祝效果
         confetti({
             particleCount: 150,
             spread: 70,
@@ -349,6 +346,15 @@
         panel.style.display = panel.style.display === "block" ? "none" : "block";
     }
 
+    // ✅ 這裡改成 Google 自然日語女声
+    function playGoogleJapaneseVoice(text) {
+        const audio = new Audio();
+        audio.src = `https://translate.google.com/translate_tts?ie=UTF-8&tl=ja&client=tw-ob&q=${encodeURIComponent(text)}`;
+        audio.play();
+        document.getElementById("pronunciationNote").innerText = `🎧 播放標準發音：${text}`;
+    }
+
+    // 舊版發音（備用）
     function playPronunciation(phrase) {
         if ('speechSynthesis' in window) {
             const u = new SpeechSynthesisUtterance(phrase);
@@ -359,7 +365,7 @@
 
     function judgePronunciationSimilarity(phrase) {
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-        if (!SpeechRecognition) return alert("不支援語音辨識");
+        if (!SpeechRecognition) return alert("不支援語音辨識，請用 Chrome / Edge");
         const r = new SpeechRecognition();
         r.lang = 'ja-JP';
         r.onresult = e => {
