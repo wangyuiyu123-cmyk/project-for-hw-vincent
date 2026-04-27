@@ -75,7 +75,7 @@
         .page-header p {
             color:var(--text-dim); font-size:1.15rem;
         }
-        /* Manga Hero Image - Clean & Full Width */
+        /* Manga Hero Image */
         .manga-hero {
             width: 100%;
             border-radius: 20px;
@@ -91,13 +91,16 @@
         }
         /* Resource Cards */
         .resource-grid {
-            display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
-            gap:24px; margin-top:30px;
+            display:grid; 
+            grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+            gap:24px; 
+            margin-top:30px;
         }
         .resource-card {
             background:rgba(255,184,130,0.06);
             border:1px solid var(--border);
-            border-radius:20px; padding:26px;
+            border-radius:20px; 
+            padding:26px;
             transition:0.3s;
         }
         .resource-card:hover {
@@ -105,18 +108,24 @@
             box-shadow:0 0 25px rgba(255,184,130,0.15);
         }
         .resource-card i {
-            font-size:2rem; color:var(--accent);
+            font-size:2rem; 
+            color:var(--accent);
             margin-bottom:14px;
         }
         .resource-card h3 {
-            color:var(--text); margin-bottom:10px;
+            color:var(--text); 
+            margin-bottom:10px;
         }
         .resource-card p {
-            color:var(--text-dim); font-size:0.98rem;
+            color:var(--text-dim); 
+            font-size:0.98rem;
         }
         footer {
-            text-align:center; margin-top:70px; padding-top:30px;
-            border-top:1px solid var(--border); color:var(--text-dim);
+            text-align:center; 
+            margin-top:70px; 
+            padding-top:30px;
+            border-top:1px solid var(--border); 
+            color:var(--text-dim);
         }
     </style>
 </head>
@@ -139,57 +148,23 @@
             <a href="game.html" class="nav-cta">立即開始體驗</a>
         </div>
     </nav>
+
     <div class="container">
         <div class="page-header">
             <h1>📚 實用日語學習資源</h1>
             <p>簡單、有趣、易學的日語知識與工具</p>
         </div>
+
+        <!-- Fixed Manga Image Section -->
         <div class="manga-hero">
-            <img src="manga-image-updated.png" alt="すみません、この電車は京都に行きますか？ - 日語學習漫畫場景 N4文法與實用會話">
-        </div>
-        
-        <!-- Additional content under the manga image (as requested) -->
-        <div style="margin: 30px 0; padding: 25px; background: rgba(255,184,130,0.08); border-radius: 20px; border: 1px solid var(--border);">
-            <h2 style="color:var(--accent); text-align:center; margin-bottom:20px;">📖 N4文法與實用會話</h2>
-            
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; font-size: 0.98rem;">
-                <div>
-                    <strong style="color:var(--accent);">N4文法：～てもらいます</strong><br>
-                    ～てもらいます (~te moraimasu)<br>
-                    請別人幫我做某事 / 得到別人為我做某事<br><br>
-                    <strong>荷物を運んでもらいます。</strong> (nimotsu o hakonde moraimasu)<br>
-                    請別人幫我搬行李。
-                </div>
-                
-                <div>
-                    <strong style="color:var(--accent);">打招呼最常用</strong><br>
-                    おはよう (ohayou) — 早安<br>
-                    こんにちは (konnichiwa) — 你好 / 午安
-                </div>
-                
-                <div>
-                    <strong style="color:var(--accent);">觀光必問句</strong><br>
-                    すみません (sumimasen) — 不好意思 / 打擾一下<br>
-                    ～はどこですか？ — 請問～在哪？
-                </div>
-                
-                <div>
-                    <strong style="color:var(--accent);">購物 & 吃飯</strong><br>
-                    いくらですか？ (ikura desuka) — 多少錢？<br>
-                    美味しい (oishii) — 好吃！
-                </div>
-                
-                <div>
-                    <strong style="color:var(--accent);">旅行超實用</strong><br>
-                    トイレはどこですか？ — 請問廁所在哪？<br>
-                    駅はどこですか？ — 車站在哪？
-                </div>
-            </div>
+            <img src="manga-resource.jpg" 
+                 alt="すみません、この電車は京都に行きますか？ - 日語學習漫畫 N4文法與實用會話">
         </div>
 
         <h2 style="color:var(--accent); margin-bottom:24px; text-align:center;">
             <i class="fas fa-star"></i> 實用學習工具
         </h2>
+        
         <div class="resource-grid">
             <div class="resource-card">
                 <i class="fas fa-book"></i>
@@ -222,6 +197,7 @@
                 <p>日本禮儀、文化、生活習慣，讓旅行更順利。</p>
             </div>
         </div>
+
         <footer>By Yu Wang Yui — 資訊科技 × 旅遊日語</footer>
     </div>
 </body>
