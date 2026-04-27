@@ -15,11 +15,7 @@
             --text-dim: #c9b39a;
         }
 
-        * { 
-            margin: 0; 
-            padding: 0; 
-            box-sizing: border-box; 
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body { 
             background: var(--bg); 
@@ -29,383 +25,161 @@
             line-height: 1.5; 
         }
 
+        /* Nav */
         .nav {
-            position: sticky;
-            top: 0;
-            z-index: 100;
+            position: sticky; top: 0; z-index: 100;
             background: rgba(17, 19, 31, 0.95);
             backdrop-filter: blur(12px);
             border-bottom: 1px solid rgba(255,184,130,0.15);
         }
-
         .nav-container {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 0 32px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            height: 76px;
+            max-width: 1100px; margin: 0 auto; padding: 0 32px;
+            display: flex; align-items: center; justify-content: space-between; height: 76px;
         }
-
         .logo {
-            font-size: 1.45rem;
-            font-weight: 700;
-            letter-spacing: 3px;
-            color: var(--accent);
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 10px;
+            font-size: 1.45rem; font-weight: 700; letter-spacing: 3px;
+            color: var(--accent); text-decoration: none;
+            display: flex; align-items: center; gap: 10px;
         }
-
         .nav-links {
-            display: flex;
-            gap: 32px;
-            list-style: none;
+            display: flex; gap: 32px; list-style: none;
         }
-
         .nav-links a {
-            color: var(--text-dim);
-            text-decoration: none;
-            font-weight: 500;
-            font-size: 1.05rem;
-            transition: all 0.3s;
+            color: var(--text-dim); text-decoration: none;
+            font-weight: 500; font-size: 1.05rem; transition: all 0.3s;
         }
-
-        .nav-links a.nav-game {
-            padding: 12px 26px;
-            margin-left: 18px;
-            border-radius: 999px;
-            background: rgba(255,184,130,0.16);
-            color: var(--accent);
-            font-weight: 700;
-            font-size: 1.1rem;
-            box-shadow: 0 0 22px rgba(255,184,130,0.24);
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--accent); text-shadow: 0 0 15px var(--accent-glow);
         }
-
-        .nav-links a.nav-game:hover,
-        .nav-links a.nav-game.active {
-            background: rgba(255,184,130,0.28);
-            color: #0a0c14;
-            text-shadow: none;
-        }
-
-        .nav-links a:hover,
-        .nav-links a.active {
-            color: var(--accent);
-            text-shadow: 0 0 15px var(--accent-glow);
-        }
-
-        .nav-toggle {
-            display: none;
-            background: transparent;
-            border: 1px solid rgba(255,184,130,0.3);
-            color: var(--accent);
-            width: 48px;
-            height: 48px;
-            border-radius: 14px;
-            cursor: pointer;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
-            transition: background 0.3s, transform 0.3s;
-        }
-
-        .nav-toggle:hover {
-            background: rgba(255,184,130,0.12);
-            transform: scale(1.05);
-        }
-
-        .nav-links {
-            transition: right 0.35s ease, opacity 0.35s ease;
-        }
-
-        .nav-links.open {
-            right: 0;
-            opacity: 1;
-        }
-
-        @media (max-width: 860px) {
-            .nav-container {
-                padding: 0 20px;
-            }
-
-            .nav-toggle {
-                display: inline-flex;
-            }
-
-            .nav-links {
-                position: fixed;
-                top: 0;
-                right: -100%;
-                width: 280px;
-                height: 100vh;
-                flex-direction: column;
-                align-items: flex-start;
-                justify-content: flex-start;
-                gap: 24px;
-                padding: 120px 24px 24px;
-                background: rgba(10, 12, 20, 0.98);
-                box-shadow: -12px 0 40px rgba(0, 0, 0, 0.45);
-                z-index: 120;
-            }
-
-            .nav-links li {
-                width: 100%;
-            }
-
-            .nav-links a {
-                font-size: 1.2rem;
-                width: 100%;
-                display: inline-block;
-                padding: 12px 0;
-            }
-
-            .nav-cta {
-                display: none;
-            }
-        }
-
         .nav-cta {
-            background: var(--accent);
-            color: #0a0c14;
-            padding: 10px 24px;
-            border-radius: 999px;
-            font-weight: 700;
-            text-decoration: none;
-            font-size: 1rem;
-            transition: all 0.3s;
+            background: var(--accent); color: #0a0c14;
+            padding: 10px 24px; border-radius: 999px;
+            font-weight: 700; text-decoration: none;
             box-shadow: 0 0 25px rgba(255,184,130,0.4);
         }
-
         .nav-cta:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 0 35px rgba(255,184,130,0.6);
+            transform: translateY(-3px); box-shadow: 0 0 35px rgba(255,184,130,0.6);
         }
 
         .container {
-            max-width: 1100px;
-            margin: 0 auto;
-            background: var(--card);
-            border-radius: 44px;
+            max-width: 1100px; margin: 0 auto;
+            background: var(--card); border-radius: 44px;
             padding: 48px 32px;
             box-shadow: 0 0 80px rgba(255,140,0,0.18), inset 0 0 40px rgba(255,184,130,0.06);
             border: 1px solid rgba(255,184,130,0.12);
             margin-top: -12px;
         }
 
-        header {
-            text-align: center;
-            margin-bottom: 48px;
-        }
-
+        header { text-align: center; margin-bottom: 48px; }
         h1 {
-            font-size: 3.4rem;
-            letter-spacing: 6px;
+            font-size: 3.4rem; letter-spacing: 6px;
             background: linear-gradient(90deg, #ffaa7a, #ffb882, #ffcb9a);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 30px var(--accent-glow);
-            margin-bottom: 8px;
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 30px var(--accent-glow); margin-bottom: 8px;
         }
-
-        .subtitle {
-            font-size: 1.28rem;
-            color: var(--text-dim);
-            opacity: 0.9;
-        }
-
+        .subtitle { font-size: 1.28rem; color: var(--text-dim); opacity: 0.9; }
         .intro-text {
-            max-width: 720px;
-            margin: 32px auto 0;
-            font-size: 1.15rem;
-            color: var(--text-dim);
-            line-height: 1.65;
-            text-align: center;
+            max-width: 720px; margin: 32px auto 0; font-size: 1.15rem;
+            color: var(--text-dim); line-height: 1.65; text-align: center;
         }
-
         .hero-photo {
-            display: block;
-            width: 100%;
-            max-width: 760px;
-            margin: 32px auto 0;
-            border-radius: 32px;
-            border: 1px solid rgba(255,184,130,0.22);
-            box-shadow: 0 24px 60px rgba(0,0,0,0.35);
-            object-fit: cover;
+            display: block; width: 100%; max-width: 760px; margin: 32px auto 0;
+            border-radius: 32px; border: 1px solid rgba(255,184,130,0.22);
+            box-shadow: 0 24px 60px rgba(0,0,0,0.35); object-fit: cover;
         }
 
         .badges {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 16px;
-            justify-content: center;
-            margin: 28px 0 40px;
+            display: flex; flex-wrap: wrap; gap: 16px;
+            justify-content: center; margin: 28px 0 40px;
         }
-
         .badge {
-            background: rgba(255,184,130,0.08);
-            border: 1px solid rgba(255,184,130,0.25);
-            border-radius: 999px;
-            padding: 10px 20px;
-            font-size: 1.05rem;
-            color: var(--accent);
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            background: rgba(255,184,130,0.08); border: 1px solid rgba(255,184,130,0.25);
+            border-radius: 999px; padding: 10px 20px; font-size: 1.05rem;
+            color: var(--accent); display: flex; align-items: center; gap: 8px;
             transition: all 0.3s;
         }
-
         .badge:hover {
             background: rgba(255,184,130,0.18);
             box-shadow: 0 0 20px rgba(255,184,130,0.3);
             transform: translateY(-2px);
         }
 
-        .badge i { font-size: 1.4rem; }
-
         .sense-row {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 16px;
-            justify-content: center;
-            margin: 32px 0 56px;
+            display: flex; flex-wrap: wrap; gap: 16px;
+            justify-content: center; margin: 32px 0 56px;
         }
-
         .sense-icon {
-            width: 64px;
-            height: 64px;
-            background: rgba(255,184,130,0.07);
-            border: 1px solid rgba(255,184,130,0.3);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.8rem;
-            color: var(--accent);
-            transition: all 0.4s;
+            width: 64px; height: 64px; background: rgba(255,184,130,0.07);
+            border: 1px solid rgba(255,184,130,0.3); border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.8rem; color: var(--accent); transition: all 0.4s;
         }
-
         .sense-icon:hover {
-            transform: scale(1.15);
-            box-shadow: 0 0 25px var(--accent-glow);
+            transform: scale(1.15); box-shadow: 0 0 25px var(--accent-glow);
         }
 
         section h2 {
-            text-align: center;
-            font-size: 2.1rem;
-            margin: 0 0 32px;
-            color: var(--accent);
-            text-shadow: 0 0 20px rgba(255,184,130,0.4);
-            letter-spacing: 2px;
+            text-align: center; font-size: 2.1rem; margin: 0 0 32px;
+            color: var(--accent); text-shadow: 0 0 20px rgba(255,184,130,0.4);
         }
 
         .feature-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 28px;
-            margin-bottom: 60px;
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 28px; margin-bottom: 60px;
         }
-
         .feature-card {
-            background: rgba(20,22,35,0.6);
-            border: 1px solid rgba(255,184,130,0.18);
-            border-radius: 28px;
-            padding: 32px 20px;
-            text-align: center;
+            background: rgba(20,22,35,0.6); border: 1px solid rgba(255,184,130,0.18);
+            border-radius: 28px; padding: 32px 20px; text-align: center;
             transition: all 0.4s;
-            position: relative;
-            overflow: hidden;
         }
-
-        .feature-card::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: radial-gradient(circle at 50% 30%, rgba(255,184,130,0.14) 0%, transparent 70%);
-            opacity: 0;
-            transition: opacity 0.5s;
-            pointer-events: none;
-        }
-
-        .feature-card:hover::before {
-            opacity: 1;
-        }
-
         .feature-card:hover {
-            border-color: var(--accent);
-            box-shadow: 0 0 50px var(--accent-glow);
+            border-color: var(--accent); box-shadow: 0 0 50px var(--accent-glow);
             transform: translateY(-6px) scale(1.03);
         }
+        .feature-icon { font-size: 4.8rem; color: var(--accent); margin-bottom: 20px; }
 
-        .feature-icon {
-            font-size: 4.8rem;
-            color: var(--accent);
-            margin-bottom: 20px;
-            filter: drop-shadow(0 0 12px var(--accent-glow));
-            animation: pulse 4s infinite ease-in-out;
+        /* Flip Card Styles */
+        .flip-card { perspective: 1000px; height: 260px; }
+        .flip-card-inner {
+            position: relative; width: 100%; height: 100%; text-align: center;
+            transition: transform 0.65s cubic-bezier(0.23, 1, 0.32, 1);
+            transform-style: preserve-3d; cursor: pointer; border-radius: 28px;
         }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 0.88; transform: scale(1); }
-            50%      { opacity: 1;    transform: scale(1.08); }
+        .flip-card:hover .flip-card-inner { transform: rotateY(180deg); }
+        .flip-card-front, .flip-card-back {
+            position: absolute; width: 100%; height: 100%; backface-visibility: hidden;
+            border-radius: 28px; display: flex; flex-direction: column;
+            align-items: center; justify-content: center; box-shadow: 0 10px 30px rgba(0,0,0,0.3);
         }
-
-        .feature-card h3 {
-            font-size: 1.35rem;
-            margin-bottom: 12px;
-            color: var(--text);
+        .flip-card-front {
+            background: linear-gradient(135deg, rgba(255,184,130,0.12), rgba(20,22,35,0.85));
+            border: 2px solid rgba(255,184,130,0.35);
         }
-
-        .feature-card p {
-            font-size: 1rem;
-            color: var(--text-dim);
-            line-height: 1.45;
+        .flip-card-back {
+            background: linear-gradient(135deg, #1a1f2e, rgba(255,184,130,0.08));
+            border: 2px solid var(--accent); transform: rotateY(180deg);
         }
-
-        .cta-section {
-            text-align: center;
-            padding: 48px 20px;
-            background: rgba(255,184,130,0.06);
-            border-radius: 32px;
-            border: 1px solid rgba(255,184,130,0.18);
+        .card-number { font-size: 4.8rem; font-weight: 800; color: var(--accent); margin-bottom: 8px; text-shadow: 0 0 20px var(--accent-glow); }
+        .card-kanji { font-size: 2.6rem; color: #ffe0c0; margin-bottom: 6px; }
+        .card-hiragana { font-size: 1.75rem; color: #fff; font-weight: 500; }
+        .card-romaji { font-size: 1.15rem; color: var(--text-dim); margin-top: 4px; }
+        .day-front { background: linear-gradient(135deg, rgba(255,184,130,0.18), rgba(17,19,31,0.9)); }
+        .back-content { padding: 20px; text-align: center; }
+        .back-content h3 { color: var(--accent); font-size: 1.65rem; margin-bottom: 18px; }
+        .speak-btn {
+            background: rgba(255,184,130,0.2); color: var(--accent); border: none;
+            padding: 12px 28px; border-radius: 999px; font-size: 1.05rem;
+            cursor: pointer; transition: all 0.3s; display: inline-flex;
+            align-items: center; gap: 8px;
         }
-
-        .cta-btn {
-            display: inline-block;
-            background: linear-gradient(90deg, #ffaa7a, #ffb882);
-            color: #0a0c14;
-            font-size: 1.35rem;
-            font-weight: 700;
-            padding: 18px 48px;
-            border-radius: 999px;
-            text-decoration: none;
-            box-shadow: 0 0 40px var(--accent-glow);
-            transition: all 0.4s;
-            margin-top: 16px;
-        }
-
-        .cta-btn:hover {
-            transform: scale(1.08) translateY(-4px);
-            box-shadow: 0 0 60px var(--accent-glow);
+        .speak-btn:hover {
+            background: var(--accent); color: #0a0c14; transform: scale(1.08);
         }
 
         footer {
-            text-align: center;
-            margin-top: 60px;
-            padding-top: 30px;
-            border-top: 1px solid rgba(255,184,130,0.1);
-            color: var(--text-dim);
+            text-align: center; margin-top: 60px; padding-top: 30px;
+            border-top: 1px solid rgba(255,184,130,0.1); color: var(--text-dim);
             font-size: 0.95rem;
-        }
-
-        @media (max-width: 640px) {
-            h1 { font-size: 2.6rem; letter-spacing: 4px; }
-            .feature-grid { gap: 24px; }
-            .feature-card { padding: 28px 16px; }
-            .feature-icon { font-size: 4.2rem; }
-            .nav-links { gap: 16px; font-size: 0.98rem; }
         }
     </style>
 </head>
@@ -423,7 +197,9 @@
                 <li><a href="learning progress.html">學習進度 Progress</a></li>
                 <li><a href="features.html">智能特色 Features</a></li>
                 <li><a href="poster.html">海報 Poster</a></li>
-                <li><a href="learning resource.html">學習資源 Resources</a></li>                <li><a href="stats.html">排名 Stats</a></li>                <li><a href="about.html">關於我們 About</a></li>
+                <li><a href="learning resource.html">學習資源 Resources</a></li>
+                <li><a href="stats.html">排名 Stats</a></li>
+                <li><a href="about.html">關於我們 About</a></li>
                 <li><a href="game.html#game" class="nav-game">學習遊戲 Game</a></li>
             </ul>
             
@@ -468,38 +244,32 @@
 
         <section>
             <h2>學習體驗 × 智能感應</h2>
-
             <div class="feature-grid">
                 <div class="feature-card">
                     <div class="feature-icon"><i class="fas fa-qrcode"></i></div>
                     <h3>QR 即學</h3>
                     <p>掃描閃卡 → 真人發音 + 情境影片 + 即時單字</p>
                 </div>
-
                 <div class="feature-card">
                     <div class="feature-icon"><i class="fas fa-map-pin"></i></div>
                     <h3>地域解鎖</h3>
                     <p>行到邊學到邊 → 餐廳/神社詞彙 + 在地文化</p>
                 </div>
-
                 <div class="feature-card">
                     <div class="feature-icon"><i class="fas fa-microphone"></i></div>
                     <h3>發音教練</h3>
                     <p>即時回饋 → 自信開口 + 通勤覆讀</p>
                 </div>
-
                 <div class="feature-card">
                     <div class="feature-icon"><i class="fas fa-bell"></i></div>
                     <h3>貼身伴學</h3>
                     <p>每日一句 + 溫習提示 → 語感不中斷</p>
                 </div>
-
                 <div class="feature-card">
                     <div class="feature-icon"><i class="fas fa-tag"></i></div>
                     <h3>NFC 觸發</h3>
                     <p>一拍即學 → 單字交換 + 實體教材互動</p>
                 </div>
-
                 <div class="feature-card">
                     <div class="feature-icon"><i class="fas fa-volume-high"></i></div>
                     <h3>景點信標導覽</h3>
@@ -508,33 +278,322 @@
             </div>
         </section>
 
-        <!-- CTA -->
-        <div class="cta-section">
-            <h2 style="margin-bottom:16px; font-size:2rem;">準備好把日語帶進生活了嗎？</h2>
-            <p style="max-width:520px; margin:0 auto 24px; color:var(--text-dim);">掃一掃、拍一拍、走一走 — 即時開啟你的沉浸式日語旅程</p>
-            <a href="#" class="cta-btn">立即開始體驗（免費試用）</a>
-        </div>
+        <!-- Flip Card Practice Section -->
+        <section style="margin: 80px 0 70px;">
+            <h2 style="text-align:center; margin-bottom:12px;">基礎練習 × 翻卡互動</h2>
+            <p style="text-align:center; font-size:1.15rem; color:var(--text-dim); margin-bottom:40px;">
+                數字 1〜10　＋　星期一〜日
+            </p>
+            <div style="text-align:center; margin:20px 0 40px; color:var(--text-dim); font-size:1.02rem;">
+                點擊卡片翻轉 • 點擊喇叭聽真人語音 • 適合初學者反覆練習
+            </div>
+
+            <div id="flashcards" style="max-width: 980px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px;">
+                
+                <!-- 10 Numbers -->
+                <div class="flip-card" data-type="number" data-jp="いち" data-romaji="ichi">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front">
+                            <div class="card-number">1</div>
+                            <div class="card-kanji">一</div>
+                            <div class="card-hiragana">いち</div>
+                            <div class="card-romaji">ichi</div>
+                        </div>
+                        <div class="flip-card-back">
+                            <div class="back-content">
+                                <h3>One</h3>
+                                <button class="speak-btn" onclick="speakJP(event, 'いち')"><i class="fas fa-volume-up"></i> 聽發音</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="flip-card" data-type="number" data-jp="に" data-romaji="ni">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front">
+                            <div class="card-number">2</div>
+                            <div class="card-kanji">二</div>
+                            <div class="card-hiragana">に</div>
+                            <div class="card-romaji">ni</div>
+                        </div>
+                        <div class="flip-card-back">
+                            <div class="back-content">
+                                <h3>Two</h3>
+                                <button class="speak-btn" onclick="speakJP(event, 'に')"><i class="fas fa-volume-up"></i> 聽發音</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="flip-card" data-type="number" data-jp="さん" data-romaji="san">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front">
+                            <div class="card-number">3</div>
+                            <div class="card-kanji">三</div>
+                            <div class="card-hiragana">さん</div>
+                            <div class="card-romaji">san</div>
+                        </div>
+                        <div class="flip-card-back">
+                            <div class="back-content">
+                                <h3>Three</h3>
+                                <button class="speak-btn" onclick="speakJP(event, 'さん')"><i class="fas fa-volume-up"></i> 聽發音</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="flip-card" data-type="number" data-jp="よん" data-romaji="yon">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front">
+                            <div class="card-number">4</div>
+                            <div class="card-kanji">四</div>
+                            <div class="card-hiragana">よん</div>
+                            <div class="card-romaji">yon (shi)</div>
+                        </div>
+                        <div class="flip-card-back">
+                            <div class="back-content">
+                                <h3>Four</h3>
+                                <button class="speak-btn" onclick="speakJP(event, 'よん')"><i class="fas fa-volume-up"></i> 聽發音</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="flip-card" data-type="number" data-jp="ご" data-romaji="go">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front">
+                            <div class="card-number">5</div>
+                            <div class="card-kanji">五</div>
+                            <div class="card-hiragana">ご</div>
+                            <div class="card-romaji">go</div>
+                        </div>
+                        <div class="flip-card-back">
+                            <div class="back-content">
+                                <h3>Five</h3>
+                                <button class="speak-btn" onclick="speakJP(event, 'ご')"><i class="fas fa-volume-up"></i> 聽發音</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="flip-card" data-type="number" data-jp="ろく" data-romaji="roku">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front">
+                            <div class="card-number">6</div>
+                            <div class="card-kanji">六</div>
+                            <div class="card-hiragana">ろく</div>
+                            <div class="card-romaji">roku</div>
+                        </div>
+                        <div class="flip-card-back">
+                            <div class="back-content">
+                                <h3>Six</h3>
+                                <button class="speak-btn" onclick="speakJP(event, 'ろく')"><i class="fas fa-volume-up"></i> 聽發音</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="flip-card" data-type="number" data-jp="なな" data-romaji="nana">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front">
+                            <div class="card-number">7</div>
+                            <div class="card-kanji">七</div>
+                            <div class="card-hiragana">なな</div>
+                            <div class="card-romaji">nana (shichi)</div>
+                        </div>
+                        <div class="flip-card-back">
+                            <div class="back-content">
+                                <h3>Seven</h3>
+                                <button class="speak-btn" onclick="speakJP(event, 'なな')"><i class="fas fa-volume-up"></i> 聽發音</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="flip-card" data-type="number" data-jp="はち" data-romaji="hachi">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front">
+                            <div class="card-number">8</div>
+                            <div class="card-kanji">八</div>
+                            <div class="card-hiragana">はち</div>
+                            <div class="card-romaji">hachi</div>
+                        </div>
+                        <div class="flip-card-back">
+                            <div class="back-content">
+                                <h3>Eight</h3>
+                                <button class="speak-btn" onclick="speakJP(event, 'はち')"><i class="fas fa-volume-up"></i> 聽發音</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="flip-card" data-type="number" data-jp="きゅう" data-romaji="kyuu">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front">
+                            <div class="card-number">9</div>
+                            <div class="card-kanji">九</div>
+                            <div class="card-hiragana">きゅう</div>
+                            <div class="card-romaji">kyuu (ku)</div>
+                        </div>
+                        <div class="flip-card-back">
+                            <div class="back-content">
+                                <h3>Nine</h3>
+                                <button class="speak-btn" onclick="speakJP(event, 'きゅう')"><i class="fas fa-volume-up"></i> 聽發音</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="flip-card" data-type="number" data-jp="じゅう" data-romaji="juu">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front">
+                            <div class="card-number">10</div>
+                            <div class="card-kanji">十</div>
+                            <div class="card-hiragana">じゅう</div>
+                            <div class="card-romaji">juu</div>
+                        </div>
+                        <div class="flip-card-back">
+                            <div class="back-content">
+                                <h3>Ten</h3>
+                                <button class="speak-btn" onclick="speakJP(event, 'じゅう')"><i class="fas fa-volume-up"></i> 聽發音</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 7 Days of the Week -->
+                <div class="flip-card" data-type="day" data-jp="げつようび" data-romaji="getsuyōbi">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front day-front">
+                            <div class="card-number">月</div>
+                            <div class="card-hiragana">げつようび</div>
+                            <div class="card-romaji">getsuyōbi</div>
+                        </div>
+                        <div class="flip-card-back">
+                            <div class="back-content">
+                                <h3>Monday</h3>
+                                <button class="speak-btn" onclick="speakJP(event, 'げつようび')"><i class="fas fa-volume-up"></i> 聽發音</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="flip-card" data-type="day" data-jp="かようび" data-romaji="kayōbi">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front day-front">
+                            <div class="card-number">火</div>
+                            <div class="card-hiragana">かようび</div>
+                            <div class="card-romaji">kayōbi</div>
+                        </div>
+                        <div class="flip-card-back">
+                            <div class="back-content">
+                                <h3>Tuesday</h3>
+                                <button class="speak-btn" onclick="speakJP(event, 'かようび')"><i class="fas fa-volume-up"></i> 聽發音</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="flip-card" data-type="day" data-jp="すいようび" data-romaji="suiyōbi">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front day-front">
+                            <div class="card-number">水</div>
+                            <div class="card-hiragana">すいようび</div>
+                            <div class="card-romaji">suiyōbi</div>
+                        </div>
+                        <div class="flip-card-back">
+                            <div class="back-content">
+                                <h3>Wednesday</h3>
+                                <button class="speak-btn" onclick="speakJP(event, 'すいようび')"><i class="fas fa-volume-up"></i> 聽發音</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="flip-card" data-type="day" data-jp="もくようび" data-romaji="mokuyōbi">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front day-front">
+                            <div class="card-number">木</div>
+                            <div class="card-hiragana">もくようび</div>
+                            <div class="card-romaji">mokuyōbi</div>
+                        </div>
+                        <div class="flip-card-back">
+                            <div class="back-content">
+                                <h3>Thursday</h3>
+                                <button class="speak-btn" onclick="speakJP(event, 'もくようび')"><i class="fas fa-volume-up"></i> 聽發音</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="flip-card" data-type="day" data-jp="きんようび" data-romaji="kin'yōbi">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front day-front">
+                            <div class="card-number">金</div>
+                            <div class="card-hiragana">きんようび</div>
+                            <div class="card-romaji">kin'yōbi</div>
+                        </div>
+                        <div class="flip-card-back">
+                            <div class="back-content">
+                                <h3>Friday</h3>
+                                <button class="speak-btn" onclick="speakJP(event, 'きんようび')"><i class="fas fa-volume-up"></i> 聽發音</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="flip-card" data-type="day" data-jp="どようび" data-romaji="doyōbi">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front day-front">
+                            <div class="card-number">土</div>
+                            <div class="card-hiragana">どようび</div>
+                            <div class="card-romaji">doyōbi</div>
+                        </div>
+                        <div class="flip-card-back">
+                            <div class="back-content">
+                                <h3>Saturday</h3>
+                                <button class="speak-btn" onclick="speakJP(event, 'どようび')"><i class="fas fa-volume-up"></i> 聽發音</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="flip-card" data-type="day" data-jp="にちようび" data-romaji="nichiyōbi">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front day-front">
+                            <div class="card-number">日</div>
+                            <div class="card-hiragana">にちようび</div>
+                            <div class="card-romaji">nichiyōbi</div>
+                        </div>
+                        <div class="flip-card-back">
+                            <div class="back-content">
+                                <h3>Sunday</h3>
+                                <button class="speak-btn" onclick="speakJP(event, 'にちようび')"><i class="fas fa-volume-up"></i> 聽發音</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <p style="text-align:center; margin-top:40px; color:var(--text-dim); font-size:0.98rem;">
+                💡 小知識：4（よん）和7（なな）在日常對話中最常用，避免不吉利的「し」「しち」。<br>
+                星期全部以「ようび」結尾，很好記！
+            </p>
+        </section>
 
         <footer>
             By Yu Wang Yui — 創新與資訊科技 (IoT 融入學習設計)<br>
             YouTube 播放清單｜詞彙表｜更多資源
         </footer>
-
     </div>
 
     <script>
+        // Mobile menu toggle
         const navToggle = document.querySelector('.nav-toggle');
         const navLinks = document.querySelector('.nav-links');
+        if (navToggle) {
+            navToggle.addEventListener('click', () => navLinks.classList.toggle('open'));
+        }
 
-        navToggle.addEventListener('click', () => {
-            navLinks.classList.toggle('open');
-        });
-
-        document.addEventListener('click', (event) => {
-            if (!event.target.closest('.nav') && navLinks.classList.contains('open')) {
-                navLinks.classList.remove('open');
+        // Speech function
+        function speakJP(e, text) {
+            e.stopImmediatePropagation();
+            if ('speechSynthesis' in window) {
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'ja-JP';
+                utterance.rate = 0.92;
+                utterance.pitch = 1.05;
+                speechSynthesis.cancel();
+                speechSynthesis.speak(utterance);
+            } else {
+                alert('您的瀏覽器不支援語音播放，請使用 Chrome / Edge 等現代瀏覽器');
             }
-        });
+        }
     </script>
 </body>
 </html>
